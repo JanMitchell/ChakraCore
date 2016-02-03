@@ -4248,23 +4248,14 @@ GlobOpt::CollectMemsetStElementI(IR::Instr *instr, Loop *loop)
     SymID baseSymID = GetVarSymID(baseOp->GetStackSym());
 
     IR::Opnd *srcDef = instr->GetSrc1();
-    StackSym *varSym = nullptr;
+    StackSym *srcSym = nullptr;
     if (srcDef->IsRegOpnd())
     {
         IR::RegOpnd* opnd = srcDef->AsRegOpnd();
         if (this->OptIsInvariant(opnd, this->currentBlock, loop, this->FindValue(opnd->m_sym), true, true))
         {
-            StackSym* sym = opnd->GetStackSym();
-            if (sym->GetType() != TyVar)
-            {
-                varSym = sym->GetVarEquivSym(instr->m_func);
-            }
-            else
-            {
-                varSym = sym;
-            }
+            srcSym = opnd->GetStackSym();
         }
-
     }
 
     BailoutConstantValue constant = {TyIllegal, 0};
@@ -4280,7 +4271,7 @@ GlobOpt::CollectMemsetStElementI(IR::Instr *instr, Loop *loop)
     {
         constant.InitVarConstValue(srcDef->AsAddrOpnd()->m_address);
     }
-    else if(!varSym)
+    else if(!srcSym)
     {
         TRACE_MEMOP_PHASE_VERBOSE(MemSet, loop, instr, L"Source is not an invariant");
         return false;
@@ -4297,7 +4288,7 @@ GlobOpt::CollectMemsetStElementI(IR::Instr *instr, Loop *loop)
     memsetInfo->base = baseSymID;
     memsetInfo->index = inductionSymID;
     memsetInfo->constant = constant;
-    memsetInfo->varSym = varSym;
+    memsetInfo->srcSym = srcSym;
     memsetInfo->count = 1;
     memsetInfo->bIndexAlreadyChanged = isIndexPreIncr;
     loop->memOpInfo->candidates->Prepend(memsetInfo);
@@ -6010,7 +6001,6 @@ GlobOpt::CopyProp(IR::Opnd *opnd, IR::Instr *instr, Value *val, IR::IndirOpnd *p
         return opnd;
     }
 
-    // SIMD_JS
     // Don't copy-prop operand of SIMD instr with ExtendedArg operands. Each instr should have its exclusive EA sequence.
     if (
             Js::IsSimd128Opcode(instr->m_opcode) && 
@@ -20822,10 +20812,9 @@ GlobOpt::EmitMemop(Loop * loop, LoopCount *loopCount, const MemOpEmitData* emitD
     {
         MemSetEmitData* data = (MemSetEmitData*)emitData;
         const Loop::MemSetCandidate* candidate = data->candidate->AsMemSet();
-        if (candidate->varSym)
+        if (candidate->srcSym)
         {
-            Assert(candidate->varSym->GetType() == TyVar);
-            IR::RegOpnd* regSrc = IR::RegOpnd::New(candidate->varSym, TyVar, func);
+            IR::RegOpnd* regSrc = IR::RegOpnd::New(candidate->srcSym, candidate->srcSym->GetType(), func);
             regSrc->SetIsJITOptimizedReg(true);
             src1 = regSrc;
         }
@@ -20878,9 +20867,9 @@ GlobOpt::EmitMemop(Loop * loop, LoopCount *loopCount, const MemOpEmitData* emitD
             const Loop::MemSetCandidate* candidate = emitData->candidate->AsMemSet();
             const int constBufSize = 32;
             wchar_t constBuf[constBufSize];
-            if (candidate->varSym)
+            if (candidate->srcSym)
             {
-                _snwprintf_s(constBuf, constBufSize, L"s%u", candidate->varSym->m_id);
+                _snwprintf_s(constBuf, constBufSize, L"s%u", candidate->srcSym->m_id);
             }
             else
             {
@@ -21023,9 +21012,9 @@ GlobOpt::InspectInstrForMemCopyCandidate(Loop* loop, IR::Instr* instr, MemCopyEm
 
 // The caller is responsible to free the memory allocated between inOrderEmitData[iEmitData -> end]
 bool
-GlobOpt::ValidateMemOpCandidates(Loop * loop, MemOpEmitData** inOrderEmitData, int& iEmitData)
+GlobOpt::ValidateMemOpCandidates(Loop * loop, _Out_writes_(iEmitData) MemOpEmitData** inOrderEmitData, int& iEmitData)
 {
-    Assert(iEmitData >= (int)loop->memOpInfo->candidates->Count());
+    AnalysisAssert(iEmitData == (int)loop->memOpInfo->candidates->Count());
     // We iterate over the second block of the loop only. MemOp Works only if the loop has exactly 2 blocks
     Assert(loop->blockList.HasTwo());
 
@@ -21104,10 +21093,16 @@ GlobOpt::ValidateMemOpCandidates(Loop * loop, MemOpEmitData** inOrderEmitData, i
         }
         if (candidateFound)
         {
-            Assert(iEmitData > 0);
+            AnalysisAssert(iEmitData > 0);
+            if (iEmitData == 0)
+            {
+                // Explicit for OACR
+                break;
+            }
             inOrderEmitData[--iEmitData] = emitData;
             candidate = nullptr;
             emitData = nullptr;
+
         }
     } NEXT_INSTR_BACKWARD_IN_BLOCK;
 
@@ -21173,3 +21168,4 @@ GlobOpt::ProcessMemOp()
         }
     } NEXT_LOOP_EDITING;
 }
+
