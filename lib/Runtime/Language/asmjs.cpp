@@ -902,6 +902,11 @@ varDeclEnd:
             return m.Fail( node, L"Only expression after table functions must be a return" );
         }
 
+        if ( !node->sxReturn.pnodeExpr )
+        {
+            return m.Fail( node, L"Module return must be an object or 1 function" );
+        }
+
         ParseNode* objNode = node->sxReturn.pnodeExpr;
         if( objNode->nop != knopObject )
         {
