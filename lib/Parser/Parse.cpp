@@ -5053,7 +5053,7 @@ void Parser::ParseTopLevelDeferredFunc(ParseNodePtr pnodeFnc, ParseNodePtr pnode
     pnodeFnc->sxFnc.pnodeVars = nullptr;
     pnodeFnc->sxFnc.pnodeBody = nullptr;
 
-	BOOL fSavedDeferAST = this->m_deferringAST;
+    BOOL fSavedDeferAST = this->m_deferringAST;
     this->m_deferringAST = TRUE;
 
     // Put the scanner into "no hashing" mode.
@@ -5122,7 +5122,7 @@ void Parser::ParseTopLevelDeferredFunc(ParseNodePtr pnodeFnc, ParseNodePtr pnode
 #if DBG
     pnodeFnc->sxFnc.deferredParseNextFunctionId = *this->m_nextFunctionId;
 #endif
-	this->m_deferringAST = fSavedDeferAST;
+    this->m_deferringAST = fSavedDeferAST;
 }
 
 bool Parser::DoParallelParse(ParseNodePtr pnodeFnc) const
