@@ -372,10 +372,6 @@ public:
         WorkerThread(HANDLE handle = nullptr) :threadHandle(handle){};
     };
 
-#if ENABLE_NATIVE_CODEGEN
-    void ReleasePreReservedSegment();
-#endif
-
     void SetCurrentThreadId(DWORD threadId) { this->currentThreadId = threadId; }
     DWORD GetCurrentThreadId() const { return this->currentThreadId; }
     void SetIsThreadBound()
@@ -386,10 +382,30 @@ public:
         }
         this->isThreadBound = true;
     }
+    bool IsJSRT() const { return !this->isThreadBound; }
     bool GetIsThreadBound() const { return this->isThreadBound; }
     void SetStackProber(StackProber * stackProber);
     PBYTE GetScriptStackLimit() const;
     static DWORD GetStackLimitForCurrentThreadOffset() { return offsetof(ThreadContext, stackLimitForCurrentThread); }
+
+    template <class Fn>
+    Js::ImplicitCallFlags TryWithDisabledImplicitCall(Fn fn)
+    {
+        DisableImplicitFlags prevDisableImplicitFlags = this->GetDisableImplicitFlags();
+        Js::ImplicitCallFlags savedImplicitCallFlags = this->GetImplicitCallFlags();
+
+        this->DisableImplicitCall();
+        this->SetImplicitCallFlags(Js::ImplicitCallFlags::ImplicitCall_None);
+        fn();
+
+        Js::ImplicitCallFlags curImplicitCallFlags = this->GetImplicitCallFlags();
+
+        this->SetDisableImplicitFlags(prevDisableImplicitFlags);
+        this->SetImplicitCallFlags(savedImplicitCallFlags);
+
+        return curImplicitCallFlags;
+    }
+
     void * GetAddressOfStackLimitForCurrentThread()
     {
         FAULTINJECT_SCRIPT_TERMINATION
@@ -436,6 +452,13 @@ public:
     void AddSimdFuncInfo(Js::OpCode op, Js::FunctionInfo *funcInfo);
     Js::OpCode GetSimdOpcodeFromFuncInfo(Js::FunctionInfo * funcInfo);
     void GetSimdFuncSignatureFromOpcode(Js::OpCode op, SimdFuncSignature &funcSignature);
+
+#if _M_IX86 || _M_AMD64
+    // auxiliary SIMD values in memory to help JIT'ed code. E.g. used for Int8x16 shuffle. 
+    _x86_SIMDValue X86_TEMP_SIMD[SIMD_TEMP_SIZE];
+    _x86_SIMDValue * GetSimdTempArea() { return X86_TEMP_SIMD; }
+#endif
+
 #endif
 
 private:
@@ -488,7 +511,7 @@ public:
 
 private:
     typedef JsUtil::BaseDictionary<uint, Js::SourceDynamicProfileManager*, Recycler, PowerOf2SizePolicy> SourceDynamicProfileManagerMap;
-    typedef JsUtil::BaseDictionary<const wchar_t*, const Js::PropertyRecord*, Recycler, PowerOf2SizePolicy> SymbolRegistrationMap;
+    typedef JsUtil::BaseDictionary<const char16*, const Js::PropertyRecord*, Recycler, PowerOf2SizePolicy> SymbolRegistrationMap;
 
     class SourceDynamicProfileManagerCache
     {
@@ -664,8 +687,6 @@ private:
     ArenaAllocator inlineCacheThreadInfoAllocator;
     ArenaAllocator isInstInlineCacheThreadInfoAllocator;
     ArenaAllocator equivalentTypeCacheInfoAllocator;
-    DListBase<Js::ScriptContext *> inlineCacheScriptContexts;
-    DListBase<Js::ScriptContext *> isInstInlineCacheScriptContexts;
     DListBase<Js::EntryPointInfo *> equivalentTypeCacheEntryPoints;
 
     typedef SList<Js::InlineCache*> InlineCacheList;
@@ -733,7 +754,7 @@ private:
     // Regex globals
     //
     UnifiedRegex::StandardChars<uint8>* standardUTF8Chars;
-    UnifiedRegex::StandardChars<wchar_t>* standardUnicodeChars;
+    UnifiedRegex::StandardChars<char16>* standardUnicodeChars;
 
     Js::ImplicitCallFlags implicitCallFlags;
 
@@ -1014,7 +1035,7 @@ private:
 public:
     void FindPropertyRecord(Js::JavascriptString *pstName, Js::PropertyRecord const ** propertyRecord);
     void FindPropertyRecord(__in LPCWSTR propertyName, __in int propertyNameLength, Js::PropertyRecord const ** propertyRecord);
-    const Js::PropertyRecord * FindPropertyRecord(const wchar_t * propertyName, int propertyNameLength);
+    const Js::PropertyRecord * FindPropertyRecord(const char16 * propertyName, int propertyNameLength);
 
     JsUtil::List<const RecyclerWeakReference<Js::PropertyRecord const>*>* FindPropertyIdNoCase(Js::ScriptContext * scriptContext, LPCWSTR propertyName, int propertyNameLength);
     JsUtil::List<const RecyclerWeakReference<Js::PropertyRecord const>*>* FindPropertyIdNoCase(Js::ScriptContext * scriptContext, JsUtil::CharacterBuffer<WCHAR> const& propertyName);
@@ -1022,11 +1043,11 @@ public:
     void CleanNoCasePropertyMap();
     void ForceCleanPropertyMap();
 
-    const Js::PropertyRecord * GetOrAddPropertyRecord(JsUtil::CharacterBuffer<wchar_t> propertyName)
+    const Js::PropertyRecord * GetOrAddPropertyRecord(JsUtil::CharacterBuffer<char16> propertyName)
     {
         return GetOrAddPropertyRecordImpl(propertyName, false);
     }
-    const Js::PropertyRecord * GetOrAddPropertyRecordBind(JsUtil::CharacterBuffer<wchar_t> propertyName)
+    const Js::PropertyRecord * GetOrAddPropertyRecordBind(JsUtil::CharacterBuffer<char16> propertyName)
     {
         return GetOrAddPropertyRecordImpl(propertyName, true);
     }
@@ -1042,10 +1063,10 @@ public:
 #endif
 
 private:
-    const Js::PropertyRecord * GetOrAddPropertyRecordImpl(JsUtil::CharacterBuffer<wchar_t> propertyName, bool bind);
+    const Js::PropertyRecord * GetOrAddPropertyRecordImpl(JsUtil::CharacterBuffer<char16> propertyName, bool bind);
     void AddPropertyRecordInternal(const Js::PropertyRecord * propertyRecord);
     void BindPropertyRecord(const Js::PropertyRecord * propertyRecord);
-    bool IsDirectPropertyName(const wchar_t * propertyName, int propertyNameLength);
+    bool IsDirectPropertyName(const char16 * propertyName, int propertyNameLength);
 
     RecyclerWeakReference<const Js::PropertyRecord> * CreatePropertyRecordWeakRef(const Js::PropertyRecord * propertyRecord);
     void AddCaseInvariantPropertyRecord(const Js::PropertyRecord * propertyRecord);
@@ -1149,11 +1170,7 @@ public:
     void SetNoScriptScope(bool noScriptScope) { this->noScriptScope = noScriptScope; }
     bool IsNoScriptScope() { return this->noScriptScope; }
 
-    Js::ScriptContext ** RegisterInlineCacheScriptContext(Js::ScriptContext * scriptContext);
-    Js::ScriptContext ** RegisterIsInstInlineCacheScriptContext(Js::ScriptContext * scriptContext);
     Js::EntryPointInfo ** RegisterEquivalentTypeCacheEntryPoint(Js::EntryPointInfo * entryPoint);
-    void UnregisterInlineCacheScriptContext(Js::ScriptContext ** scriptContext);
-    void UnregisterIsInstInlineCacheScriptContext(Js::ScriptContext ** scriptContext);
     void UnregisterEquivalentTypeCacheEntryPoint(Js::EntryPointInfo ** entryPoint);
     void RegisterProtoInlineCache(Js::InlineCache * inlineCache, Js::PropertyId propertyId);
     void RegisterStoreFieldInlineCache(Js::InlineCache * inlineCache, Js::PropertyId propertyId);
@@ -1300,8 +1317,8 @@ public:
 #endif
 
     void EnsureSymbolRegistrationMap();
-    const Js::PropertyRecord* GetSymbolFromRegistrationMap(const wchar_t* stringKey);
-    const Js::PropertyRecord* AddSymbolToRegistrationMap(const wchar_t* stringKey, charcount_t stringLength);
+    const Js::PropertyRecord* GetSymbolFromRegistrationMap(const char16* stringKey);
+    const Js::PropertyRecord* AddSymbolToRegistrationMap(const char16* stringKey, charcount_t stringLength);
 
     inline void ClearPendingSOError()
     {
@@ -1510,7 +1527,7 @@ public:
     // Regex helpers
     //
     UnifiedRegex::StandardChars<uint8>* GetStandardChars(__inout_opt uint8* dummy);
-    UnifiedRegex::StandardChars<wchar_t>* GetStandardChars(__inout_opt wchar_t* dummy);
+    UnifiedRegex::StandardChars<char16>* GetStandardChars(__inout_opt char16* dummy);
 
     bool IsOptimizedForManyInstances() const { return isOptimizedForManyInstances; }
 

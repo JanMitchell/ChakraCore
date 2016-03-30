@@ -23,8 +23,8 @@ enum
     koplCmp,    // < <= > >=
     koplShf,    // << >> >>>
     koplAdd,    // + -
-    koplExpo,   // **
     koplMul,    // * / %
+    koplExpo,   // **
     koplUni,    // unary operators
     koplLim
 };
@@ -137,7 +137,7 @@ public:
     static IdentPtr PidFromNode(ParseNodePtr pnode);
 
     ParseNode* CopyPnode(ParseNode* pnode);
-    IdentPtr GenerateIdentPtr(__ecount(len) wchar_t* name,long len);
+    IdentPtr GenerateIdentPtr(__ecount(len) char16* name,long len);
 
     ArenaAllocator *GetAllocator() { return &m_nodeAllocator;}
 
@@ -198,7 +198,6 @@ private:
     BOOL                m_uncertainStructure;
     bool                m_hasParallelJob;
     bool                m_doingFastScan;
-    Span                m_asgToConst;
     int                 m_nextBlockId;
 
     // RegexPattern objects created for literal regexes are recycler-allocated and need to be kept alive until the function body
@@ -323,9 +322,9 @@ public:
         switch(m_parseType)
         {
             case ParseType_Upfront:
-                return L"Upfront";
+                return _u("Upfront");
             case ParseType_Deferred:
-                return L"Deferred";
+                return _u("Deferred");
         }
         Assert(false);
         return NULL;
@@ -355,6 +354,7 @@ private:
     ParseNodePtr m_currentNodeDeferredFunc; // current function or NULL
     ParseNodePtr m_currentNodeProg; // current program
     DeferredFunctionStub *m_currDeferredStub;
+    DeferredFunctionStub *m_prevSiblingDeferredStub;
     long * m_pCurrentAstSize;
     ParseNodePtr * m_ppnodeScope;  // function list tail
     ParseNodePtr * m_ppnodeExprScope; // function expression list tail
@@ -481,7 +481,7 @@ private:
 
     void MarkEvalCaller()
     {
-        if (m_currentNodeFunc)
+        if (this->GetCurrentFunctionNode())
         {
             ParseNodePtr pnodeFunc = GetCurrentFunctionNode();
             pnodeFunc->sxFnc.SetCallsEval(true);
@@ -493,6 +493,26 @@ private:
             PushDynamicBlock();
         }
     }
+
+    struct ParserState
+    {
+        ParseNodePtr *m_ppnodeScopeSave;
+        ParseNodePtr *m_ppnodeExprScopeSave;
+        charcount_t m_funcInArraySave;
+        long *m_pCurrentAstSizeSave;
+        uint m_funcInArrayDepthSave;
+        uint m_nestedCountSave;
+#if DEBUG
+        // For very basic validation purpose - to check that we are not going restore to some other block.
+        BlockInfoStack *m_currentBlockInfo;
+#endif
+    };
+
+    // This function is going to capture some of the important current state of the parser to an object. Once we learn
+    // that we need to reparse the grammar again we could use RestoreStateFrom to restore that state to the parser.
+    void CaptureState(ParserState *state);
+    void RestoreStateFrom(ParserState *state);
+    // Future recommendation : Consider consolidating Parser::CaptureState and Scanner::Capture together if we do CaptureState more often.
 
 public:
     IdentPtrList* GetRequestedModulesList();
@@ -508,11 +528,16 @@ protected:
     ModuleExportEntryList* EnsureModuleIndirectExportEntryList();
     ModuleExportEntryList* EnsureModuleStarExportEntryList();
 
+    void AddModuleSpecifier(IdentPtr moduleRequest);
     void AddModuleImportEntry(ModuleImportEntryList* importEntryList, IdentPtr importName, IdentPtr localName, IdentPtr moduleRequest, ParseNodePtr declNode);
+    void AddModuleExportEntry(ModuleExportEntryList* exportEntryList, ModuleExportEntry* exportEntry);
     void AddModuleExportEntry(ModuleExportEntryList* exportEntryList, IdentPtr importName, IdentPtr localName, IdentPtr exportName, IdentPtr moduleRequest);
     void AddModuleLocalExportEntry(ParseNodePtr varDeclNode);
+    void CheckForDuplicateExportEntry(ModuleExportEntryList* exportEntryList, IdentPtr exportName);
 
-    ParseNodePtr CreateModuleImportDeclNode(IdentPtr pid);
+    Js::PropertyId EnsurePropertyId(IdentPtr pid);
+    ParseNodePtr CreateModuleImportDeclNode(IdentPtr localName);
+    void MarkIdentifierReferenceIsModuleExport(IdentPtr localName);
 
 public:
     WellKnownPropertyPids* names(){ return &wellKnownPropertyPids; }
@@ -794,6 +819,7 @@ private:
     template<bool buildAST> void ParseImportClause(ModuleImportEntryList* importEntryList, bool parsingAfterComma = false);
 
     template<bool buildAST> ParseNodePtr ParseExportDeclaration();
+    template<bool buildAST> ParseNodePtr ParseDefaultExportClause();
 
     template<bool buildAST> void ParseNamedImportOrExportClause(ModuleImportEntryList* importEntryList, ModuleExportEntryList* exportEntryList, bool isExportClause);
     template<bool buildAST> IdentPtr ParseImportOrExportFromClause(bool throwIfNotFound);
@@ -863,7 +889,7 @@ private:
         BOOL *nativeForOkay = nullptr);
 
     template <bool buildAST>
-    ParseNodePtr ParseDestructuredVarDecl(tokens declarationType, bool isDecl, bool *hasSeenRest, bool topLevel = true);
+    ParseNodePtr ParseDestructuredVarDecl(tokens declarationType, bool isDecl, bool *hasSeenRest, bool topLevel = true, bool allowEmptyExpression = true);
 
     template <bool buildAST>
     ParseNodePtr ParseDestructuredInitializer(ParseNodePtr lhsNode,
@@ -903,7 +929,6 @@ public:
 
 private:
     void DeferOrEmitPotentialSpreadError(ParseNodePtr pnodeT);
-    template<bool buildAST> void TrackAssignment(ParseNodePtr pnodeT, IdentToken* pToken, charcount_t ichMin, charcount_t ichLim);
     PidRefStack* PushPidRef(IdentPtr pid);
     PidRefStack* FindOrAddPidRef(IdentPtr pid, int blockId, int maxScopeId = -1);
     void RemovePrevPidRef(IdentPtr pid, PidRefStack *lastRef);

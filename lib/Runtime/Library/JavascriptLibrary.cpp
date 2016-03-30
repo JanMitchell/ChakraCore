@@ -1,7 +1,8 @@
 //-------------------------------------------------------------------------------------------------------
-// Copyright (C) Microsoft. All rights reserved.
+// Copyright (C) Microsoft Corporation and contributors. All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 //-------------------------------------------------------------------------------------------------------
+
 #include "RuntimeLibraryPch.h"
 
 #include "Library/JSON.h"
@@ -131,7 +132,7 @@ namespace Js
         // The prototype property of the object prototype is null.
         objectPrototype = ObjectPrototypeObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, nullValue, nullptr,
-            DeferredTypeHandler<InitializeObjectPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeObjectPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
         constructorPrototypeObjectType = DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
             &SharedPrototypeTypeHandler, true, true);
@@ -144,77 +145,77 @@ namespace Js
             {
                 arrayBufferPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeArrayBufferPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeArrayBufferPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 arrayBufferType = DynamicType::New(scriptContext, TypeIds_ArrayBuffer, arrayBufferPrototype, nullptr,
                     SimplePathTypeHandler::New(scriptContext, scriptContext->GetRootPath(), 0, 0, 0, true, true), true, true);
 
                 dataViewPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeDataViewPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeDataViewPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 typedArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeTypedArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeTypedArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 Int8ArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeInt8ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeInt8ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 Uint8ArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeUint8ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeUint8ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 // If ES6 TypedArrays are enabled, we have Khronos Interop mode enabled
                 Uint8ClampedArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeUint8ClampedArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeUint8ClampedArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 Int16ArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeInt16ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeInt16ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 Uint16ArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeUint16ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeUint16ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 Int32ArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeInt32ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeInt32ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 Uint32ArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeUint32ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeUint32ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 Float32ArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeFloat32ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeFloat32ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 Float64ArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeFloat64ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeFloat64ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 Int64ArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeInt64ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeInt64ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 Uint64ArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeUint64ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeUint64ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 BoolArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeBoolArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeBoolArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 CharArrayPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, typedArrayPrototype, nullptr,
-                    DeferredTypeHandler<InitializeCharArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeCharArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
             }
             else
             {
                 arrayBufferPrototype = JavascriptArrayBuffer::Create(0,
                     DynamicType::New(scriptContext, TypeIds_ArrayBuffer, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeArrayBufferPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeArrayBufferPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 arrayBufferType = DynamicType::New(scriptContext, TypeIds_ArrayBuffer, arrayBufferPrototype, nullptr,
                     SimplePathTypeHandler::New(scriptContext, scriptContext->GetRootPath(), 0, 0, 0, true, true), true, true);
@@ -222,71 +223,71 @@ namespace Js
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Int8ArrayPrototype = RecyclerNew(recycler, Int8Array, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Int8Array, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeInt8ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeInt8ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Uint8ArrayPrototype = RecyclerNew(recycler, Uint8Array, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Uint8Array, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeUint8ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeUint8ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 dataViewPrototype = DynamicObject::New(recycler,
                     DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeDataViewPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeDataViewPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Uint8ClampedArrayPrototype = RecyclerNew(recycler, Uint8ClampedArray, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Uint8ClampedArray, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeUint8ClampedArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeUint8ClampedArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Int16ArrayPrototype = RecyclerNew(recycler, Int16Array, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Int16Array, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeInt16ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeInt16ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Uint16ArrayPrototype = RecyclerNew(recycler, Uint16Array, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Uint16Array, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeUint16ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeUint16ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Int32ArrayPrototype = RecyclerNew(recycler, Int32Array, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Int32Array, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeInt32ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeInt32ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Uint32ArrayPrototype = RecyclerNew(recycler, Uint32Array, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Uint32Array, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeUint32ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeUint32ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Float32ArrayPrototype = RecyclerNew(recycler, Float32Array, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Float32Array, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeFloat32ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeFloat32ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Float64ArrayPrototype = RecyclerNew(recycler, Float64Array, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Float64Array, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeFloat64ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeFloat64ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Int64ArrayPrototype = RecyclerNew(recycler, Int64Array, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Int64Array, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeInt64ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeInt64ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 Uint64ArrayPrototype = RecyclerNew(recycler, Uint64Array, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_Uint64Array, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeUint64ArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeUint64ArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 BoolArrayPrototype = RecyclerNew(recycler, BoolArray, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_BoolArray, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeBoolArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeBoolArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
                 baseArrayBuffer = JavascriptArrayBuffer::Create(0, arrayBufferType);
                 CharArrayPrototype = RecyclerNew(recycler, CharArray, baseArrayBuffer, 0, 0,
                     DynamicType::New(scriptContext, TypeIds_CharArray, objectPrototype, nullptr,
-                    DeferredTypeHandler<InitializeCharArrayPrototype>::GetDefaultInstance()));
+                    DeferredTypeHandler<InitializeCharArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
             }
         }
         else
@@ -312,29 +313,67 @@ namespace Js
 
         arrayPrototype = JavascriptArray::New<Var, JavascriptArray, 0>(0,
             DynamicType::New(scriptContext, TypeIds_Array, objectPrototype, nullptr,
-            DeferredTypeHandler<InitializeArrayPrototype>::GetDefaultInstance()), recycler);
+            DeferredTypeHandler<InitializeArrayPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()), recycler);
 
         booleanPrototype = RecyclerNew(recycler, JavascriptBooleanObject, nullptr,
             DynamicType::New(scriptContext, TypeIds_BooleanObject, objectPrototype, nullptr,
-            DeferredTypeHandler<InitializeBooleanPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeBooleanPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
         numberPrototype = RecyclerNew(recycler, JavascriptNumberObject, TaggedInt::ToVarUnchecked(0),
             DynamicType::New(scriptContext, TypeIds_NumberObject, objectPrototype, nullptr,
-            DeferredTypeHandler<InitializeNumberPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeNumberPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
         stringPrototype = RecyclerNew(recycler, JavascriptStringObject, nullptr,
             DynamicType::New(scriptContext, TypeIds_StringObject, objectPrototype, nullptr,
-            DeferredTypeHandler<InitializeStringPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeStringPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+
+        /* Initialize SIMD prototypes*/
+        if (GetScriptContext()->GetConfig()->IsSimdjsEnabled())
+        {
+            simdBool8x16Prototype = RecyclerNew(recycler, JavascriptSIMDObject, nullptr,
+                DynamicType::New(scriptContext, TypeIds_SIMDObject, objectPrototype, nullptr,
+                    DeferredTypeHandler<InitializeSIMDBool8x16Prototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+            simdBool16x8Prototype = RecyclerNew(recycler, JavascriptSIMDObject, nullptr,
+                DynamicType::New(scriptContext, TypeIds_SIMDObject, objectPrototype, nullptr,
+                    DeferredTypeHandler<InitializeSIMDBool16x8Prototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+            simdBool32x4Prototype = RecyclerNew(recycler, JavascriptSIMDObject, nullptr,
+                DynamicType::New(scriptContext, TypeIds_SIMDObject, objectPrototype, nullptr,
+                    DeferredTypeHandler<InitializeSIMDBool32x4Prototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+
+            simdInt8x16Prototype = RecyclerNew(recycler, JavascriptSIMDObject, nullptr,
+                DynamicType::New(scriptContext, TypeIds_SIMDObject, objectPrototype, nullptr,
+                    DeferredTypeHandler<InitializeSIMDInt8x16Prototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+            simdInt16x8Prototype = RecyclerNew(recycler, JavascriptSIMDObject, nullptr,
+                DynamicType::New(scriptContext, TypeIds_SIMDObject, objectPrototype, nullptr,
+                    DeferredTypeHandler<InitializeSIMDInt16x8Prototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+            simdInt32x4Prototype = RecyclerNew(recycler, JavascriptSIMDObject, nullptr,
+                DynamicType::New(scriptContext, TypeIds_SIMDObject, objectPrototype, nullptr,
+                    DeferredTypeHandler<InitializeSIMDInt32x4Prototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+
+            simdUint8x16Prototype = RecyclerNew(recycler, JavascriptSIMDObject, nullptr,
+                DynamicType::New(scriptContext, TypeIds_SIMDObject, objectPrototype, nullptr,
+                    DeferredTypeHandler<InitializeSIMDUint8x16Prototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+            simdUint16x8Prototype = RecyclerNew(recycler, JavascriptSIMDObject, nullptr,
+                DynamicType::New(scriptContext, TypeIds_SIMDObject, objectPrototype, nullptr,
+                    DeferredTypeHandler<InitializeSIMDUint16x8Prototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+            simdUint32x4Prototype = RecyclerNew(recycler, JavascriptSIMDObject, nullptr,
+                DynamicType::New(scriptContext, TypeIds_SIMDObject, objectPrototype, nullptr,
+                    DeferredTypeHandler<InitializeSIMDUint32x4Prototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+
+            simdFloat32x4Prototype = RecyclerNew(recycler, JavascriptSIMDObject, nullptr,
+                DynamicType::New(scriptContext, TypeIds_SIMDObject, objectPrototype, nullptr,
+                    DeferredTypeHandler<InitializeSIMDFloat32x4Prototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
+        }
 
         if (scriptContext->GetConfig()->IsES6PrototypeChain())
         {
             datePrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-                DeferredTypeHandler<InitializeDatePrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeDatePrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
             regexPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-                DeferredTypeHandler<InitializeRegexPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeRegexPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         }
         else
         {
@@ -342,80 +381,80 @@ namespace Js
 
             datePrototype = RecyclerNewZ(recycler, JavascriptDate, initDateValue,
                 DynamicType::New(scriptContext, TypeIds_Date, objectPrototype, nullptr,
-                DeferredTypeHandler<InitializeDatePrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeDatePrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         }
 
         if (scriptContext->GetConfig()->IsES6PrototypeChain())
         {
             errorPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-                DeferredTypeHandler<InitializeErrorPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
             evalErrorPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeEvalErrorPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeEvalErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
             rangeErrorPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeRangeErrorPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeRangeErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
             referenceErrorPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeReferenceErrorPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeReferenceErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
             syntaxErrorPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeSyntaxErrorPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeSyntaxErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
             typeErrorPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeTypeErrorPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeTypeErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
             uriErrorPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeURIErrorPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeURIErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         }
         else
         {
             errorPrototype = RecyclerNew(this->GetRecycler(), JavascriptError,
                 DynamicType::New(scriptContext, TypeIds_Error, objectPrototype, nullptr,
-                DeferredTypeHandler<InitializeErrorPrototype>::GetDefaultInstance()),
+                DeferredTypeHandler<InitializeErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()),
                 /*isExternalError*/FALSE, /*isPrototype*/TRUE);
 
             evalErrorPrototype = RecyclerNew(this->GetRecycler(), JavascriptError,
                 DynamicType::New(scriptContext, TypeIds_Error, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeEvalErrorPrototype>::GetDefaultInstance()),
+                DeferredTypeHandler<InitializeEvalErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()),
                 /*isExternalError*/FALSE, /*isPrototype*/TRUE);
 
             rangeErrorPrototype = RecyclerNew(this->GetRecycler(), JavascriptError,
                 DynamicType::New(scriptContext, TypeIds_Error, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeRangeErrorPrototype>::GetDefaultInstance()),
+                DeferredTypeHandler<InitializeRangeErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()),
                 /*isExternalError*/FALSE, /*isPrototype*/TRUE);
 
             referenceErrorPrototype = RecyclerNew(this->GetRecycler(), JavascriptError,
                 DynamicType::New(scriptContext, TypeIds_Error, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeReferenceErrorPrototype>::GetDefaultInstance()),
+                DeferredTypeHandler<InitializeReferenceErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()),
                 /*isExternalError*/FALSE, /*isPrototype*/TRUE);
 
             syntaxErrorPrototype = RecyclerNew(this->GetRecycler(), JavascriptError,
                 DynamicType::New(scriptContext, TypeIds_Error, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeSyntaxErrorPrototype>::GetDefaultInstance()),
+                DeferredTypeHandler<InitializeSyntaxErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()),
                 /*isExternalError*/FALSE, /*isPrototype*/TRUE);
 
             typeErrorPrototype = RecyclerNew(this->GetRecycler(), JavascriptError,
                 DynamicType::New(scriptContext, TypeIds_Error, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeTypeErrorPrototype>::GetDefaultInstance()),
+                DeferredTypeHandler<InitializeTypeErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()),
                 /*isExternalError*/FALSE, /*isPrototype*/TRUE);
 
             uriErrorPrototype = RecyclerNew(this->GetRecycler(), JavascriptError,
                 DynamicType::New(scriptContext, TypeIds_Error, errorPrototype, nullptr,
-                DeferredTypeHandler<InitializeURIErrorPrototype>::GetDefaultInstance()),
+                DeferredTypeHandler<InitializeURIErrorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()),
                 /*isExternalError*/FALSE, /*isPrototype*/TRUE);
         }
 
         functionPrototype = RecyclerNew(recycler, JavascriptFunction,
             DynamicType::New(scriptContext, TypeIds_Function, objectPrototype, JavascriptFunction::PrototypeEntryPoint,
-            DeferredTypeHandler<InitializeFunctionPrototype>::GetDefaultInstance()), &JavascriptFunction::EntryInfo::PrototypeEntryPoint);
+            DeferredTypeHandler<InitializeFunctionPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()), &JavascriptFunction::EntryInfo::PrototypeEntryPoint);
 
         promisePrototype = nullptr;
         javascriptEnumeratorIteratorPrototype = nullptr;
@@ -425,71 +464,71 @@ namespace Js
 
         symbolPrototype = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-            DeferredTypeHandler<InitializeSymbolPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeSymbolPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
         mapPrototype = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-            DeferredTypeHandler<InitializeMapPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeMapPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
         setPrototype = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-            DeferredTypeHandler<InitializeSetPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeSetPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
         weakMapPrototype = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-            DeferredTypeHandler<InitializeWeakMapPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeWeakMapPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
         weakSetPrototype = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-            DeferredTypeHandler<InitializeWeakSetPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeWeakSetPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
         iteratorPrototype = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-            DeferredTypeHandler<InitializeIteratorPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeIteratorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
         arrayIteratorPrototype = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, iteratorPrototype, nullptr,
-            DeferredTypeHandler<InitializeArrayIteratorPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeArrayIteratorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         mapIteratorPrototype = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, iteratorPrototype, nullptr,
-            DeferredTypeHandler<InitializeMapIteratorPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeMapIteratorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         setIteratorPrototype = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, iteratorPrototype, nullptr,
-            DeferredTypeHandler<InitializeSetIteratorPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeSetIteratorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         stringIteratorPrototype = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, iteratorPrototype, nullptr,
-            DeferredTypeHandler<InitializeStringIteratorPrototype>::GetDefaultInstance()));
+            DeferredTypeHandler<InitializeStringIteratorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
         if (scriptContext->GetConfig()->IsES6PromiseEnabled())
         {
             promisePrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
-                DeferredTypeHandler<InitializePromisePrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializePromisePrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         }
 
         if (scriptContext->GetConfig()->IsES6ProxyEnabled())
         {
             javascriptEnumeratorIteratorPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, iteratorPrototype, nullptr,
-                DeferredTypeHandler<InitializeJavascriptEnumeratorIteratorPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeJavascriptEnumeratorIteratorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         }
 
         if (scriptContext->GetConfig()->IsES6GeneratorsEnabled())
         {
             generatorFunctionPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, functionPrototype, nullptr,
-                DeferredTypeHandler<InitializeGeneratorFunctionPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeGeneratorFunctionPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
 
             generatorPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, iteratorPrototype, nullptr,
-                DeferredTypeHandler<InitializeGeneratorPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeGeneratorPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         }
 
         if (scriptContext->GetConfig()->IsES7AsyncAndAwaitEnabled())
         {
             asyncFunctionPrototype = DynamicObject::New(recycler,
                 DynamicType::New(scriptContext, TypeIds_Object, functionPrototype, nullptr,
-                DeferredTypeHandler<InitializeAsyncFunctionPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeAsyncFunctionPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         }
     }
 
@@ -666,19 +705,32 @@ namespace Js
         // Initialize types
         if (GetScriptContext()->GetConfig()->IsSimdjsEnabled())
         {
-            simdFloat32x4TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDFloat32x4, nullValue /*prototype*/, nullptr);
-            simdFloat64x2TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDFloat64x2, nullValue /*prototype*/, nullptr);
-            simdInt32x4TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDInt32x4, nullValue /*prototype*/, nullptr);
-            simdInt16x8TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDInt16x8, nullValue /*prototype*/, nullptr);
-            simdInt8x16TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDInt8x16, nullValue /*prototype*/, nullptr);
+            simdBool8x16TypeDynamic  = DynamicType::New(scriptContext, TypeIds_SIMDObject, simdBool8x16Prototype, nullptr, NullTypeHandler<false>::GetDefaultInstance(), true, true);
+            simdBool16x8TypeDynamic  = DynamicType::New(scriptContext, TypeIds_SIMDObject, simdBool16x8Prototype, nullptr, NullTypeHandler<false>::GetDefaultInstance(), true, true);
+            simdBool32x4TypeDynamic  = DynamicType::New(scriptContext, TypeIds_SIMDObject, simdBool32x4Prototype, nullptr, NullTypeHandler<false>::GetDefaultInstance(), true, true);
 
-            simdBool32x4TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDBool32x4, nullValue /*prototype*/, nullptr);
-            simdBool16x8TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDBool16x8, nullValue /*prototype*/, nullptr);
-            simdBool8x16TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDBool8x16, nullValue /*prototype*/, nullptr);
+            simdInt8x16TypeDynamic   = DynamicType::New(scriptContext, TypeIds_SIMDObject, simdInt8x16Prototype, nullptr, NullTypeHandler<false>::GetDefaultInstance(), true, true);
+            simdInt16x8TypeDynamic   = DynamicType::New(scriptContext, TypeIds_SIMDObject, simdInt16x8Prototype, nullptr, NullTypeHandler<false>::GetDefaultInstance(), true, true);
+            simdInt32x4TypeDynamic   = DynamicType::New(scriptContext, TypeIds_SIMDObject, simdInt32x4Prototype, nullptr, NullTypeHandler<false>::GetDefaultInstance(), true, true);
 
-            simdUint32x4TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDUint32x4, nullValue /*prototype*/, nullptr);
-            simdUint16x8TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDUint16x8, nullValue /*prototype*/, nullptr);
-            simdUint8x16TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDUint8x16, nullValue /*prototype*/, nullptr);
+            simdUint8x16TypeDynamic  = DynamicType::New(scriptContext, TypeIds_SIMDObject, simdUint8x16Prototype, nullptr, NullTypeHandler<false>::GetDefaultInstance(), true, true);
+            simdUint16x8TypeDynamic  = DynamicType::New(scriptContext, TypeIds_SIMDObject, simdUint16x8Prototype, nullptr, NullTypeHandler<false>::GetDefaultInstance(), true, true);
+            simdUint32x4TypeDynamic  = DynamicType::New(scriptContext, TypeIds_SIMDObject, simdUint32x4Prototype, nullptr, NullTypeHandler<false>::GetDefaultInstance(), true, true);
+            simdFloat32x4TypeDynamic = DynamicType::New(scriptContext, TypeIds_SIMDObject, simdFloat32x4Prototype, nullptr, NullTypeHandler<false>::GetDefaultInstance(), true, true);
+
+            simdFloat32x4TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDFloat32x4, simdFloat32x4Prototype , nullptr);
+            simdFloat64x2TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDFloat64x2, simdFloat64x2Prototype, nullptr);
+            simdInt32x4TypeStatic   = StaticType::New(scriptContext, TypeIds_SIMDInt32x4, simdInt32x4Prototype, nullptr);
+            simdInt16x8TypeStatic   = StaticType::New(scriptContext, TypeIds_SIMDInt16x8, simdInt16x8Prototype, nullptr);
+            simdInt8x16TypeStatic   = StaticType::New(scriptContext, TypeIds_SIMDInt8x16, simdInt8x16Prototype, nullptr);
+
+            simdBool32x4TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDBool32x4, simdBool32x4Prototype, nullptr);
+            simdBool16x8TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDBool16x8, simdBool16x8Prototype, nullptr);
+            simdBool8x16TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDBool8x16, simdBool8x16Prototype, nullptr);
+
+            simdUint32x4TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDUint32x4, simdUint32x4Prototype, nullptr);
+            simdUint16x8TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDUint16x8, simdUint16x8Prototype, nullptr);
+            simdUint8x16TypeStatic = StaticType::New(scriptContext, TypeIds_SIMDUint8x16, simdUint8x16Prototype, nullptr);
         }
 
         // Initialize Object types
@@ -1080,50 +1132,50 @@ namespace Js
 
         emptyString = CreateEmptyString(); // Must be created before other calls to CreateString
         nullString = CreateEmptyString(); // Must be distinct from emptyString (for the DOM)
-        quotesString = CreateStringFromCppLiteral(L"\"\"");
-        whackString = CreateStringFromCppLiteral(L"/");
-        undefinedDisplayString = CreateStringFromCppLiteral(L"undefined");
-        nanDisplayString = CreateStringFromCppLiteral(L"NaN");
-        nullDisplayString = CreateStringFromCppLiteral(L"null");
-        unknownDisplayString = CreateStringFromCppLiteral(L"unknown");
-        commaDisplayString = CreateStringFromCppLiteral(L",");
-        commaSpaceDisplayString = CreateStringFromCppLiteral(L", ");
-        trueDisplayString = CreateStringFromCppLiteral(L"true");
-        falseDisplayString = CreateStringFromCppLiteral(L"false");
-        lengthDisplayString = CreateStringFromCppLiteral(L"length");
-        objectDisplayString = CreateStringFromCppLiteral(L"[object Object]");
-        errorDisplayString = CreateStringFromCppLiteral(L"[object Error]");
-        stringTypeDisplayString = CreateStringFromCppLiteral(L"string");
-        functionPrefixString = CreateStringFromCppLiteral(L"function ");
-        generatorFunctionPrefixString = CreateStringFromCppLiteral(L"function* ");
-        asyncFunctionPrefixString = CreateStringFromCppLiteral(L"async function ");
+        quotesString = CreateStringFromCppLiteral(_u("\"\""));
+        whackString = CreateStringFromCppLiteral(_u("/"));
+        undefinedDisplayString = CreateStringFromCppLiteral(_u("undefined"));
+        nanDisplayString = CreateStringFromCppLiteral(_u("NaN"));
+        nullDisplayString = CreateStringFromCppLiteral(_u("null"));
+        unknownDisplayString = CreateStringFromCppLiteral(_u("unknown"));
+        commaDisplayString = CreateStringFromCppLiteral(_u(","));
+        commaSpaceDisplayString = CreateStringFromCppLiteral(_u(", "));
+        trueDisplayString = CreateStringFromCppLiteral(_u("true"));
+        falseDisplayString = CreateStringFromCppLiteral(_u("false"));
+        lengthDisplayString = CreateStringFromCppLiteral(_u("length"));
+        objectDisplayString = CreateStringFromCppLiteral(_u("[object Object]"));
+        errorDisplayString = CreateStringFromCppLiteral(_u("[object Error]"));
+        stringTypeDisplayString = CreateStringFromCppLiteral(_u("string"));
+        functionPrefixString = CreateStringFromCppLiteral(_u("function "));
+        generatorFunctionPrefixString = CreateStringFromCppLiteral(_u("function* "));
+        asyncFunctionPrefixString = CreateStringFromCppLiteral(_u("async function "));
         functionDisplayString = CreateStringFromCppLiteral(JS_DISPLAY_STRING_FUNCTION_ANONYMOUS);
-        xDomainFunctionDisplayString = CreateStringFromCppLiteral(L"\012function anonymous() {\012    [x-domain code]\012}\012");
-        invalidDateString = CreateStringFromCppLiteral(L"Invalid Date");
-        objectTypeDisplayString = CreateStringFromCppLiteral(L"object");
-        functionTypeDisplayString = CreateStringFromCppLiteral(L"function");
-        booleanTypeDisplayString = CreateStringFromCppLiteral(L"boolean");
-        numberTypeDisplayString = CreateStringFromCppLiteral(L"number");
+        xDomainFunctionDisplayString = CreateStringFromCppLiteral(_u("\012function anonymous() {\012    [x-domain code]\012}\012"));
+        invalidDateString = CreateStringFromCppLiteral(_u("Invalid Date"));
+        objectTypeDisplayString = CreateStringFromCppLiteral(_u("object"));
+        functionTypeDisplayString = CreateStringFromCppLiteral(_u("function"));
+        booleanTypeDisplayString = CreateStringFromCppLiteral(_u("boolean"));
+        numberTypeDisplayString = CreateStringFromCppLiteral(_u("number"));
         promiseResolveFunction = nullptr;
 
         if (GetScriptContext()->GetConfig()->IsSimdjsEnabled())
         {
-            simdFloat32x4DisplayString = CreateStringFromCppLiteral(L"float32x4");
-            simdFloat64x2DisplayString = CreateStringFromCppLiteral(L"float64x2");
-            simdInt32x4DisplayString = CreateStringFromCppLiteral(L"int32x4");
-            simdInt16x8DisplayString = CreateStringFromCppLiteral(L"int16x8");
-            simdInt8x16DisplayString = CreateStringFromCppLiteral(L"int8x16");
+            simdFloat32x4DisplayString = CreateStringFromCppLiteral(_u("float32x4"));
+            simdFloat64x2DisplayString = CreateStringFromCppLiteral(_u("float64x2"));
+            simdInt32x4DisplayString = CreateStringFromCppLiteral(_u("int32x4"));
+            simdInt16x8DisplayString = CreateStringFromCppLiteral(_u("int16x8"));
+            simdInt8x16DisplayString = CreateStringFromCppLiteral(_u("int8x16"));
 
-            simdBool32x4DisplayString = CreateStringFromCppLiteral(L"bool32x4");
-            simdBool16x8DisplayString = CreateStringFromCppLiteral(L"bool16x8");
-            simdBool8x16DisplayString = CreateStringFromCppLiteral(L"bool8x16");
+            simdBool32x4DisplayString = CreateStringFromCppLiteral(_u("bool32x4"));
+            simdBool16x8DisplayString = CreateStringFromCppLiteral(_u("bool16x8"));
+            simdBool8x16DisplayString = CreateStringFromCppLiteral(_u("bool8x16"));
 
-            simdUint32x4DisplayString = CreateStringFromCppLiteral(L"uint32x4");
-            simdUint16x8DisplayString = CreateStringFromCppLiteral(L"uint16x8");
-            simdUint8x16DisplayString = CreateStringFromCppLiteral(L"uint8x16");
+            simdUint32x4DisplayString = CreateStringFromCppLiteral(_u("uint32x4"));
+            simdUint16x8DisplayString = CreateStringFromCppLiteral(_u("uint16x8"));
+            simdUint8x16DisplayString = CreateStringFromCppLiteral(_u("uint8x16"));
         }
 
-        symbolTypeDisplayString = CreateStringFromCppLiteral(L"symbol");
+        symbolTypeDisplayString = CreateStringFromCppLiteral(_u("symbol"));
 
         symbolHasInstance = CreateSymbol(BuiltInPropertyRecords::_symbolHasInstance);
         symbolIsConcatSpreadable = CreateSymbol(BuiltInPropertyRecords::_symbolIsConcatSpreadable);
@@ -1136,15 +1188,19 @@ namespace Js
         if (scriptContext->GetConfig()->IsES6RegExSymbolsEnabled())
         {
             symbolMatch = CreateSymbol(BuiltInPropertyRecords::_symbolMatch);
+            symbolReplace = CreateSymbol(BuiltInPropertyRecords::_symbolReplace);
             symbolSearch = CreateSymbol(BuiltInPropertyRecords::_symbolSearch);
+            symbolSplit = CreateSymbol(BuiltInPropertyRecords::_symbolSplit);
         }
         else
         {
             symbolMatch = nullptr;
+            symbolReplace = nullptr;
             symbolSearch = nullptr;
+            symbolSplit = nullptr;
         }
 
-        debuggerDeadZoneBlockVariableString = CreateStringFromCppLiteral(L"[Uninitialized block variable]");
+        debuggerDeadZoneBlockVariableString = CreateStringFromCppLiteral(_u("[Uninitialized block variable]"));
         defaultAccessorFunction = CreateNonProfiledFunction(&JavascriptOperators::EntryInfo::DefaultAccessor);
 
         if (scriptContext->GetConfig()->IsErrorStackTraceEnabled())
@@ -1208,7 +1264,12 @@ namespace Js
         AddFunctionToLibraryObject(globalObject, PropertyIds::escape, &GlobalObject::EntryInfo::Escape, 1);
         AddFunctionToLibraryObject(globalObject, PropertyIds::unescape, &GlobalObject::EntryInfo::UnEscape, 1);
 
-        if (scriptContext->GetConfig()->SupportsCollectGarbage())
+        if (scriptContext->GetConfig()->SupportsCollectGarbage()
+#ifdef ENABLE_PROJECTION
+            || scriptContext->GetConfig()->GetHostType() == HostType::HostTypeApplication
+            || scriptContext->GetConfig()->GetHostType() == HostType::HostTypeWebview
+#endif
+            )
         {
             AddFunctionToLibraryObject(globalObject, PropertyIds::CollectGarbage, &GlobalObject::EntryInfo::CollectGarbage, 0);
         }
@@ -1216,9 +1277,9 @@ namespace Js
 #ifdef IR_VIEWER
         if (Js::Configuration::Global.flags.IsEnabled(Js::IRViewerFlag))
         {
-            AddFunctionToLibraryObjectWithPropertyName(globalObject, L"parseIR", &GlobalObject::EntryInfo::ParseIR, 1);
-            AddFunctionToLibraryObjectWithPropertyName(globalObject, L"functionList", &GlobalObject::EntryInfo::FunctionList, 1);
-            AddFunctionToLibraryObjectWithPropertyName(globalObject, L"rejitFunction", &GlobalObject::EntryInfo::RejitFunction, 2);
+            AddFunctionToLibraryObjectWithPropertyName(globalObject, _u("parseIR"), &GlobalObject::EntryInfo::ParseIR, 1);
+            AddFunctionToLibraryObjectWithPropertyName(globalObject, _u("functionList"), &GlobalObject::EntryInfo::FunctionList, 1);
+            AddFunctionToLibraryObjectWithPropertyName(globalObject, _u("rejitFunction"), &GlobalObject::EntryInfo::RejitFunction, 2);
         }
 #endif /* IR_VIEWER */
 
@@ -1269,7 +1330,7 @@ namespace Js
             DeferredTypeHandler<InitializeDateConstructor>::GetDefaultInstance());
         AddFunction(globalObject, PropertyIds::Date, dateConstructor);
         functionConstructor = CreateBuiltinConstructor(&JavascriptFunction::EntryInfo::NewInstance,
-            DeferredTypeHandler<InitializeFunctionConstructor>::GetDefaultInstance());
+            DeferredTypeHandler<InitializeFunctionConstructor, DefaultDeferredTypeFilter, true>::GetDefaultInstance());
         AddFunction(globalObject, PropertyIds::Function, functionConstructor);
         mathObject = DynamicObject::New(recycler,
             DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
@@ -1284,23 +1345,7 @@ namespace Js
                 DynamicType::New(scriptContext, TypeIds_Object, objectPrototype, nullptr,
                 DeferredTypeHandler<InitializeSIMDObject>::GetDefaultInstance()));
 
-            AddMember(globalObject, PropertyIds::SIMD, simdObject, PropertyNone);
-
-            // TODO: Move these to constructors' prototypes per spec with wrapper object implementation.
-
-            // Initialize toString functions. Do it here instead of InitializeSIMDObject, since we can possible access those fields before SIMD object is deferred initialized (e.g. SIMD object coming from ASMJS code).
-            simdFloat32x4ToStringFunction = DefaultCreateFunction(&JavascriptSIMDFloat32x4::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
-            simdFloat64x2ToStringFunction = DefaultCreateFunction(&JavascriptSIMDFloat64x2::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
-            simdInt32x4ToStringFunction = DefaultCreateFunction(&JavascriptSIMDInt32x4::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
-            simdInt16x8ToStringFunction = DefaultCreateFunction(&JavascriptSIMDInt16x8::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
-            simdInt8x16ToStringFunction = DefaultCreateFunction(&JavascriptSIMDInt8x16::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
-            simdBool32x4ToStringFunction = DefaultCreateFunction(&JavascriptSIMDBool32x4::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
-            simdBool16x8ToStringFunction = DefaultCreateFunction(&JavascriptSIMDBool16x8::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
-            simdBool8x16ToStringFunction = DefaultCreateFunction(&JavascriptSIMDBool8x16::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
-
-            simdUint32x4ToStringFunction = DefaultCreateFunction(&JavascriptSIMDUint32x4::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
-            simdUint16x8ToStringFunction = DefaultCreateFunction(&JavascriptSIMDUint16x8::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
-            simdUint8x16ToStringFunction = DefaultCreateFunction(&JavascriptSIMDUint8x16::EntryInfo::ToString, 1, nullptr, nullptr, PropertyIds::toString);
+            AddMember(globalObject, PropertyIds::SIMD, simdObject);
         }
         debugObject = nullptr;
 
@@ -1327,7 +1372,7 @@ namespace Js
             if (scriptContext->GetConfig()->IsES6TypedArrayExtensionsEnabled())
             {
                 typedArrayConstructor = CreateBuiltinConstructor(&TypedArrayBase::EntryInfo::NewInstance,
-                    DeferredTypeHandler<InitializeTypedArrayConstructor>::GetDefaultInstance(),
+                    DeferredTypeHandler<InitializeTypedArrayConstructor, DefaultDeferredTypeFilter, true>::GetDefaultInstance(),
                     functionPrototype);
 
                 Int8ArrayConstructor = CreateBuiltinConstructor(&Int8Array::EntryInfo::NewInstance,
@@ -1671,13 +1716,14 @@ namespace Js
         {
             DynamicType* dynamicType = DynamicType::New(scriptContext, TypeIds_Object, library->nullValue, nullptr, NullTypeHandler<false>::GetDefaultInstance(), false);
             DynamicObject* unscopablesList = DynamicObject::New(library->GetRecycler(), dynamicType);
-            unscopablesList->SetProperty(PropertyIds::find, JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
-            unscopablesList->SetProperty(PropertyIds::findIndex, JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
-            unscopablesList->SetProperty(PropertyIds::fill, JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
+            unscopablesList->SetProperty(PropertyIds::find,       JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
+            unscopablesList->SetProperty(PropertyIds::findIndex,  JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
+            unscopablesList->SetProperty(PropertyIds::fill,       JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
             unscopablesList->SetProperty(PropertyIds::copyWithin, JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
-            unscopablesList->SetProperty(PropertyIds::entries, JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
-            unscopablesList->SetProperty(PropertyIds::keys, JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
-            unscopablesList->SetProperty(PropertyIds::values, JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
+            unscopablesList->SetProperty(PropertyIds::entries,    JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
+            unscopablesList->SetProperty(PropertyIds::includes,   JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
+            unscopablesList->SetProperty(PropertyIds::keys,       JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
+            unscopablesList->SetProperty(PropertyIds::values,     JavascriptBoolean::ToVar(true, scriptContext), PropertyOperation_None, nullptr);
             library->AddMember(arrayPrototype, PropertyIds::_symbolUnscopables, unscopablesList, PropertyConfigurable);
         }
 
@@ -1687,10 +1733,8 @@ namespace Js
             /* No inlining            Array_CopyWithin     */ library->AddFunctionToLibraryObject(arrayPrototype, PropertyIds::copyWithin, &JavascriptArray::EntryInfo::CopyWithin, 2);
         }
 
-        if (scriptContext->GetConfig()->IsES7BuiltinsEnabled())
-        {
-            builtinFuncs[BuiltinFunction::Array_Includes] = library->AddFunctionToLibraryObject(arrayPrototype, PropertyIds::includes, &JavascriptArray::EntryInfo::Includes, 1);
-        }
+
+        builtinFuncs[BuiltinFunction::Array_Includes] = library->AddFunctionToLibraryObject(arrayPrototype, PropertyIds::includes, &JavascriptArray::EntryInfo::Includes, 1);
 
         DebugOnly(CheckRegisteredBuiltIns(builtinFuncs, scriptContext));
 
@@ -1742,7 +1786,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(arrayBufferPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"ArrayBuffer"), PropertyConfigurable);
+            library->AddMember(arrayBufferPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("ArrayBuffer")), PropertyConfigurable);
         }
 
         arrayBufferPrototype->SetHasNoEnumerableProperties(true);
@@ -1793,7 +1837,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(dataViewPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"DataView"), PropertyConfigurable);
+            library->AddMember(dataViewPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("DataView")), PropertyConfigurable);
         }
 
         dataViewPrototype->SetHasNoEnumerableProperties(true);
@@ -1811,7 +1855,7 @@ namespace Js
         library->AddMember(typedArrayConstructor, PropertyIds::length, TaggedInt::ToVarUnchecked(3), PropertyNone);
         if (scriptContext->GetConfig()->IsES6FunctionNameEnabled())
         {
-            library->AddMember(typedArrayConstructor, PropertyIds::name, library->CreateStringFromCppLiteral(L"TypedArray"), PropertyConfigurable);
+            library->AddMember(typedArrayConstructor, PropertyIds::name, library->CreateStringFromCppLiteral(_u("TypedArray")), PropertyConfigurable);
         }
         library->AddMember(typedArrayConstructor, PropertyIds::prototype, library->typedArrayPrototype, PropertyNone);
 
@@ -1858,12 +1902,7 @@ namespace Js
         library->AddFunctionToLibraryObject(typedarrayPrototype, PropertyIds::keys, &TypedArrayBase::EntryInfo::Keys, 0);
         JavascriptFunction* valuesFunc = library->AddFunctionToLibraryObject(typedarrayPrototype, PropertyIds::values, &TypedArrayBase::EntryInfo::Values, 0);
         library->AddMember(typedarrayPrototype, PropertyIds::_symbolIterator, valuesFunc);
-
-        if (scriptContext->GetConfig()->IsES7BuiltinsEnabled())
-        {
-            library->AddFunctionToLibraryObject(typedarrayPrototype, PropertyIds::includes, &TypedArrayBase::EntryInfo::Includes, 1);
-        }
-
+        library->AddFunctionToLibraryObject(typedarrayPrototype, PropertyIds::includes, &TypedArrayBase::EntryInfo::Includes, 1);
 
         library->AddAccessorsToLibraryObject(typedarrayPrototype, PropertyIds::buffer, &TypedArrayBase::EntryInfo::GetterBuffer, nullptr);
         library->AddAccessorsToLibraryObject(typedarrayPrototype, PropertyIds::byteLength, &TypedArrayBase::EntryInfo::GetterByteLength, nullptr);
@@ -1906,7 +1945,7 @@ namespace Js
             library->AddMember(typedArrayConstructor, PropertyIds::length, TaggedInt::ToVarUnchecked(3), PropertyNone); \
             if (scriptContext->GetConfig()->IsES6FunctionNameEnabled()) \
             { \
-                library->AddMember(typedArrayConstructor, PropertyIds::name, library->CreateStringFromCppLiteral(L#typedArray), PropertyConfigurable); \
+                library->AddMember(typedArrayConstructor, PropertyIds::name, library->CreateStringFromCppLiteral(_u(#typedArray)), PropertyConfigurable); \
             } \
         } \
         else \
@@ -2006,7 +2045,7 @@ namespace Js
         bool hasNoEnumerableProperties = true;
         PropertyAttributes prototypeNameMessageAttributes = PropertyConfigurable | PropertyWritable;
 
-        library->AddMember(prototype, PropertyIds::name, library->CreateStringFromCppLiteral(L"Error"), prototypeNameMessageAttributes);
+        library->AddMember(prototype, PropertyIds::name, library->CreateStringFromCppLiteral(_u("Error")), prototypeNameMessageAttributes);
         library->AddMember(prototype, PropertyIds::message, library->GetEmptyString(), prototypeNameMessageAttributes);
         library->AddFunctionToLibraryObject(prototype, PropertyIds::toString, &JavascriptError::EntryInfo::ToString, 0);
 
@@ -2024,7 +2063,7 @@ namespace Js
         if (scriptContext->GetConfig()->IsES6FunctionNameEnabled()) \
         { \
             PropertyAttributes prototypeNameMessageAttributes = PropertyConfigurable; \
-            library->AddMember(constructor, PropertyIds::name, library->CreateStringFromCppLiteral(L#error), prototypeNameMessageAttributes); \
+            library->AddMember(constructor, PropertyIds::name, library->CreateStringFromCppLiteral(_u(#error)), prototypeNameMessageAttributes); \
         } \
         constructor->SetHasNoEnumerableProperties(true); \
     } \
@@ -2044,7 +2083,7 @@ namespace Js
         library->AddMember(prototype, PropertyIds::constructor, library->Get##error##Constructor()); \
         bool hasNoEnumerableProperties = true; \
         PropertyAttributes prototypeNameMessageAttributes = PropertyConfigurable | PropertyWritable; \
-        library->AddMember(prototype, PropertyIds::name, library->CreateStringFromCppLiteral(L#error), prototypeNameMessageAttributes); \
+        library->AddMember(prototype, PropertyIds::name, library->CreateStringFromCppLiteral(_u(#error)), prototypeNameMessageAttributes); \
         library->AddMember(prototype, PropertyIds::message, library->GetEmptyString(), prototypeNameMessageAttributes); \
         library->AddFunctionToLibraryObject(prototype, PropertyIds::toString, &JavascriptError::EntryInfo::ToString, 0); \
         prototype->SetHasNoEnumerableProperties(hasNoEnumerableProperties); \
@@ -2092,7 +2131,7 @@ namespace Js
 
     void JavascriptLibrary::InitializeSymbolConstructor(DynamicObject* symbolConstructor, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
     {
-        typeHandler->Convert(symbolConstructor, mode, 14);
+        typeHandler->Convert(symbolConstructor, mode, 16);
         // Note: Any new function addition/deletion/modification should also be updated in JavascriptLibrary::ProfilerRegisterSymbol
         // so that the update is in sync with profiler
         JavascriptLibrary* library = symbolConstructor->GetLibrary();
@@ -2131,7 +2170,9 @@ namespace Js
         if (scriptContext->GetConfig()->IsES6RegExSymbolsEnabled())
         {
             library->AddMember(symbolConstructor, PropertyIds::match, library->GetSymbolMatch(), PropertyNone);
+            library->AddMember(symbolConstructor, PropertyIds::replace, library->GetSymbolReplace(), PropertyNone);
             library->AddMember(symbolConstructor, PropertyIds::search, library->GetSymbolSearch(), PropertyNone);
+            library->AddMember(symbolConstructor, PropertyIds::split, library->GetSymbolSplit(), PropertyNone);
         }
 
         library->AddFunctionToLibraryObject(symbolConstructor, PropertyIds::for_, &JavascriptSymbol::EntryInfo::For, 1);
@@ -2152,7 +2193,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(symbolPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"Symbol"), PropertyConfigurable);
+            library->AddMember(symbolPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("Symbol")), PropertyConfigurable);
         }
         scriptContext->SetBuiltInLibraryFunction(JavascriptSymbol::EntryInfo::ValueOf.GetOriginalEntryPoint(),
             library->AddFunctionToLibraryObject(symbolPrototype, PropertyIds::valueOf, &JavascriptSymbol::EntryInfo::ValueOf, 0));
@@ -2217,7 +2258,7 @@ namespace Js
         library->AddMember(promisePrototype, PropertyIds::constructor, library->promiseConstructor);
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(promisePrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"Promise"), PropertyConfigurable);
+            library->AddMember(promisePrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("Promise")), PropertyConfigurable);
         }
         scriptContext->SetBuiltInLibraryFunction(JavascriptPromise::EntryInfo::Catch.GetOriginalEntryPoint(),
             library->AddFunctionToLibraryObject(promisePrototype, PropertyIds::catch_, &JavascriptPromise::EntryInfo::Catch, 1));
@@ -2236,7 +2277,7 @@ namespace Js
         library->AddMember(generatorFunctionConstructor, PropertyIds::prototype, library->generatorFunctionPrototype, PropertyNone);
         if (scriptContext->GetConfig()->IsES6FunctionNameEnabled())
         {
-            library->AddMember(generatorFunctionConstructor, PropertyIds::name, library->CreateStringFromCppLiteral(L"GeneratorFunction"), PropertyConfigurable);
+            library->AddMember(generatorFunctionConstructor, PropertyIds::name, library->CreateStringFromCppLiteral(_u("GeneratorFunction")), PropertyConfigurable);
         }
         generatorFunctionConstructor->SetHasNoEnumerableProperties(true);
     }
@@ -2251,7 +2292,7 @@ namespace Js
         library->AddMember(generatorFunctionPrototype, PropertyIds::prototype, library->generatorPrototype, PropertyConfigurable);
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(generatorFunctionPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"GeneratorFunction"), PropertyConfigurable);
+            library->AddMember(generatorFunctionPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("GeneratorFunction")), PropertyConfigurable);
         }
         generatorFunctionPrototype->SetHasNoEnumerableProperties(true);
     }
@@ -2267,7 +2308,7 @@ namespace Js
         library->AddMember(generatorPrototype, PropertyIds::constructor, library->generatorFunctionPrototype, PropertyConfigurable);
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(generatorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"Generator"), PropertyConfigurable);
+            library->AddMember(generatorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("Generator")), PropertyConfigurable);
         }
         library->AddFunctionToLibraryObject(generatorPrototype, PropertyIds::next, &JavascriptGenerator::EntryInfo::Next, 1);
         library->AddFunctionToLibraryObject(generatorPrototype, PropertyIds::return_, &JavascriptGenerator::EntryInfo::Return, 1);
@@ -2285,7 +2326,7 @@ namespace Js
         library->AddMember(asyncFunctionConstructor, PropertyIds::prototype, library->asyncFunctionPrototype, PropertyNone);
         if (scriptContext->GetConfig()->IsES6FunctionNameEnabled())
         {
-            library->AddMember(asyncFunctionConstructor, PropertyIds::name, library->CreateStringFromCppLiteral(L"AsyncFunction"), PropertyConfigurable);
+            library->AddMember(asyncFunctionConstructor, PropertyIds::name, library->CreateStringFromCppLiteral(_u("AsyncFunction")), PropertyConfigurable);
         }
         asyncFunctionConstructor->SetHasNoEnumerableProperties(true);
     }
@@ -2299,7 +2340,7 @@ namespace Js
         library->AddMember(asyncFunctionPrototype, PropertyIds::constructor, library->asyncFunctionConstructor, PropertyConfigurable);
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(asyncFunctionPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"AsyncFunction"), PropertyConfigurable);
+            library->AddMember(asyncFunctionPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("AsyncFunction")), PropertyConfigurable);
         }
         asyncFunctionPrototype->SetHasNoEnumerableProperties(true);
     }
@@ -2524,7 +2565,7 @@ namespace Js
 
     void JavascriptLibrary::InitializeComplexThings()
     {
-        emptyRegexPattern = RegexHelper::CompileDynamic(scriptContext, L"", 0, L"", 0, false);
+        emptyRegexPattern = RegexHelper::CompileDynamic(scriptContext, _u(""), 0, _u(""), 0, false);
 
         Recycler *const recycler = GetRecycler();
 
@@ -2540,7 +2581,7 @@ namespace Js
         {
             regexPrototype = RecyclerNew(recycler, JavascriptRegExp, emptyRegexPattern,
                 DynamicType::New(scriptContext, TypeIds_RegEx, objectPrototype, nullptr,
-                DeferredTypeHandler<InitializeRegexPrototype>::GetDefaultInstance()));
+                DeferredTypeHandler<InitializeRegexPrototype, DefaultDeferredTypeFilter, true>::GetDefaultInstance()));
         }
 
         SimplePathTypeHandler *typeHandler =
@@ -2615,7 +2656,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(mathObject, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"Math"), PropertyConfigurable);
+            library->AddMember(mathObject, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("Math")), PropertyConfigurable);
         }
 
         DebugOnly(CheckRegisteredBuiltIns(builtinFuncs, scriptContext));
@@ -2634,463 +2675,472 @@ namespace Js
         JavascriptFunction ** builtinFuncs = library->GetBuiltinFunctions();
 
         /*** Float32x4 ***/
-        JavascriptFunction* float32x4Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Float32x4, &SIMDFloat32x4Lib::EntryInfo::Float32x4, 5, PropertyNone);
+        JavascriptFunction* float32x4Function = library->AddFunctionToLibraryObjectWithPrototype(simdObject, PropertyIds::Float32x4, &SIMDFloat32x4Lib::EntryInfo::Float32x4, 5, library->simdFloat32x4Prototype, nullptr);
         builtinFuncs[BuiltinFunction::SIMD_Float32x4_Float32x4] = float32x4Function;        
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Check] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::check, &SIMDFloat32x4Lib::EntryInfo::Check, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::zero, &SIMDFloat32x4Lib::EntryInfo::Zero, 1, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Splat] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::splat, &SIMDFloat32x4Lib::EntryInfo::Splat, 2, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Check] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::check, &SIMDFloat32x4Lib::EntryInfo::Check, 2);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Splat] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::splat, &SIMDFloat32x4Lib::EntryInfo::Splat, 2);
 
         // Lane Access
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_ExtractLane] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::extractLane, &SIMDFloat32x4Lib::EntryInfo::ExtractLane, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_ReplaceLane] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::replaceLane, &SIMDFloat32x4Lib::EntryInfo::ReplaceLane, 4, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_ExtractLane] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::extractLane, &SIMDFloat32x4Lib::EntryInfo::ExtractLane, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_ReplaceLane] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::replaceLane, &SIMDFloat32x4Lib::EntryInfo::ReplaceLane, 4);
 
 
         // type conversions
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromFloat64x2,     &SIMDFloat32x4Lib::EntryInfo::FromFloat64x2,     2, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromFloat64x2Bits, &SIMDFloat32x4Lib::EntryInfo::FromFloat64x2Bits, 2, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_FromInt32x4] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromInt32x4,       &SIMDFloat32x4Lib::EntryInfo::FromInt32x4,       2, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromUint32x4,      &SIMDFloat32x4Lib::EntryInfo::FromUint32x4,      2, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromInt16x8Bits,   &SIMDFloat32x4Lib::EntryInfo::FromInt16x8Bits,   2, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromInt8x16Bits,   &SIMDFloat32x4Lib::EntryInfo::FromInt8x16Bits,   2, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_FromInt32x4Bits] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromInt32x4Bits, &SIMDFloat32x4Lib::EntryInfo::FromInt32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromUint32x4Bits, &SIMDFloat32x4Lib::EntryInfo::FromUint32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromUint16x8Bits, &SIMDFloat32x4Lib::EntryInfo::FromUint16x8Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromUint8x16Bits, &SIMDFloat32x4Lib::EntryInfo::FromUint8x16Bits, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromFloat64x2,     &SIMDFloat32x4Lib::EntryInfo::FromFloat64x2,     2);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromFloat64x2Bits, &SIMDFloat32x4Lib::EntryInfo::FromFloat64x2Bits, 2);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_FromInt32x4] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromInt32x4,       &SIMDFloat32x4Lib::EntryInfo::FromInt32x4,       2);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromUint32x4,      &SIMDFloat32x4Lib::EntryInfo::FromUint32x4,      2);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromInt16x8Bits,   &SIMDFloat32x4Lib::EntryInfo::FromInt16x8Bits,   2);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromInt8x16Bits,   &SIMDFloat32x4Lib::EntryInfo::FromInt8x16Bits,   2);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_FromInt32x4Bits] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromInt32x4Bits, &SIMDFloat32x4Lib::EntryInfo::FromInt32x4Bits, 2);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromUint32x4Bits, &SIMDFloat32x4Lib::EntryInfo::FromUint32x4Bits, 2);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromUint16x8Bits, &SIMDFloat32x4Lib::EntryInfo::FromUint16x8Bits, 2);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::fromUint8x16Bits, &SIMDFloat32x4Lib::EntryInfo::FromUint8x16Bits, 2);
         // binary ops
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Add] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::add, &SIMDFloat32x4Lib::EntryInfo::Add, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Sub] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::sub,    &SIMDFloat32x4Lib::EntryInfo::Sub,   3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Mul] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::mul,    &SIMDFloat32x4Lib::EntryInfo::Mul,   3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Div] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::div,    &SIMDFloat32x4Lib::EntryInfo::Div,   3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::and,    &SIMDFloat32x4Lib::EntryInfo::And,   3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::or,     &SIMDFloat32x4Lib::EntryInfo::Or,    3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::xor,    &SIMDFloat32x4Lib::EntryInfo::Xor,   3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Min] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::min,    &SIMDFloat32x4Lib::EntryInfo::Min,   3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Max] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::max,    &SIMDFloat32x4Lib::EntryInfo::Max,   3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::minNum, &SIMDFloat32x4Lib::EntryInfo::MinNum, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::maxNum, &SIMDFloat32x4Lib::EntryInfo::MaxNum, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::scale,  &SIMDFloat32x4Lib::EntryInfo::Scale, 3, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Add] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::add, &SIMDFloat32x4Lib::EntryInfo::Add, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Sub] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::sub,    &SIMDFloat32x4Lib::EntryInfo::Sub,   3);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Mul] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::mul,    &SIMDFloat32x4Lib::EntryInfo::Mul,   3);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Div] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::div,    &SIMDFloat32x4Lib::EntryInfo::Div,   3);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::and,    &SIMDFloat32x4Lib::EntryInfo::And,   3);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::or,     &SIMDFloat32x4Lib::EntryInfo::Or,    3);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::xor,    &SIMDFloat32x4Lib::EntryInfo::Xor,   3);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Min] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::min,    &SIMDFloat32x4Lib::EntryInfo::Min,   3);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Max] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::max,    &SIMDFloat32x4Lib::EntryInfo::Max,   3);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::minNum, &SIMDFloat32x4Lib::EntryInfo::MinNum, 3);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::maxNum, &SIMDFloat32x4Lib::EntryInfo::MaxNum, 3);
         // unary ops
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Abs] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::abs,            &SIMDFloat32x4Lib::EntryInfo::Abs,            2, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Neg] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::neg,            &SIMDFloat32x4Lib::EntryInfo::Neg,            2, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::not,            &SIMDFloat32x4Lib::EntryInfo::Not,            2, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Sqrt] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::sqrt,           &SIMDFloat32x4Lib::EntryInfo::Sqrt,           2, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Reciprocal] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::reciprocalApproximation,     &SIMDFloat32x4Lib::EntryInfo::Reciprocal,     2, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_ReciprocalSqrt] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::reciprocalSqrtApproximation, &SIMDFloat32x4Lib::EntryInfo::ReciprocalSqrt, 2, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Abs] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::abs,            &SIMDFloat32x4Lib::EntryInfo::Abs,            2);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Neg] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::neg,            &SIMDFloat32x4Lib::EntryInfo::Neg,            2);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::not,            &SIMDFloat32x4Lib::EntryInfo::Not,            2);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Sqrt] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::sqrt,           &SIMDFloat32x4Lib::EntryInfo::Sqrt,           2);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Reciprocal] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::reciprocalApproximation,     &SIMDFloat32x4Lib::EntryInfo::Reciprocal,     2);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_ReciprocalSqrt] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::reciprocalSqrtApproximation, &SIMDFloat32x4Lib::EntryInfo::ReciprocalSqrt, 2);
         // compare ops
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::lessThan,           &SIMDFloat32x4Lib::EntryInfo::LessThan,          3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::lessThanOrEqual,    &SIMDFloat32x4Lib::EntryInfo::LessThanOrEqual,   3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::equal,              &SIMDFloat32x4Lib::EntryInfo::Equal,             3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::notEqual,           &SIMDFloat32x4Lib::EntryInfo::NotEqual,          3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::greaterThan,        &SIMDFloat32x4Lib::EntryInfo::GreaterThan,       3, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::greaterThanOrEqual, &SIMDFloat32x4Lib::EntryInfo::GreaterThanOrEqual,3, PropertyNone);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::lessThan,           &SIMDFloat32x4Lib::EntryInfo::LessThan,          3);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::lessThanOrEqual,    &SIMDFloat32x4Lib::EntryInfo::LessThanOrEqual,   3);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::equal,              &SIMDFloat32x4Lib::EntryInfo::Equal,             3);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::notEqual,           &SIMDFloat32x4Lib::EntryInfo::NotEqual,          3);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::greaterThan,        &SIMDFloat32x4Lib::EntryInfo::GreaterThan,       3);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::greaterThanOrEqual, &SIMDFloat32x4Lib::EntryInfo::GreaterThanOrEqual,3);
         // others
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Swizzle] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::swizzle,            &SIMDFloat32x4Lib::EntryInfo::Swizzle, 6, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Shuffle] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::shuffle,            &SIMDFloat32x4Lib::EntryInfo::Shuffle, 7, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::clamp,              &SIMDFloat32x4Lib::EntryInfo::Clamp,   4, PropertyNone);
-        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::select,             &SIMDFloat32x4Lib::EntryInfo::Select,  4, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Load] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::load,  &SIMDFloat32x4Lib::EntryInfo::Load,  3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Load1] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::load1, &SIMDFloat32x4Lib::EntryInfo::Load1, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Load2] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::load2, &SIMDFloat32x4Lib::EntryInfo::Load2, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Load3] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::load3, &SIMDFloat32x4Lib::EntryInfo::Load3, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Store] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::store, &SIMDFloat32x4Lib::EntryInfo::Store, 4, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Store1] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::store1, &SIMDFloat32x4Lib::EntryInfo::Store1, 4, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Store2] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::store2, &SIMDFloat32x4Lib::EntryInfo::Store2, 4, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Store3] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::store3, &SIMDFloat32x4Lib::EntryInfo::Store3, 4, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Swizzle] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::swizzle,            &SIMDFloat32x4Lib::EntryInfo::Swizzle, 6);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Shuffle] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::shuffle,            &SIMDFloat32x4Lib::EntryInfo::Shuffle, 7);
+        library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::select,             &SIMDFloat32x4Lib::EntryInfo::Select,  4);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Load] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::load,  &SIMDFloat32x4Lib::EntryInfo::Load,  3);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Load1] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::load1, &SIMDFloat32x4Lib::EntryInfo::Load1, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Load2] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::load2, &SIMDFloat32x4Lib::EntryInfo::Load2, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Load3] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::load3, &SIMDFloat32x4Lib::EntryInfo::Load3, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Store] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::store, &SIMDFloat32x4Lib::EntryInfo::Store, 4);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Store1] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::store1, &SIMDFloat32x4Lib::EntryInfo::Store1, 4);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Store2] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::store2, &SIMDFloat32x4Lib::EntryInfo::Store2, 4);
+        builtinFuncs[BuiltinFunction::SIMD_Float32x4_Store3] = library->AddFunctionToLibraryObject(float32x4Function, PropertyIds::store3, &SIMDFloat32x4Lib::EntryInfo::Store3, 4);
         /*** End Float32x4 ***/
 
         /*** Float64x2 ***/
-        JavascriptFunction* float64x2Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Float64x2, &SIMDFloat64x2Lib::EntryInfo::Float64x2, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::check, &SIMDFloat64x2Lib::EntryInfo::Check, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::zero, &SIMDFloat64x2Lib::EntryInfo::Zero, 1, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::splat, &SIMDFloat64x2Lib::EntryInfo::Splat, 2, PropertyNone);
+        JavascriptFunction* float64x2Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Float64x2, &SIMDFloat64x2Lib::EntryInfo::Float64x2, 3);
+        
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::check, &SIMDFloat64x2Lib::EntryInfo::Check, 2);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::splat, &SIMDFloat64x2Lib::EntryInfo::Splat, 2);
         // type conversions
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::fromFloat32x4,      &SIMDFloat64x2Lib::EntryInfo::FromFloat32x4,        2, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::fromFloat32x4Bits,  &SIMDFloat64x2Lib::EntryInfo::FromFloat32x4Bits,    2, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::fromInt32x4,        &SIMDFloat64x2Lib::EntryInfo::FromInt32x4,          2, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::fromInt32x4Bits,    &SIMDFloat64x2Lib::EntryInfo::FromInt32x4Bits,      2, PropertyNone);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::fromFloat32x4,      &SIMDFloat64x2Lib::EntryInfo::FromFloat32x4,        2);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::fromFloat32x4Bits,  &SIMDFloat64x2Lib::EntryInfo::FromFloat32x4Bits,    2);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::fromInt32x4,        &SIMDFloat64x2Lib::EntryInfo::FromInt32x4,          2);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::fromInt32x4Bits,    &SIMDFloat64x2Lib::EntryInfo::FromInt32x4Bits,      2);
         // binary ops
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::add, &SIMDFloat64x2Lib::EntryInfo::Add, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::sub, &SIMDFloat64x2Lib::EntryInfo::Sub, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::mul, &SIMDFloat64x2Lib::EntryInfo::Mul, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::div, &SIMDFloat64x2Lib::EntryInfo::Div, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::min,    &SIMDFloat64x2Lib::EntryInfo::Min,      3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::max,    &SIMDFloat64x2Lib::EntryInfo::Max,      3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::scale,  &SIMDFloat64x2Lib::EntryInfo::Scale,    3, PropertyNone);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::add, &SIMDFloat64x2Lib::EntryInfo::Add, 3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::sub, &SIMDFloat64x2Lib::EntryInfo::Sub, 3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::mul, &SIMDFloat64x2Lib::EntryInfo::Mul, 3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::div, &SIMDFloat64x2Lib::EntryInfo::Div, 3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::min,    &SIMDFloat64x2Lib::EntryInfo::Min,      3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::max,    &SIMDFloat64x2Lib::EntryInfo::Max,      3);
         // unary ops
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::abs,            &SIMDFloat64x2Lib::EntryInfo::Abs,              2, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::neg,            &SIMDFloat64x2Lib::EntryInfo::Neg,              2, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::sqrt,           &SIMDFloat64x2Lib::EntryInfo::Sqrt,             2, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::reciprocalApproximation,     &SIMDFloat64x2Lib::EntryInfo::Reciprocal,       2, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::reciprocalSqrtApproximation, &SIMDFloat64x2Lib::EntryInfo::ReciprocalSqrt,   2, PropertyNone);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::abs,            &SIMDFloat64x2Lib::EntryInfo::Abs,              2);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::neg,            &SIMDFloat64x2Lib::EntryInfo::Neg,              2);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::sqrt,           &SIMDFloat64x2Lib::EntryInfo::Sqrt,             2);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::reciprocalApproximation,     &SIMDFloat64x2Lib::EntryInfo::Reciprocal,       2);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::reciprocalSqrtApproximation, &SIMDFloat64x2Lib::EntryInfo::ReciprocalSqrt,   2);
         // compare ops
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::lessThan,           &SIMDFloat64x2Lib::EntryInfo::LessThan,             3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::lessThanOrEqual,    &SIMDFloat64x2Lib::EntryInfo::LessThanOrEqual,      3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::equal,              &SIMDFloat64x2Lib::EntryInfo::Equal,                3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::notEqual,           &SIMDFloat64x2Lib::EntryInfo::NotEqual,             3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::greaterThan,        &SIMDFloat64x2Lib::EntryInfo::GreaterThan,          3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::greaterThanOrEqual, &SIMDFloat64x2Lib::EntryInfo::GreaterThanOrEqual,   3, PropertyNone);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::lessThan,           &SIMDFloat64x2Lib::EntryInfo::LessThan,             3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::lessThanOrEqual,    &SIMDFloat64x2Lib::EntryInfo::LessThanOrEqual,      3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::equal,              &SIMDFloat64x2Lib::EntryInfo::Equal,                3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::notEqual,           &SIMDFloat64x2Lib::EntryInfo::NotEqual,             3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::greaterThan,        &SIMDFloat64x2Lib::EntryInfo::GreaterThan,          3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::greaterThanOrEqual, &SIMDFloat64x2Lib::EntryInfo::GreaterThanOrEqual,   3);
         // others
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::swizzle,    &SIMDFloat64x2Lib::EntryInfo::Swizzle,  4, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::shuffle,    &SIMDFloat64x2Lib::EntryInfo::Shuffle,  5, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::clamp,      &SIMDFloat64x2Lib::EntryInfo::Clamp,    4, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::select,     &SIMDFloat64x2Lib::EntryInfo::Select,   4, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::load,  &SIMDFloat64x2Lib::EntryInfo::Load, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::load1, &SIMDFloat64x2Lib::EntryInfo::Load1, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::store,  &SIMDFloat64x2Lib::EntryInfo::Store, 4, PropertyNone);
-        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::store1, &SIMDFloat64x2Lib::EntryInfo::Store1, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::swizzle,    &SIMDFloat64x2Lib::EntryInfo::Swizzle,  4);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::shuffle,    &SIMDFloat64x2Lib::EntryInfo::Shuffle,  5);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::select,     &SIMDFloat64x2Lib::EntryInfo::Select,   4);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::load,  &SIMDFloat64x2Lib::EntryInfo::Load, 3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::load1, &SIMDFloat64x2Lib::EntryInfo::Load1, 3);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::store,  &SIMDFloat64x2Lib::EntryInfo::Store, 4);
+        library->AddFunctionToLibraryObject(float64x2Function, PropertyIds::store1, &SIMDFloat64x2Lib::EntryInfo::Store1, 4);
         /*** End Float64x2 ***/
 
         /*** Int32x4 ***/
-        JavascriptFunction* int32x4Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Int32x4, &SIMDInt32x4Lib::EntryInfo::Int32x4, 5, PropertyNone);
+        JavascriptFunction* int32x4Function = library->AddFunctionToLibraryObjectWithPrototype(simdObject, PropertyIds::Int32x4, &SIMDInt32x4Lib::EntryInfo::Int32x4, 5, library->simdInt32x4Prototype, nullptr);
         builtinFuncs[BuiltinFunction::SIMD_Int32x4_Int32x4] = int32x4Function;
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Check] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::check,        &SIMDInt32x4Lib::EntryInfo::Check,      2, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Splat] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::splat,        &SIMDInt32x4Lib::EntryInfo::Splat,      2, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::bool_,        &SIMDInt32x4Lib::EntryInfo::Bool,       5, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::withFlagX,    &SIMDInt32x4Lib::EntryInfo::WithFlagX,  3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::withFlagY,    &SIMDInt32x4Lib::EntryInfo::WithFlagY,  3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::withFlagZ,    &SIMDInt32x4Lib::EntryInfo::WithFlagZ,  3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::withFlagW,    &SIMDInt32x4Lib::EntryInfo::WithFlagW,  3, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Check] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::check,        &SIMDInt32x4Lib::EntryInfo::Check,      2);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Splat] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::splat,        &SIMDInt32x4Lib::EntryInfo::Splat,      2);
         // Lane Access
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_ExtractLane] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::extractLane, &SIMDInt32x4Lib::EntryInfo::ExtractLane, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_ReplaceLane] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::replaceLane, &SIMDInt32x4Lib::EntryInfo::ReplaceLane, 4, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_ExtractLane] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::extractLane, &SIMDInt32x4Lib::EntryInfo::ExtractLane, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_ReplaceLane] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::replaceLane, &SIMDInt32x4Lib::EntryInfo::ReplaceLane, 4);
         // type conversions
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromFloat64x2, &SIMDInt32x4Lib::EntryInfo::FromFloat64x2,         2, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromFloat64x2Bits, &SIMDInt32x4Lib::EntryInfo::FromFloat64x2Bits, 2, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_FromFloat32x4] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromFloat32x4, &SIMDInt32x4Lib::EntryInfo::FromFloat32x4,         2, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_FromFloat32x4Bits] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromFloat32x4Bits, &SIMDInt32x4Lib::EntryInfo::FromFloat32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromUint32x4Bits, &SIMDInt32x4Lib::EntryInfo::FromUint32x4Bits,   2, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromUint8x16Bits, &SIMDInt32x4Lib::EntryInfo::FromUint8x16Bits,   2, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromUint16x8Bits, &SIMDInt32x4Lib::EntryInfo::FromUint16x8Bits,   2, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromInt8x16Bits, &SIMDInt32x4Lib::EntryInfo::FromInt8x16Bits,     2, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromInt16x8Bits, &SIMDInt32x4Lib::EntryInfo::FromInt16x8Bits,     2, PropertyNone);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromFloat64x2, &SIMDInt32x4Lib::EntryInfo::FromFloat64x2,         2);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromFloat64x2Bits, &SIMDInt32x4Lib::EntryInfo::FromFloat64x2Bits, 2);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_FromFloat32x4] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromFloat32x4, &SIMDInt32x4Lib::EntryInfo::FromFloat32x4,         2);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_FromFloat32x4Bits] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromFloat32x4Bits, &SIMDInt32x4Lib::EntryInfo::FromFloat32x4Bits, 2);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromUint32x4Bits, &SIMDInt32x4Lib::EntryInfo::FromUint32x4Bits,   2);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromUint8x16Bits, &SIMDInt32x4Lib::EntryInfo::FromUint8x16Bits,   2);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromUint16x8Bits, &SIMDInt32x4Lib::EntryInfo::FromUint16x8Bits,   2);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromInt8x16Bits, &SIMDInt32x4Lib::EntryInfo::FromInt8x16Bits,     2);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::fromInt16x8Bits, &SIMDInt32x4Lib::EntryInfo::FromInt16x8Bits,     2);
 
         // binary ops
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Add] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::add, &SIMDInt32x4Lib::EntryInfo::Add, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Sub] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::sub, &SIMDInt32x4Lib::EntryInfo::Sub, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Mul] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::mul, &SIMDInt32x4Lib::EntryInfo::Mul, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_And] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::and, &SIMDInt32x4Lib::EntryInfo::And, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Or] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::or,  &SIMDInt32x4Lib::EntryInfo::Or,  3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Xor] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::xor, &SIMDInt32x4Lib::EntryInfo::Xor, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::min, &SIMDInt32x4Lib::EntryInfo::Min, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::max, &SIMDInt32x4Lib::EntryInfo::Max, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Neg] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::neg, &SIMDInt32x4Lib::EntryInfo::Neg, 2, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Not] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::not, &SIMDInt32x4Lib::EntryInfo::Not, 2, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Add] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::add, &SIMDInt32x4Lib::EntryInfo::Add, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Sub] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::sub, &SIMDInt32x4Lib::EntryInfo::Sub, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Mul] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::mul, &SIMDInt32x4Lib::EntryInfo::Mul, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_And] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::and, &SIMDInt32x4Lib::EntryInfo::And, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Or] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::or,  &SIMDInt32x4Lib::EntryInfo::Or,  3);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Xor] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::xor, &SIMDInt32x4Lib::EntryInfo::Xor, 3);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::min, &SIMDInt32x4Lib::EntryInfo::Min, 3);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::max, &SIMDInt32x4Lib::EntryInfo::Max, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Neg] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::neg, &SIMDInt32x4Lib::EntryInfo::Neg, 2);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Not] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::not, &SIMDInt32x4Lib::EntryInfo::Not, 2);
         // compare ops
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::lessThan,           &SIMDInt32x4Lib::EntryInfo::LessThan,           3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::lessThanOrEqual,    &SIMDInt32x4Lib::EntryInfo::LessThanOrEqual,    3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::equal,              &SIMDInt32x4Lib::EntryInfo::Equal,              3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::notEqual,           &SIMDInt32x4Lib::EntryInfo::NotEqual,           3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::greaterThan,        &SIMDInt32x4Lib::EntryInfo::GreaterThan,        3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::greaterThanOrEqual, &SIMDInt32x4Lib::EntryInfo::GreaterThanOrEqual, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::lessThan,           &SIMDInt32x4Lib::EntryInfo::LessThan,           3);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::lessThanOrEqual,    &SIMDInt32x4Lib::EntryInfo::LessThanOrEqual,    3);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::equal,              &SIMDInt32x4Lib::EntryInfo::Equal,              3);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::notEqual,           &SIMDInt32x4Lib::EntryInfo::NotEqual,           3);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::greaterThan,        &SIMDInt32x4Lib::EntryInfo::GreaterThan,        3);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::greaterThanOrEqual, &SIMDInt32x4Lib::EntryInfo::GreaterThanOrEqual, 3);
         // shuffle
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Swizzle] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::swizzle,      &SIMDInt32x4Lib::EntryInfo::Swizzle,     6, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Shuffle] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::shuffle,      &SIMDInt32x4Lib::EntryInfo::Shuffle,     7, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Swizzle] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::swizzle,      &SIMDInt32x4Lib::EntryInfo::Swizzle,     6);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Shuffle] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::shuffle,      &SIMDInt32x4Lib::EntryInfo::Shuffle,     7);
         // shift
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::shiftLeftByScalar, &SIMDInt32x4Lib::EntryInfo::ShiftLeftByScalar, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::shiftRightByScalar, &SIMDInt32x4Lib::EntryInfo::ShiftRightByScalar, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::shiftLeftByScalar, &SIMDInt32x4Lib::EntryInfo::ShiftLeftByScalar, 3);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::shiftRightByScalar, &SIMDInt32x4Lib::EntryInfo::ShiftRightByScalar, 3);
         // select
-        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::select, &SIMDInt32x4Lib::EntryInfo::Select, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::select, &SIMDInt32x4Lib::EntryInfo::Select, 4);
  
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Load] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::load, &SIMDInt32x4Lib::EntryInfo::Load, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Load1] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::load1, &SIMDInt32x4Lib::EntryInfo::Load1, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Load2] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::load2, &SIMDInt32x4Lib::EntryInfo::Load2, 3, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Load3] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::load3, &SIMDInt32x4Lib::EntryInfo::Load3, 3, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Load] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::load, &SIMDInt32x4Lib::EntryInfo::Load, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Load1] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::load1, &SIMDInt32x4Lib::EntryInfo::Load1, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Load2] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::load2, &SIMDInt32x4Lib::EntryInfo::Load2, 3);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Load3] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::load3, &SIMDInt32x4Lib::EntryInfo::Load3, 3);
 
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Store] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::store, &SIMDInt32x4Lib::EntryInfo::Store, 4, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Store1] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::store1, &SIMDInt32x4Lib::EntryInfo::Store1, 4, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Store2] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::store2, &SIMDInt32x4Lib::EntryInfo::Store2, 4, PropertyNone);
-        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Store3] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::store3, &SIMDInt32x4Lib::EntryInfo::Store3, 4, PropertyNone);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Store] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::store, &SIMDInt32x4Lib::EntryInfo::Store, 4);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Store1] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::store1, &SIMDInt32x4Lib::EntryInfo::Store1, 4);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Store2] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::store2, &SIMDInt32x4Lib::EntryInfo::Store2, 4);
+        builtinFuncs[BuiltinFunction::SIMD_Int32x4_Store3] = library->AddFunctionToLibraryObject(int32x4Function, PropertyIds::store3, &SIMDInt32x4Lib::EntryInfo::Store3, 4);
        /*** End Int32x4 ***/
 
         /*** Int16x8 ***/
-        JavascriptFunction* int16x8Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Int16x8, &SIMDInt16x8Lib::EntryInfo::Int16x8, 5, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::splat, &SIMDInt16x8Lib::EntryInfo::Splat, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::check, &SIMDInt16x8Lib::EntryInfo::Check, 2, PropertyNone);
+        JavascriptFunction* int16x8Function = library->AddFunctionToLibraryObjectWithPrototype(simdObject, PropertyIds::Int16x8,
+            &SIMDInt16x8Lib::EntryInfo::Int16x8, 9, library->simdInt16x8Prototype, nullptr);
+        builtinFuncs[BuiltinFunction::SIMD_Int16x8_Int16x8] = int16x8Function;
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::splat, &SIMDInt16x8Lib::EntryInfo::Splat, 2);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::check, &SIMDInt16x8Lib::EntryInfo::Check, 2);
         // type conversions
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromFloat32x4Bits, &SIMDInt16x8Lib::EntryInfo::FromFloat32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromInt32x4Bits, &SIMDInt16x8Lib::EntryInfo::FromInt32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromInt8x16Bits, &SIMDInt16x8Lib::EntryInfo::FromInt8x16Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromUint32x4Bits, &SIMDInt16x8Lib::EntryInfo::FromUint32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromUint16x8Bits, &SIMDInt16x8Lib::EntryInfo::FromUint16x8Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromUint8x16Bits, &SIMDInt16x8Lib::EntryInfo::FromUint8x16Bits, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromFloat32x4Bits, &SIMDInt16x8Lib::EntryInfo::FromFloat32x4Bits, 2);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromInt32x4Bits, &SIMDInt16x8Lib::EntryInfo::FromInt32x4Bits, 2);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromInt8x16Bits, &SIMDInt16x8Lib::EntryInfo::FromInt8x16Bits, 2);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromUint32x4Bits, &SIMDInt16x8Lib::EntryInfo::FromUint32x4Bits, 2);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromUint16x8Bits, &SIMDInt16x8Lib::EntryInfo::FromUint16x8Bits, 2);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::fromUint8x16Bits, &SIMDInt16x8Lib::EntryInfo::FromUint8x16Bits, 2);
         // UnaryOps
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::neg, &SIMDInt16x8Lib::EntryInfo::Neg, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::not, &SIMDInt16x8Lib::EntryInfo::Not, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::neg, &SIMDInt16x8Lib::EntryInfo::Neg, 2);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::not, &SIMDInt16x8Lib::EntryInfo::Not, 2);
         // binary ops
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::add, &SIMDInt16x8Lib::EntryInfo::Add, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::sub, &SIMDInt16x8Lib::EntryInfo::Sub, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::mul, &SIMDInt16x8Lib::EntryInfo::Mul, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::and, &SIMDInt16x8Lib::EntryInfo::And, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::or, &SIMDInt16x8Lib::EntryInfo::Or, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::xor, &SIMDInt16x8Lib::EntryInfo::Xor, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::addSaturate, &SIMDInt16x8Lib::EntryInfo::AddSaturate, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::subSaturate, &SIMDInt16x8Lib::EntryInfo::SubSaturate, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::min, &SIMDInt16x8Lib::EntryInfo::Min, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::max, &SIMDInt16x8Lib::EntryInfo::Max, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::add, &SIMDInt16x8Lib::EntryInfo::Add, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::sub, &SIMDInt16x8Lib::EntryInfo::Sub, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::mul, &SIMDInt16x8Lib::EntryInfo::Mul, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::and, &SIMDInt16x8Lib::EntryInfo::And, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::or, &SIMDInt16x8Lib::EntryInfo::Or, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::xor, &SIMDInt16x8Lib::EntryInfo::Xor, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::addSaturate, &SIMDInt16x8Lib::EntryInfo::AddSaturate, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::subSaturate, &SIMDInt16x8Lib::EntryInfo::SubSaturate, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::min, &SIMDInt16x8Lib::EntryInfo::Min, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::max, &SIMDInt16x8Lib::EntryInfo::Max, 3);
         // compare ops
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::lessThan, &SIMDInt16x8Lib::EntryInfo::LessThan, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::lessThanOrEqual, &SIMDInt16x8Lib::EntryInfo::LessThanOrEqual, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::equal, &SIMDInt16x8Lib::EntryInfo::Equal, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::notEqual, &SIMDInt16x8Lib::EntryInfo::NotEqual, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::greaterThan, &SIMDInt16x8Lib::EntryInfo::GreaterThan, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::greaterThanOrEqual, &SIMDInt16x8Lib::EntryInfo::GreaterThanOrEqual, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::lessThan, &SIMDInt16x8Lib::EntryInfo::LessThan, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::lessThanOrEqual, &SIMDInt16x8Lib::EntryInfo::LessThanOrEqual, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::equal, &SIMDInt16x8Lib::EntryInfo::Equal, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::notEqual, &SIMDInt16x8Lib::EntryInfo::NotEqual, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::greaterThan, &SIMDInt16x8Lib::EntryInfo::GreaterThan, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::greaterThanOrEqual, &SIMDInt16x8Lib::EntryInfo::GreaterThanOrEqual, 3);
         // Lane Access
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::extractLane, &SIMDInt16x8Lib::EntryInfo::ExtractLane, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::replaceLane, &SIMDInt16x8Lib::EntryInfo::ReplaceLane, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::extractLane, &SIMDInt16x8Lib::EntryInfo::ExtractLane, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::replaceLane, &SIMDInt16x8Lib::EntryInfo::ReplaceLane, 3);
         // shift
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::shiftLeftByScalar, &SIMDInt16x8Lib::EntryInfo::ShiftLeftByScalar, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::shiftRightByScalar, &SIMDInt16x8Lib::EntryInfo::ShiftRightByScalar, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::shiftLeftByScalar, &SIMDInt16x8Lib::EntryInfo::ShiftLeftByScalar, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::shiftRightByScalar, &SIMDInt16x8Lib::EntryInfo::ShiftRightByScalar, 3);
         // load/store
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::load, &SIMDInt16x8Lib::EntryInfo::Load, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::store, &SIMDInt16x8Lib::EntryInfo::Store, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::load, &SIMDInt16x8Lib::EntryInfo::Load, 3);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::store, &SIMDInt16x8Lib::EntryInfo::Store, 4);
         // others
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::swizzle, &SIMDInt16x8Lib::EntryInfo::Swizzle, 10, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::shuffle, &SIMDInt16x8Lib::EntryInfo::Shuffle, 11, PropertyNone);
-        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::select, &SIMDInt16x8Lib::EntryInfo::Select, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::swizzle, &SIMDInt16x8Lib::EntryInfo::Swizzle, 10);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::shuffle, &SIMDInt16x8Lib::EntryInfo::Shuffle, 11);
+        library->AddFunctionToLibraryObject(int16x8Function, PropertyIds::select, &SIMDInt16x8Lib::EntryInfo::Select, 4);
         /*** End Int16x8 ***/
 
         /*** Int8x16 ***/
-        JavascriptFunction* int8x16Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Int8x16, &SIMDInt8x16Lib::EntryInfo::Int8x16, 17, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::check, &SIMDInt8x16Lib::EntryInfo::Check, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::splat, &SIMDInt8x16Lib::EntryInfo::Splat, 2, PropertyNone);
+        JavascriptFunction* int8x16Function = library->AddFunctionToLibraryObjectWithPrototype(simdObject, PropertyIds::Int8x16,
+            &SIMDInt8x16Lib::EntryInfo::Int8x16, 17, library->simdInt8x16Prototype, nullptr);
+        builtinFuncs[BuiltinFunction::SIMD_Int8x16_Int8x16] = int8x16Function;
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::check, &SIMDInt8x16Lib::EntryInfo::Check, 2);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::splat, &SIMDInt8x16Lib::EntryInfo::Splat, 2);
         // type conversions
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromFloat32x4Bits, &SIMDInt8x16Lib::EntryInfo::FromFloat32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromInt32x4Bits, &SIMDInt8x16Lib::EntryInfo::FromInt32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromInt16x8Bits, &SIMDInt8x16Lib::EntryInfo::FromInt16x8Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromUint32x4Bits, &SIMDInt8x16Lib::EntryInfo::FromUint32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromUint16x8Bits, &SIMDInt8x16Lib::EntryInfo::FromUint16x8Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromUint8x16Bits, &SIMDInt8x16Lib::EntryInfo::FromUint8x16Bits, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromFloat32x4Bits, &SIMDInt8x16Lib::EntryInfo::FromFloat32x4Bits, 2);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromInt32x4Bits, &SIMDInt8x16Lib::EntryInfo::FromInt32x4Bits, 2);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromInt16x8Bits, &SIMDInt8x16Lib::EntryInfo::FromInt16x8Bits, 2);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromUint32x4Bits, &SIMDInt8x16Lib::EntryInfo::FromUint32x4Bits, 2);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromUint16x8Bits, &SIMDInt8x16Lib::EntryInfo::FromUint16x8Bits, 2);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::fromUint8x16Bits, &SIMDInt8x16Lib::EntryInfo::FromUint8x16Bits, 2);
         // binary ops
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::add, &SIMDInt8x16Lib::EntryInfo::Add, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::sub, &SIMDInt8x16Lib::EntryInfo::Sub, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::mul, &SIMDInt8x16Lib::EntryInfo::Mul, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::and, &SIMDInt8x16Lib::EntryInfo::And, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::or , &SIMDInt8x16Lib::EntryInfo::Or , 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::xor, &SIMDInt8x16Lib::EntryInfo::Xor, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::min, &SIMDInt8x16Lib::EntryInfo::Min, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::max, &SIMDInt8x16Lib::EntryInfo::Max, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::addSaturate, &SIMDInt8x16Lib::EntryInfo::AddSaturate, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::subSaturate, &SIMDInt8x16Lib::EntryInfo::SubSaturate, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::add, &SIMDInt8x16Lib::EntryInfo::Add, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::sub, &SIMDInt8x16Lib::EntryInfo::Sub, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::mul, &SIMDInt8x16Lib::EntryInfo::Mul, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::and, &SIMDInt8x16Lib::EntryInfo::And, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::or , &SIMDInt8x16Lib::EntryInfo::Or , 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::xor, &SIMDInt8x16Lib::EntryInfo::Xor, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::min, &SIMDInt8x16Lib::EntryInfo::Min, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::max, &SIMDInt8x16Lib::EntryInfo::Max, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::addSaturate, &SIMDInt8x16Lib::EntryInfo::AddSaturate, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::subSaturate, &SIMDInt8x16Lib::EntryInfo::SubSaturate, 3);
         // unary ops
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::neg, &SIMDInt8x16Lib::EntryInfo::Neg, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::not, &SIMDInt8x16Lib::EntryInfo::Not, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::neg, &SIMDInt8x16Lib::EntryInfo::Neg, 2);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::not, &SIMDInt8x16Lib::EntryInfo::Not, 2);
         // compare ops
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::lessThan, &SIMDInt8x16Lib::EntryInfo::LessThan, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::lessThanOrEqual, &SIMDInt8x16Lib::EntryInfo::LessThanOrEqual, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::equal   , &SIMDInt8x16Lib::EntryInfo::Equal   , 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::notEqual   , &SIMDInt8x16Lib::EntryInfo::NotEqual   , 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::greaterThan, &SIMDInt8x16Lib::EntryInfo::GreaterThan, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::greaterThanOrEqual, &SIMDInt8x16Lib::EntryInfo::GreaterThanOrEqual , 3, PropertyNone);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::lessThan, &SIMDInt8x16Lib::EntryInfo::LessThan, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::lessThanOrEqual, &SIMDInt8x16Lib::EntryInfo::LessThanOrEqual, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::equal   , &SIMDInt8x16Lib::EntryInfo::Equal   , 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::notEqual   , &SIMDInt8x16Lib::EntryInfo::NotEqual   , 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::greaterThan, &SIMDInt8x16Lib::EntryInfo::GreaterThan, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::greaterThanOrEqual, &SIMDInt8x16Lib::EntryInfo::GreaterThanOrEqual , 3);
         // shuffle
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::swizzle, &SIMDInt8x16Lib::EntryInfo::Swizzle, 18, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::shuffle, &SIMDInt8x16Lib::EntryInfo::Shuffle, 19, PropertyNone);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::swizzle, &SIMDInt8x16Lib::EntryInfo::Swizzle, 18);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::shuffle, &SIMDInt8x16Lib::EntryInfo::Shuffle, 19);
         // shift
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::shiftLeftByScalar, &SIMDInt8x16Lib::EntryInfo::ShiftLeftByScalar, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::shiftRightByScalar, &SIMDInt8x16Lib::EntryInfo::ShiftRightByScalar, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::shiftLeftByScalar, &SIMDInt8x16Lib::EntryInfo::ShiftLeftByScalar, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::shiftRightByScalar, &SIMDInt8x16Lib::EntryInfo::ShiftRightByScalar, 3);
         // load/store
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::load, &SIMDInt8x16Lib::EntryInfo::Load, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::store, &SIMDInt8x16Lib::EntryInfo::Store, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::load, &SIMDInt8x16Lib::EntryInfo::Load, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::store, &SIMDInt8x16Lib::EntryInfo::Store, 4);
         // Lane Access
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::extractLane, &SIMDInt8x16Lib::EntryInfo::ExtractLane, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::replaceLane, &SIMDInt8x16Lib::EntryInfo::ReplaceLane, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::extractLane, &SIMDInt8x16Lib::EntryInfo::ExtractLane, 3);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::replaceLane, &SIMDInt8x16Lib::EntryInfo::ReplaceLane, 4);
         // select
-        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::select, &SIMDInt8x16Lib::EntryInfo::Select, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(int8x16Function, PropertyIds::select, &SIMDInt8x16Lib::EntryInfo::Select, 4);
         /*** End Int8x16 ***/
 
         /*** Bool32x4 ***/
-        JavascriptFunction* bool32x4Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Bool32x4, &SIMDBool32x4Lib::EntryInfo::Bool32x4, 5, PropertyNone);
-        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::check, &SIMDBool32x4Lib::EntryInfo::Check, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::splat, &SIMDBool32x4Lib::EntryInfo::Splat, 2, PropertyNone);
+        JavascriptFunction* bool32x4Function = library->AddFunctionToLibraryObjectWithPrototype(simdObject, PropertyIds::Bool32x4,
+            &SIMDBool32x4Lib::EntryInfo::Bool32x4, 5, library->simdBool32x4Prototype, nullptr);
+        builtinFuncs[BuiltinFunction::SIMD_Bool32x4_Bool32x4] = bool32x4Function;
+        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::check, &SIMDBool32x4Lib::EntryInfo::Check, 2);
+        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::splat, &SIMDBool32x4Lib::EntryInfo::Splat, 2);
         // UnaryOps
-        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::not, &SIMDBool32x4Lib::EntryInfo::Not, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::allTrue, &SIMDBool32x4Lib::EntryInfo::AllTrue, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::anyTrue, &SIMDBool32x4Lib::EntryInfo::AnyTrue, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::not, &SIMDBool32x4Lib::EntryInfo::Not, 2);
+        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::allTrue, &SIMDBool32x4Lib::EntryInfo::AllTrue, 2);
+        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::anyTrue, &SIMDBool32x4Lib::EntryInfo::AnyTrue, 2);
         // BinaryOps
-        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::and, &SIMDBool32x4Lib::EntryInfo::And, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::or , &SIMDBool32x4Lib::EntryInfo::Or, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::xor, &SIMDBool32x4Lib::EntryInfo::Xor, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::and, &SIMDBool32x4Lib::EntryInfo::And, 2);
+        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::or , &SIMDBool32x4Lib::EntryInfo::Or, 2);
+        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::xor, &SIMDBool32x4Lib::EntryInfo::Xor, 2);
         // Lane Access
-        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::extractLane, &SIMDBool32x4Lib::EntryInfo::ExtractLane, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::replaceLane, &SIMDBool32x4Lib::EntryInfo::ReplaceLane, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::extractLane, &SIMDBool32x4Lib::EntryInfo::ExtractLane, 3);
+        library->AddFunctionToLibraryObject(bool32x4Function, PropertyIds::replaceLane, &SIMDBool32x4Lib::EntryInfo::ReplaceLane, 4);
         /*** End Bool32x4 ***/
 
         /*** Bool16x8 ***/
-        JavascriptFunction* bool16x8Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Bool16x8, &SIMDBool16x8Lib::EntryInfo::Bool16x8, 9, PropertyNone);
-        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::check, &SIMDBool16x8Lib::EntryInfo::Check, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::splat, &SIMDBool16x8Lib::EntryInfo::Splat, 2, PropertyNone);
+        JavascriptFunction* bool16x8Function = library->AddFunctionToLibraryObjectWithPrototype(simdObject, PropertyIds::Bool16x8,
+                &SIMDBool16x8Lib::EntryInfo::Bool16x8, 9, library->simdBool16x8Prototype, nullptr);
+        builtinFuncs[BuiltinFunction::SIMD_Bool16x8_Bool16x8] = bool16x8Function;
+        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::check, &SIMDBool16x8Lib::EntryInfo::Check, 2);
+        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::splat, &SIMDBool16x8Lib::EntryInfo::Splat, 2);
         // UnaryOps
-        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::not, &SIMDBool16x8Lib::EntryInfo::Not, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::allTrue, &SIMDBool16x8Lib::EntryInfo::AllTrue, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::anyTrue, &SIMDBool16x8Lib::EntryInfo::AnyTrue, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::not, &SIMDBool16x8Lib::EntryInfo::Not, 2);
+        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::allTrue, &SIMDBool16x8Lib::EntryInfo::AllTrue, 2);
+        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::anyTrue, &SIMDBool16x8Lib::EntryInfo::AnyTrue, 2);
         // BinaryOps
-        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::and, &SIMDBool16x8Lib::EntryInfo::And, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::or, &SIMDBool16x8Lib::EntryInfo::Or, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::xor, &SIMDBool16x8Lib::EntryInfo::Xor, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::and, &SIMDBool16x8Lib::EntryInfo::And, 2);
+        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::or, &SIMDBool16x8Lib::EntryInfo::Or, 2);
+        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::xor, &SIMDBool16x8Lib::EntryInfo::Xor, 2);
         // Lane Access
-        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::extractLane, &SIMDBool16x8Lib::EntryInfo::ExtractLane, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::replaceLane, &SIMDBool16x8Lib::EntryInfo::ReplaceLane, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::extractLane, &SIMDBool16x8Lib::EntryInfo::ExtractLane, 3);
+        library->AddFunctionToLibraryObject(bool16x8Function, PropertyIds::replaceLane, &SIMDBool16x8Lib::EntryInfo::ReplaceLane, 4);
         /*** End Bool16x8 ***/
 
         /*** Bool8x16 ***/
-        JavascriptFunction* bool8x16Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Bool8x16, &SIMDBool8x16Lib::EntryInfo::Bool8x16, 17, PropertyNone);
-        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::check, &SIMDBool8x16Lib::EntryInfo::Check, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::splat, &SIMDBool8x16Lib::EntryInfo::Splat, 2, PropertyNone);
+        JavascriptFunction* bool8x16Function = library->AddFunctionToLibraryObjectWithPrototype(simdObject, PropertyIds::Bool8x16,
+            &SIMDBool8x16Lib::EntryInfo::Bool8x16, 17, library->simdBool8x16Prototype, nullptr);
+        builtinFuncs[BuiltinFunction::SIMD_Bool8x16_Bool8x16] = bool8x16Function;
+        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::check, &SIMDBool8x16Lib::EntryInfo::Check, 2);
+        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::splat, &SIMDBool8x16Lib::EntryInfo::Splat, 2);
         // UnaryOps
-        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::not, &SIMDBool8x16Lib::EntryInfo::Not, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::allTrue, &SIMDBool8x16Lib::EntryInfo::AllTrue, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::anyTrue, &SIMDBool8x16Lib::EntryInfo::AnyTrue, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::not, &SIMDBool8x16Lib::EntryInfo::Not, 2);
+        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::allTrue, &SIMDBool8x16Lib::EntryInfo::AllTrue, 2);
+        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::anyTrue, &SIMDBool8x16Lib::EntryInfo::AnyTrue, 2);
         // BinaryOps
-        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::and, &SIMDBool8x16Lib::EntryInfo::And, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::or , &SIMDBool8x16Lib::EntryInfo::Or, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::xor, &SIMDBool8x16Lib::EntryInfo::Xor, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::and, &SIMDBool8x16Lib::EntryInfo::And, 2);
+        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::or , &SIMDBool8x16Lib::EntryInfo::Or, 2);
+        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::xor, &SIMDBool8x16Lib::EntryInfo::Xor, 2);
         // Lane Access
-        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::extractLane, &SIMDBool8x16Lib::EntryInfo::ExtractLane, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::replaceLane, &SIMDBool8x16Lib::EntryInfo::ReplaceLane, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::extractLane, &SIMDBool8x16Lib::EntryInfo::ExtractLane, 3);
+        library->AddFunctionToLibraryObject(bool8x16Function, PropertyIds::replaceLane, &SIMDBool8x16Lib::EntryInfo::ReplaceLane, 4);
         /*** End Bool8x16 ***/
 
         /*** Uint32x4 ***/
-        JavascriptFunction* uint32x4Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Uint32x4, &SIMDUint32x4Lib::EntryInfo::Uint32x4, 5, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::check, &SIMDUint32x4Lib::EntryInfo::Check, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::splat, &SIMDUint32x4Lib::EntryInfo::Splat, 2, PropertyNone);
+        JavascriptFunction* uint32x4Function = library->AddFunctionToLibraryObjectWithPrototype(simdObject, PropertyIds::Uint32x4,
+            &SIMDUint32x4Lib::EntryInfo::Uint32x4, 5, library->simdUint32x4Prototype, nullptr);
+        builtinFuncs[BuiltinFunction::SIMD_Uint32x4_Uint32x4] = uint32x4Function;
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::check, &SIMDUint32x4Lib::EntryInfo::Check, 2);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::splat, &SIMDUint32x4Lib::EntryInfo::Splat, 2);
         // Lane Access
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::extractLane, &SIMDUint32x4Lib::EntryInfo::ExtractLane, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::replaceLane, &SIMDUint32x4Lib::EntryInfo::ReplaceLane, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::extractLane, &SIMDUint32x4Lib::EntryInfo::ExtractLane, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::replaceLane, &SIMDUint32x4Lib::EntryInfo::ReplaceLane, 4);
         // type conversions
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromFloat32x4, &SIMDUint32x4Lib::EntryInfo::FromFloat32x4, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromFloat32x4Bits, &SIMDUint32x4Lib::EntryInfo::FromFloat32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromInt32x4Bits, &SIMDUint32x4Lib::EntryInfo::FromInt32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromInt16x8Bits, &SIMDUint32x4Lib::EntryInfo::FromInt16x8Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromInt8x16Bits, &SIMDUint32x4Lib::EntryInfo::FromInt8x16Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromUint16x8Bits, &SIMDUint32x4Lib::EntryInfo::FromUint16x8Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromUint8x16Bits, &SIMDUint32x4Lib::EntryInfo::FromUint8x16Bits, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromFloat32x4, &SIMDUint32x4Lib::EntryInfo::FromFloat32x4, 2);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromFloat32x4Bits, &SIMDUint32x4Lib::EntryInfo::FromFloat32x4Bits, 2);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromInt32x4Bits, &SIMDUint32x4Lib::EntryInfo::FromInt32x4Bits, 2);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromInt16x8Bits, &SIMDUint32x4Lib::EntryInfo::FromInt16x8Bits, 2);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromInt8x16Bits, &SIMDUint32x4Lib::EntryInfo::FromInt8x16Bits, 2);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromUint16x8Bits, &SIMDUint32x4Lib::EntryInfo::FromUint16x8Bits, 2);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::fromUint8x16Bits, &SIMDUint32x4Lib::EntryInfo::FromUint8x16Bits, 2);
         // unary ops
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::not, &SIMDUint32x4Lib::EntryInfo::Not, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::not, &SIMDUint32x4Lib::EntryInfo::Not, 2);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::neg, &SIMDUint32x4Lib::EntryInfo::Neg, 2);
         // binary ops
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::add, &SIMDUint32x4Lib::EntryInfo::Add, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::sub, &SIMDUint32x4Lib::EntryInfo::Sub, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::mul, &SIMDUint32x4Lib::EntryInfo::Mul, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::and, &SIMDUint32x4Lib::EntryInfo::And, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::or, &SIMDUint32x4Lib::EntryInfo::Or, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::xor, &SIMDUint32x4Lib::EntryInfo::Xor, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::add, &SIMDUint32x4Lib::EntryInfo::Add, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::sub, &SIMDUint32x4Lib::EntryInfo::Sub, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::mul, &SIMDUint32x4Lib::EntryInfo::Mul, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::and, &SIMDUint32x4Lib::EntryInfo::And, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::or, &SIMDUint32x4Lib::EntryInfo::Or, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::xor, &SIMDUint32x4Lib::EntryInfo::Xor, 3);
         // compare ops
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::lessThan, &SIMDUint32x4Lib::EntryInfo::LessThan, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::lessThanOrEqual, &SIMDUint32x4Lib::EntryInfo::LessThanOrEqual, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::equal, &SIMDUint32x4Lib::EntryInfo::Equal, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::notEqual, &SIMDUint32x4Lib::EntryInfo::NotEqual, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::greaterThan, &SIMDUint32x4Lib::EntryInfo::GreaterThan, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::greaterThanOrEqual, &SIMDUint32x4Lib::EntryInfo::GreaterThanOrEqual, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::min, &SIMDUint32x4Lib::EntryInfo::Min, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::max, &SIMDUint32x4Lib::EntryInfo::Max, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::lessThan, &SIMDUint32x4Lib::EntryInfo::LessThan, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::lessThanOrEqual, &SIMDUint32x4Lib::EntryInfo::LessThanOrEqual, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::equal, &SIMDUint32x4Lib::EntryInfo::Equal, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::notEqual, &SIMDUint32x4Lib::EntryInfo::NotEqual, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::greaterThan, &SIMDUint32x4Lib::EntryInfo::GreaterThan, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::greaterThanOrEqual, &SIMDUint32x4Lib::EntryInfo::GreaterThanOrEqual, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::min, &SIMDUint32x4Lib::EntryInfo::Min, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::max, &SIMDUint32x4Lib::EntryInfo::Max, 3);
         // others
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::swizzle, &SIMDUint32x4Lib::EntryInfo::Swizzle, 6, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::shuffle, &SIMDUint32x4Lib::EntryInfo::Shuffle, 7, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::select, &SIMDUint32x4Lib::EntryInfo::Select, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::swizzle, &SIMDUint32x4Lib::EntryInfo::Swizzle, 6);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::shuffle, &SIMDUint32x4Lib::EntryInfo::Shuffle, 7);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::select, &SIMDUint32x4Lib::EntryInfo::Select, 4);
         // shift
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::shiftLeftByScalar, &SIMDUint32x4Lib::EntryInfo::ShiftLeftByScalar, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::shiftRightByScalar, &SIMDUint32x4Lib::EntryInfo::ShiftRightByScalar, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::shiftLeftByScalar, &SIMDUint32x4Lib::EntryInfo::ShiftLeftByScalar, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::shiftRightByScalar, &SIMDUint32x4Lib::EntryInfo::ShiftRightByScalar, 3);
         // load/store
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::load, &SIMDUint32x4Lib::EntryInfo::Load, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::load1, &SIMDUint32x4Lib::EntryInfo::Load1, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::load2, &SIMDUint32x4Lib::EntryInfo::Load2, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::load3, &SIMDUint32x4Lib::EntryInfo::Load3, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::store, &SIMDUint32x4Lib::EntryInfo::Store, 4, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::store1, &SIMDUint32x4Lib::EntryInfo::Store1, 4, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::store2, &SIMDUint32x4Lib::EntryInfo::Store2, 4, PropertyNone);
-        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::store3, &SIMDUint32x4Lib::EntryInfo::Store3, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::load, &SIMDUint32x4Lib::EntryInfo::Load, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::load1, &SIMDUint32x4Lib::EntryInfo::Load1, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::load2, &SIMDUint32x4Lib::EntryInfo::Load2, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::load3, &SIMDUint32x4Lib::EntryInfo::Load3, 3);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::store, &SIMDUint32x4Lib::EntryInfo::Store, 4);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::store1, &SIMDUint32x4Lib::EntryInfo::Store1, 4);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::store2, &SIMDUint32x4Lib::EntryInfo::Store2, 4);
+        library->AddFunctionToLibraryObject(uint32x4Function, PropertyIds::store3, &SIMDUint32x4Lib::EntryInfo::Store3, 4);
         /*** End Uint32x4 ***/
 
         /** Uint16x8 **/
-        JavascriptFunction* Uint16x8Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Uint16x8, &SIMDUint16x8Lib::EntryInfo::Uint16x8, 5, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::splat, &SIMDUint16x8Lib::EntryInfo::Splat, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::check, &SIMDUint16x8Lib::EntryInfo::Check, 2, PropertyNone);
+        JavascriptFunction* uint16x8Function = library->AddFunctionToLibraryObjectWithPrototype(simdObject, PropertyIds::Uint16x8,
+            &SIMDUint16x8Lib::EntryInfo::Uint16x8, 9, library->simdUint16x8Prototype, nullptr);
+        builtinFuncs[BuiltinFunction::SIMD_Uint16x8_Uint16x8] = uint16x8Function;
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::splat, &SIMDUint16x8Lib::EntryInfo::Splat, 2);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::check, &SIMDUint16x8Lib::EntryInfo::Check, 2);
         //// type conversions
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::fromFloat32x4Bits, &SIMDUint16x8Lib::EntryInfo::FromFloat32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::fromInt32x4Bits, &SIMDUint16x8Lib::EntryInfo::FromInt32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::fromInt16x8Bits, &SIMDUint16x8Lib::EntryInfo::FromInt16x8Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::fromInt8x16Bits, &SIMDUint16x8Lib::EntryInfo::FromInt8x16Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::fromUint32x4Bits, &SIMDUint16x8Lib::EntryInfo::FromUint32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::fromUint8x16Bits, &SIMDUint16x8Lib::EntryInfo::FromUint8x16Bits, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::fromFloat32x4Bits, &SIMDUint16x8Lib::EntryInfo::FromFloat32x4Bits, 2);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::fromInt32x4Bits, &SIMDUint16x8Lib::EntryInfo::FromInt32x4Bits, 2);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::fromInt16x8Bits, &SIMDUint16x8Lib::EntryInfo::FromInt16x8Bits, 2);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::fromInt8x16Bits, &SIMDUint16x8Lib::EntryInfo::FromInt8x16Bits, 2);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::fromUint32x4Bits, &SIMDUint16x8Lib::EntryInfo::FromUint32x4Bits, 2);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::fromUint8x16Bits, &SIMDUint16x8Lib::EntryInfo::FromUint8x16Bits, 2);
 
         //// UnaryOps
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::not, &SIMDUint16x8Lib::EntryInfo::Not, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::not, &SIMDUint16x8Lib::EntryInfo::Not, 2);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::neg, &SIMDUint16x8Lib::EntryInfo::Neg, 2);
         //// binary ops
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::add, &SIMDUint16x8Lib::EntryInfo::Add, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::sub, &SIMDUint16x8Lib::EntryInfo::Sub, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::mul, &SIMDUint16x8Lib::EntryInfo::Mul, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::and, &SIMDUint16x8Lib::EntryInfo::And, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::or , &SIMDUint16x8Lib::EntryInfo::Or, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::xor, &SIMDUint16x8Lib::EntryInfo::Xor, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::addSaturate, &SIMDUint16x8Lib::EntryInfo::AddSaturate, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::subSaturate, &SIMDUint16x8Lib::EntryInfo::SubSaturate, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::min, &SIMDUint16x8Lib::EntryInfo::Min, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::max, &SIMDUint16x8Lib::EntryInfo::Max, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::add, &SIMDUint16x8Lib::EntryInfo::Add, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::sub, &SIMDUint16x8Lib::EntryInfo::Sub, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::mul, &SIMDUint16x8Lib::EntryInfo::Mul, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::and, &SIMDUint16x8Lib::EntryInfo::And, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::or , &SIMDUint16x8Lib::EntryInfo::Or, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::xor, &SIMDUint16x8Lib::EntryInfo::Xor, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::addSaturate, &SIMDUint16x8Lib::EntryInfo::AddSaturate, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::subSaturate, &SIMDUint16x8Lib::EntryInfo::SubSaturate, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::min, &SIMDUint16x8Lib::EntryInfo::Min, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::max, &SIMDUint16x8Lib::EntryInfo::Max, 3);
         //// compare ops
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::lessThan, &SIMDUint16x8Lib::EntryInfo::LessThan, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::lessThanOrEqual, &SIMDUint16x8Lib::EntryInfo::LessThanOrEqual, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::equal, &SIMDUint16x8Lib::EntryInfo::Equal, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::notEqual, &SIMDUint16x8Lib::EntryInfo::NotEqual, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::greaterThan, &SIMDUint16x8Lib::EntryInfo::GreaterThan, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::greaterThanOrEqual, &SIMDUint16x8Lib::EntryInfo::GreaterThanOrEqual, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::lessThan, &SIMDUint16x8Lib::EntryInfo::LessThan, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::lessThanOrEqual, &SIMDUint16x8Lib::EntryInfo::LessThanOrEqual, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::equal, &SIMDUint16x8Lib::EntryInfo::Equal, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::notEqual, &SIMDUint16x8Lib::EntryInfo::NotEqual, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::greaterThan, &SIMDUint16x8Lib::EntryInfo::GreaterThan, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::greaterThanOrEqual, &SIMDUint16x8Lib::EntryInfo::GreaterThanOrEqual, 3);
         //// Lane Access
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::extractLane, &SIMDUint16x8Lib::EntryInfo::ExtractLane, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::replaceLane, &SIMDUint16x8Lib::EntryInfo::ReplaceLane, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::extractLane, &SIMDUint16x8Lib::EntryInfo::ExtractLane, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::replaceLane, &SIMDUint16x8Lib::EntryInfo::ReplaceLane, 3);
         //// shift
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::shiftLeftByScalar, &SIMDUint16x8Lib::EntryInfo::ShiftLeftByScalar, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::shiftRightByScalar, &SIMDUint16x8Lib::EntryInfo::ShiftRightByScalar, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::shiftLeftByScalar, &SIMDUint16x8Lib::EntryInfo::ShiftLeftByScalar, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::shiftRightByScalar, &SIMDUint16x8Lib::EntryInfo::ShiftRightByScalar, 3);
         //// load/store
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::load, &SIMDUint16x8Lib::EntryInfo::Load, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::store, &SIMDUint16x8Lib::EntryInfo::Store, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::load, &SIMDUint16x8Lib::EntryInfo::Load, 3);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::store, &SIMDUint16x8Lib::EntryInfo::Store, 3);
         //// others
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::swizzle, &SIMDUint16x8Lib::EntryInfo::Swizzle, 10, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::shuffle, &SIMDUint16x8Lib::EntryInfo::Shuffle, 11, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint16x8Function, PropertyIds::select, &SIMDUint16x8Lib::EntryInfo::Select, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::swizzle, &SIMDUint16x8Lib::EntryInfo::Swizzle, 10);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::shuffle, &SIMDUint16x8Lib::EntryInfo::Shuffle, 11);
+        library->AddFunctionToLibraryObject(uint16x8Function, PropertyIds::select, &SIMDUint16x8Lib::EntryInfo::Select, 4);
         /** end Uint16x8 **/
 
         /** Uint8x16**/
-        JavascriptFunction* Uint8x16Function = library->AddFunctionToLibraryObject(simdObject, PropertyIds::Uint8x16, &SIMDUint8x16Lib::EntryInfo::Uint8x16, 5, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::splat, &SIMDUint8x16Lib::EntryInfo::Splat, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::check, &SIMDUint8x16Lib::EntryInfo::Check, 2, PropertyNone);
+        JavascriptFunction* uint8x16Function = library->AddFunctionToLibraryObjectWithPrototype(simdObject, PropertyIds::Uint8x16,
+            &SIMDUint8x16Lib::EntryInfo::Uint8x16, 17, library->simdUint8x16Prototype, nullptr);
+        builtinFuncs[BuiltinFunction::SIMD_Uint8x16_Uint8x16] = uint8x16Function;
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::splat, &SIMDUint8x16Lib::EntryInfo::Splat, 2);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::check, &SIMDUint8x16Lib::EntryInfo::Check, 2);
         //// type conversions
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::fromInt32x4Bits, &SIMDUint8x16Lib::EntryInfo::FromInt32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::fromInt16x8Bits, &SIMDUint8x16Lib::EntryInfo::FromInt16x8Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::fromInt8x16Bits, &SIMDUint8x16Lib::EntryInfo::FromInt8x16Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::fromUint32x4Bits, &SIMDUint8x16Lib::EntryInfo::FromUint32x4Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::fromUint16x8Bits, &SIMDUint8x16Lib::EntryInfo::FromUint16x8Bits, 2, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::fromFloat32x4Bits, &SIMDUint8x16Lib::EntryInfo::FromFloat32x4Bits, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::fromInt32x4Bits, &SIMDUint8x16Lib::EntryInfo::FromInt32x4Bits, 2);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::fromInt16x8Bits, &SIMDUint8x16Lib::EntryInfo::FromInt16x8Bits, 2);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::fromInt8x16Bits, &SIMDUint8x16Lib::EntryInfo::FromInt8x16Bits, 2);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::fromUint32x4Bits, &SIMDUint8x16Lib::EntryInfo::FromUint32x4Bits, 2);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::fromUint16x8Bits, &SIMDUint8x16Lib::EntryInfo::FromUint16x8Bits, 2);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::fromFloat32x4Bits, &SIMDUint8x16Lib::EntryInfo::FromFloat32x4Bits, 2);
 
         //// UnaryOps
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::not, &SIMDUint8x16Lib::EntryInfo::Not, 2, PropertyNone);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::not, &SIMDUint8x16Lib::EntryInfo::Not, 2);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::neg, &SIMDUint8x16Lib::EntryInfo::Neg, 2);
         //// binary ops
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::add, &SIMDUint8x16Lib::EntryInfo::Add, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::sub, &SIMDUint8x16Lib::EntryInfo::Sub, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::mul, &SIMDUint8x16Lib::EntryInfo::Mul, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::and, &SIMDUint8x16Lib::EntryInfo::And, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::or , &SIMDUint8x16Lib::EntryInfo::Or, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::xor, &SIMDUint8x16Lib::EntryInfo::Xor, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::addSaturate, &SIMDUint8x16Lib::EntryInfo::AddSaturate, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::subSaturate, &SIMDUint8x16Lib::EntryInfo::SubSaturate, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::min, &SIMDUint8x16Lib::EntryInfo::Min, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::max, &SIMDUint8x16Lib::EntryInfo::Max, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::add, &SIMDUint8x16Lib::EntryInfo::Add, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::sub, &SIMDUint8x16Lib::EntryInfo::Sub, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::mul, &SIMDUint8x16Lib::EntryInfo::Mul, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::and, &SIMDUint8x16Lib::EntryInfo::And, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::or , &SIMDUint8x16Lib::EntryInfo::Or, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::xor, &SIMDUint8x16Lib::EntryInfo::Xor, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::addSaturate, &SIMDUint8x16Lib::EntryInfo::AddSaturate, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::subSaturate, &SIMDUint8x16Lib::EntryInfo::SubSaturate, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::min, &SIMDUint8x16Lib::EntryInfo::Min, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::max, &SIMDUint8x16Lib::EntryInfo::Max, 3);
         //// compare ops
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::lessThan, &SIMDUint8x16Lib::EntryInfo::LessThan, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::lessThanOrEqual, &SIMDUint8x16Lib::EntryInfo::LessThanOrEqual, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::equal, &SIMDUint8x16Lib::EntryInfo::Equal, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::notEqual, &SIMDUint8x16Lib::EntryInfo::NotEqual, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::greaterThan, &SIMDUint8x16Lib::EntryInfo::GreaterThan, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::greaterThanOrEqual, &SIMDUint8x16Lib::EntryInfo::GreaterThanOrEqual, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::lessThan, &SIMDUint8x16Lib::EntryInfo::LessThan, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::lessThanOrEqual, &SIMDUint8x16Lib::EntryInfo::LessThanOrEqual, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::equal, &SIMDUint8x16Lib::EntryInfo::Equal, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::notEqual, &SIMDUint8x16Lib::EntryInfo::NotEqual, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::greaterThan, &SIMDUint8x16Lib::EntryInfo::GreaterThan, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::greaterThanOrEqual, &SIMDUint8x16Lib::EntryInfo::GreaterThanOrEqual, 3);
         //// Lane Access
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::extractLane, &SIMDUint8x16Lib::EntryInfo::ExtractLane, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::replaceLane, &SIMDUint8x16Lib::EntryInfo::ReplaceLane, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::extractLane, &SIMDUint8x16Lib::EntryInfo::ExtractLane, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::replaceLane, &SIMDUint8x16Lib::EntryInfo::ReplaceLane, 3);
         //// shift
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::shiftLeftByScalar, &SIMDUint8x16Lib::EntryInfo::ShiftLeftByScalar, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::shiftRightByScalar, &SIMDUint8x16Lib::EntryInfo::ShiftRightByScalar, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::shiftLeftByScalar, &SIMDUint8x16Lib::EntryInfo::ShiftLeftByScalar, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::shiftRightByScalar, &SIMDUint8x16Lib::EntryInfo::ShiftRightByScalar, 3);
         //// load/store
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::load, &SIMDUint8x16Lib::EntryInfo::Load, 3, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::store, &SIMDUint8x16Lib::EntryInfo::Store, 3, PropertyNone);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::load, &SIMDUint8x16Lib::EntryInfo::Load, 3);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::store, &SIMDUint8x16Lib::EntryInfo::Store, 3);
         //// others
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::swizzle, &SIMDUint8x16Lib::EntryInfo::Swizzle, 18, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::shuffle, &SIMDUint8x16Lib::EntryInfo::Shuffle, 19, PropertyNone);
-        library->AddFunctionToLibraryObject(Uint8x16Function, PropertyIds::select, &SIMDUint8x16Lib::EntryInfo::Select, 4, PropertyNone);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::swizzle, &SIMDUint8x16Lib::EntryInfo::Swizzle, 18);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::shuffle, &SIMDUint8x16Lib::EntryInfo::Shuffle, 19);
+        library->AddFunctionToLibraryObject(uint8x16Function, PropertyIds::select, &SIMDUint8x16Lib::EntryInfo::Select, 4);
         /** end Uint8x16 **/
     }
 
@@ -3564,8 +3614,8 @@ namespace Js
     };
 
 #if ENABLE_DEBUG_CONFIG_OPTIONS
-    wchar_t const * const JavascriptLibrary::LibraryFunctionName[] = {
-#define LIBRARY_FUNCTION(obj, name, argc, flags, entry) L#obj L"." L#name,
+    char16 const * const JavascriptLibrary::LibraryFunctionName[] = {
+#define LIBRARY_FUNCTION(obj, name, argc, flags, entry) _u(#obj) _u(".") _u(#name),
 #include "LibraryFunction.h"
 #undef LIBRARY_FUNCTION
         0
@@ -3736,7 +3786,114 @@ namespace Js
 
         numberPrototype->SetHasNoEnumerableProperties(true);
     }
+    template<typename SIMDTypeName>
+    void JavascriptLibrary::SIMDPrototypeInitHelper(DynamicObject* simdPrototype, JavascriptLibrary* library, JavascriptFunction* constructorFn, JavascriptString* strLiteral)
+    {
+        ScriptContext* scriptContext = simdPrototype->GetScriptContext();
+        //The initial value of SIMDConstructor.prototype.constructor is the intrinsic object %SIMDConstructor%
+        library->AddMember(simdPrototype, PropertyIds::constructor, constructorFn);
 
+        scriptContext->SetBuiltInLibraryFunction(SIMDTypeName::EntryInfo::ToLocaleString.GetOriginalEntryPoint(),
+            library->AddFunctionToLibraryObject(simdPrototype, PropertyIds::toLocaleString, &SIMDTypeName::EntryInfo::ToLocaleString, 0));
+        scriptContext->SetBuiltInLibraryFunction(SIMDTypeName::EntryInfo::ToString.GetOriginalEntryPoint(),
+            library->AddFunctionToLibraryObject(simdPrototype, PropertyIds::toString, &SIMDTypeName::EntryInfo::ToString, 1));
+        scriptContext->SetBuiltInLibraryFunction(SIMDTypeName::EntryInfo::ValueOf.GetOriginalEntryPoint(),
+            library->AddFunctionToLibraryObject(simdPrototype, PropertyIds::valueOf, &SIMDTypeName::EntryInfo::ValueOf, 0));
+
+        if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
+        {
+            library->AddMember(simdPrototype, PropertyIds::_symbolToStringTag, strLiteral, PropertyConfigurable);
+        }
+
+        if (scriptContext->GetConfig()->IsES6ToPrimitiveEnabled())
+        {
+            scriptContext->SetBuiltInLibraryFunction(SIMDTypeName::EntryInfo::SymbolToPrimitive.GetOriginalEntryPoint(),
+                library->AddFunctionToLibraryObjectWithName(simdPrototype, PropertyIds::_symbolToPrimitive, PropertyIds::_RuntimeFunctionNameId_toPrimitive,
+                    &SIMDTypeName::EntryInfo::SymbolToPrimitive, 1));
+            simdPrototype->SetWritable(PropertyIds::_symbolToPrimitive, false);
+        }
+        simdPrototype->SetHasNoEnumerableProperties(true);
+
+    }
+    void JavascriptLibrary::InitializeSIMDBool8x16Prototype(DynamicObject* simdPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
+    {
+        typeHandler->Convert(simdPrototype, mode, 6);
+        JavascriptLibrary* library = simdPrototype->GetLibrary();
+        SIMDPrototypeInitHelper<JavascriptSIMDBool8x16>(simdPrototype, library, library->GetBuiltinFunctions()[BuiltinFunction::SIMD_Bool8x16_Bool8x16],
+            library->CreateStringFromCppLiteral(_u("SIMD.Bool8x16")));
+    }
+
+    void JavascriptLibrary::InitializeSIMDBool16x8Prototype(DynamicObject* simdPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
+    {
+        typeHandler->Convert(simdPrototype, mode, 6);
+        JavascriptLibrary* library = simdPrototype->GetLibrary();
+        SIMDPrototypeInitHelper<JavascriptSIMDBool16x8>(simdPrototype, library, library->GetBuiltinFunctions()[BuiltinFunction::SIMD_Bool16x8_Bool16x8],
+            library->CreateStringFromCppLiteral(_u("SIMD.Bool16x8")));
+    }
+
+    void JavascriptLibrary::InitializeSIMDBool32x4Prototype(DynamicObject* simdPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
+    {
+        typeHandler->Convert(simdPrototype, mode, 6);
+        JavascriptLibrary* library = simdPrototype->GetLibrary();
+        SIMDPrototypeInitHelper<JavascriptSIMDBool32x4>(simdPrototype, library, library->GetBuiltinFunctions()[BuiltinFunction::SIMD_Bool32x4_Bool32x4],
+            library->CreateStringFromCppLiteral(_u("SIMD.Bool32x4")));
+    }
+
+    void JavascriptLibrary::InitializeSIMDInt8x16Prototype(DynamicObject* simdPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
+    {
+        typeHandler->Convert(simdPrototype, mode, 6);
+        JavascriptLibrary* library = simdPrototype->GetLibrary();
+        SIMDPrototypeInitHelper<JavascriptSIMDInt8x16>(simdPrototype, library, library->GetBuiltinFunctions()[BuiltinFunction::SIMD_Int8x16_Int8x16],
+            library->CreateStringFromCppLiteral(_u("SIMD.Int8x16")));
+    }
+
+    void JavascriptLibrary::InitializeSIMDInt16x8Prototype(DynamicObject* simdPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
+    {
+        typeHandler->Convert(simdPrototype, mode, 6);
+        JavascriptLibrary* library = simdPrototype->GetLibrary();
+        SIMDPrototypeInitHelper<JavascriptSIMDInt16x8>(simdPrototype, library, library->GetBuiltinFunctions()[BuiltinFunction::SIMD_Int16x8_Int16x8],
+            library->CreateStringFromCppLiteral(_u("SIMD.Int16x8")));
+    }
+
+    void JavascriptLibrary::InitializeSIMDInt32x4Prototype(DynamicObject* simdPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
+    {
+        typeHandler->Convert(simdPrototype, mode, 6);
+        JavascriptLibrary* library = simdPrototype->GetLibrary();
+        SIMDPrototypeInitHelper<JavascriptSIMDInt32x4>(simdPrototype, library, library->GetBuiltinFunctions()[BuiltinFunction::SIMD_Int32x4_Int32x4],
+            library->CreateStringFromCppLiteral(_u("SIMD.Int32x4")));
+    }
+
+    void JavascriptLibrary::InitializeSIMDUint8x16Prototype(DynamicObject* simdPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
+    {
+        typeHandler->Convert(simdPrototype, mode, 6);
+        JavascriptLibrary* library = simdPrototype->GetLibrary();
+        SIMDPrototypeInitHelper<JavascriptSIMDUint8x16>(simdPrototype, library, library->GetBuiltinFunctions()[BuiltinFunction::SIMD_Uint8x16_Uint8x16],
+            library->CreateStringFromCppLiteral(_u("SIMD.Uint8x16")));
+    }
+
+    void JavascriptLibrary::InitializeSIMDUint16x8Prototype(DynamicObject* simdPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
+    {
+        typeHandler->Convert(simdPrototype, mode, 6);
+        JavascriptLibrary* library = simdPrototype->GetLibrary();
+        SIMDPrototypeInitHelper<JavascriptSIMDUint16x8>(simdPrototype, library, library->GetBuiltinFunctions()[BuiltinFunction::SIMD_Uint16x8_Uint16x8],
+            library->CreateStringFromCppLiteral(_u("SIMD.Uint16x8")));
+    }
+
+    void JavascriptLibrary::InitializeSIMDUint32x4Prototype(DynamicObject* simdPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
+    {
+        typeHandler->Convert(simdPrototype, mode, 6);
+        JavascriptLibrary* library = simdPrototype->GetLibrary();
+        SIMDPrototypeInitHelper<JavascriptSIMDUint32x4>(simdPrototype, library, library->GetBuiltinFunctions()[BuiltinFunction::SIMD_Uint32x4_Uint32x4],
+            library->CreateStringFromCppLiteral(_u("SIMD.Uint32x4")));
+    }
+
+    void JavascriptLibrary::InitializeSIMDFloat32x4Prototype(DynamicObject* simdPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
+    {
+        typeHandler->Convert(simdPrototype, mode, 6);
+        JavascriptLibrary* library = simdPrototype->GetLibrary(); 
+        SIMDPrototypeInitHelper<JavascriptSIMDFloat32x4>(simdPrototype, library, library->GetBuiltinFunctions()[BuiltinFunction::SIMD_Float32x4_Float32x4], 
+            library->CreateStringFromCppLiteral(_u("SIMD.Float32x4")));
+    }
 
     void JavascriptLibrary::InitializeObjectConstructor(DynamicObject* objectConstructor, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
     {
@@ -3796,7 +3953,7 @@ namespace Js
                 library->AddFunctionToLibraryObject(objectConstructor, PropertyIds::assign, &JavascriptObject::EntryInfo::Assign, 2));
         }
 
-        if (scriptContext->GetConfig()->IsES7BuiltinsEnabled())
+        if (scriptContext->GetConfig()->IsES7ValuesEntriesEnabled())
         {
             scriptContext->SetBuiltInLibraryFunction(JavascriptObject::EntryInfo::Values.GetOriginalEntryPoint(),
                 library->AddFunctionToLibraryObject(objectConstructor, PropertyIds::values, &JavascriptObject::EntryInfo::Values, 1));
@@ -3868,7 +4025,7 @@ namespace Js
 
     void JavascriptLibrary::InitializeRegexPrototype(DynamicObject* regexPrototype, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
     {
-        typeHandler->Convert(regexPrototype, mode, 5);
+        typeHandler->Convert(regexPrototype, mode, 24);
         // Note: Any new function addition/deletion/modification should also be updated in JavascriptLibrary::ProfilerRegisterRegExp
         // so that the update is in sync with profiler
         JavascriptFunction * func;
@@ -3876,10 +4033,14 @@ namespace Js
         JavascriptFunction ** builtinFuncs = library->GetBuiltinFunctions();
 
         library->AddMember(regexPrototype, PropertyIds::constructor, library->regexConstructor);
+        library->regexConstructorSlotIndex = 0;
+        Assert(regexPrototype->GetSlot(library->regexConstructorSlotIndex) == library->regexConstructor);
 
         func = library->AddFunctionToLibraryObject(regexPrototype, PropertyIds::exec, &JavascriptRegExp::EntryInfo::Exec, 1);
         builtinFuncs[BuiltinFunction::RegExp_Exec] = func;
         library->regexExecFunction = func;
+        library->regexExecSlotIndex = 1;
+        Assert(regexPrototype->GetSlot(library->regexExecSlotIndex) == library->regexExecFunction);
 
         library->AddFunctionToLibraryObject(regexPrototype, PropertyIds::test, &JavascriptRegExp::EntryInfo::Test, 1);
         library->AddFunctionToLibraryObject(regexPrototype, PropertyIds::toString, &JavascriptRegExp::EntryInfo::ToString, 0);
@@ -3890,30 +4051,36 @@ namespace Js
 
         if (scriptConfig->IsES6RegExPrototypePropertiesEnabled())
         {
-            RuntimeFunction* globalGetter = library->CreateGetterFunction(PropertyIds::global, &JavascriptRegExp::EntryInfo::GetterGlobal);
-            library->AddAccessorsToLibraryObject(regexPrototype, PropertyIds::global, globalGetter, nullptr);
-            library->regexGlobalGetterFunction = globalGetter;
+            library->regexGlobalGetterFunction =
+                library->AddGetterToLibraryObject(regexPrototype, PropertyIds::global, &JavascriptRegExp::EntryInfo::GetterGlobal);
+            library->regexGlobalGetterSlotIndex = 5;
+            Assert(regexPrototype->GetSlot(library->regexGlobalGetterSlotIndex) == library->regexGlobalGetterFunction);
 
             library->AddAccessorsToLibraryObject(regexPrototype, PropertyIds::ignoreCase, &JavascriptRegExp::EntryInfo::GetterIgnoreCase, nullptr);
             library->AddAccessorsToLibraryObject(regexPrototype, PropertyIds::multiline, &JavascriptRegExp::EntryInfo::GetterMultiline, nullptr);
             library->AddAccessorsToLibraryObject(regexPrototype, PropertyIds::options, &JavascriptRegExp::EntryInfo::GetterOptions, nullptr);
             library->AddAccessorsToLibraryObject(regexPrototype, PropertyIds::source, &JavascriptRegExp::EntryInfo::GetterSource, nullptr);
-            library->AddAccessorsToLibraryObject(regexPrototype, PropertyIds::flags, &JavascriptRegExp::EntryInfo::GetterFlags, nullptr);
+
+            library->regexFlagsGetterFunction =
+                library->AddGetterToLibraryObject(regexPrototype, PropertyIds::flags, &JavascriptRegExp::EntryInfo::GetterFlags);
+            library->regexFlagsGetterSlotIndex = 15;
+            Assert(regexPrototype->GetSlot(library->regexFlagsGetterSlotIndex) == library->regexFlagsGetterFunction);
 
             if (scriptConfig->IsES6RegExStickyEnabled())
             {
-                RuntimeFunction* stickyGetter = library->CreateGetterFunction(PropertyIds::sticky, &JavascriptRegExp::EntryInfo::GetterSticky);
-                library->AddAccessorsToLibraryObject(regexPrototype, PropertyIds::sticky, stickyGetter, nullptr);
-                library->regexStickyGetterFunction = stickyGetter;
+                library->regexStickyGetterFunction =
+                    library->AddGetterToLibraryObject(regexPrototype, PropertyIds::sticky, &JavascriptRegExp::EntryInfo::GetterSticky);
+                library->regexStickyGetterSlotIndex = 17;
+                Assert(regexPrototype->GetSlot(library->regexStickyGetterSlotIndex) == library->regexStickyGetterFunction);
             }
 
             if (scriptConfig->IsES6UnicodeExtensionsEnabled())
             {
-                RuntimeFunction* unicodeGetter = library->CreateGetterFunction(PropertyIds::unicode, &JavascriptRegExp::EntryInfo::GetterUnicode);
-                library->AddAccessorsToLibraryObject(regexPrototype, PropertyIds::unicode, unicodeGetter, nullptr);
-                library->regexUnicodeGetterFunction = unicodeGetter;
+                library->regexUnicodeGetterFunction =
+                    library->AddGetterToLibraryObject(regexPrototype, PropertyIds::unicode, &JavascriptRegExp::EntryInfo::GetterUnicode);
+                library->regexUnicodeGetterSlotIndex = 19;
+                Assert(regexPrototype->GetSlot(library->regexUnicodeGetterSlotIndex) == library->regexUnicodeGetterFunction);
             }
-
         }
 
         if (scriptConfig->IsES6RegExSymbolsEnabled())
@@ -3924,17 +4091,31 @@ namespace Js
                 PropertyIds::_RuntimeFunctionNameId_match,
                 &JavascriptRegExp::EntryInfo::SymbolMatch,
                 1);
+            library->AddFunctionToLibraryObjectWithName(
+                regexPrototype,
+                PropertyIds::_symbolReplace,
+                PropertyIds::_RuntimeFunctionNameId_replace,
+                &JavascriptRegExp::EntryInfo::SymbolReplace,
+                2);
             builtinFuncs[BuiltinFunction::RegExp_SymbolSearch] = library->AddFunctionToLibraryObjectWithName(
                 regexPrototype,
                 PropertyIds::_symbolSearch,
                 PropertyIds::_RuntimeFunctionNameId_search,
                 &JavascriptRegExp::EntryInfo::SymbolSearch,
                 1);
+            library->AddFunctionToLibraryObjectWithName(
+                regexPrototype,
+                PropertyIds::_symbolSplit,
+                PropertyIds::_RuntimeFunctionNameId_split,
+                &JavascriptRegExp::EntryInfo::SymbolSplit,
+                2);
         }
 
         DebugOnly(CheckRegisteredBuiltIns(builtinFuncs, library->GetScriptContext()));
 
         regexPrototype->SetHasNoEnumerableProperties(true);
+
+        library->regexPrototypeType = regexPrototype->GetDynamicType();
     }
 
     void JavascriptLibrary::InitializeStringConstructor(DynamicObject* stringConstructor, DeferredTypeHandlerBase * typeHandler, DeferredInitializeMode mode)
@@ -4009,22 +4190,19 @@ namespace Js
         scriptContext->SetBuiltInLibraryFunction(JavascriptString::EntryInfo::ValueOf.GetOriginalEntryPoint(),
                                                                   library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::valueOf,            &JavascriptString::EntryInfo::ValueOf,              0));
 
-        if (scriptContext->GetConfig()->SupportsES3Extensions())
-        {
-            /* No inlining                String_Anchor        */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::anchor,             &JavascriptString::EntryInfo::Anchor,               1);
-            /* No inlining                String_Big           */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::big,                &JavascriptString::EntryInfo::Big,                  0);
-            /* No inlining                String_Blink         */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::blink,              &JavascriptString::EntryInfo::Blink,                0);
-            /* No inlining                String_Bold          */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::bold,               &JavascriptString::EntryInfo::Bold,                 0);
-            /* No inlining                String_Fixed         */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::fixed,              &JavascriptString::EntryInfo::Fixed,                0);
-            /* No inlining                String_FontColor     */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::fontcolor,          &JavascriptString::EntryInfo::FontColor,            1);
-            /* No inlining                String_FontSize      */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::fontsize,           &JavascriptString::EntryInfo::FontSize,             1);
-            /* No inlining                String_Italics       */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::italics,            &JavascriptString::EntryInfo::Italics,              0);
-            builtinFuncs[BuiltinFunction::String_Link]          = library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::link,               &JavascriptString::EntryInfo::Link,                 1);
-            /* No inlining                String_Small         */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::Small,              &JavascriptString::EntryInfo::Small,                0);
-            /* No inlining                String_Strike        */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::strike,             &JavascriptString::EntryInfo::Strike,               0);
-            /* No inlining                String_Sub           */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::sub,                &JavascriptString::EntryInfo::Sub,                  0);
-            /* No inlining                String_Sup           */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::sup,                &JavascriptString::EntryInfo::Sup,                  0);
-        }
+        /* No inlining                String_Anchor        */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::anchor,             &JavascriptString::EntryInfo::Anchor,               1);
+        /* No inlining                String_Big           */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::big,                &JavascriptString::EntryInfo::Big,                  0);
+        /* No inlining                String_Blink         */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::blink,              &JavascriptString::EntryInfo::Blink,                0);
+        /* No inlining                String_Bold          */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::bold,               &JavascriptString::EntryInfo::Bold,                 0);
+        /* No inlining                String_Fixed         */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::fixed,              &JavascriptString::EntryInfo::Fixed,                0);
+        /* No inlining                String_FontColor     */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::fontcolor,          &JavascriptString::EntryInfo::FontColor,            1);
+        /* No inlining                String_FontSize      */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::fontsize,           &JavascriptString::EntryInfo::FontSize,             1);
+        /* No inlining                String_Italics       */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::italics,            &JavascriptString::EntryInfo::Italics,              0);
+        builtinFuncs[BuiltinFunction::String_Link]          = library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::link,               &JavascriptString::EntryInfo::Link,                 1);
+        /* No inlining                String_Small         */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::Small,              &JavascriptString::EntryInfo::Small,                0);
+        /* No inlining                String_Strike        */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::strike,             &JavascriptString::EntryInfo::Strike,               0);
+        /* No inlining                String_Sub           */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::sub,                &JavascriptString::EntryInfo::Sub,                  0);
+        /* No inlining                String_Sup           */ library->AddFunctionToLibraryObject(stringPrototype, PropertyIds::sup,                &JavascriptString::EntryInfo::Sup,                  0);
 
         if (scriptContext->GetConfig()->IsES6StringExtensionsEnabled())
         {
@@ -4098,7 +4276,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(mapPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"Map"), PropertyConfigurable);
+            library->AddMember(mapPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("Map")), PropertyConfigurable);
         }
 
         mapPrototype->SetHasNoEnumerableProperties(true);
@@ -4152,7 +4330,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(setPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"Set"), PropertyConfigurable);
+            library->AddMember(setPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("Set")), PropertyConfigurable);
         }
 
         setPrototype->SetHasNoEnumerableProperties(true);
@@ -4191,7 +4369,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(weakMapPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"WeakMap"), PropertyConfigurable);
+            library->AddMember(weakMapPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("WeakMap")), PropertyConfigurable);
         }
 
         weakMapPrototype->SetHasNoEnumerableProperties(true);
@@ -4229,7 +4407,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(weakSetPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"WeakSet"), PropertyConfigurable);
+            library->AddMember(weakSetPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("WeakSet")), PropertyConfigurable);
         }
 
         weakSetPrototype->SetHasNoEnumerableProperties(true);
@@ -4256,11 +4434,11 @@ namespace Js
         JavascriptLibrary* library = arrayIteratorPrototype->GetLibrary();
         ScriptContext* scriptContext = library->GetScriptContext();
 
-        library->AddFunctionToLibraryObject(arrayIteratorPrototype, PropertyIds::next, &JavascriptArrayIterator::EntryInfo::Next, 0);
+        library->arrayIteratorPrototypeBuiltinNextFunction = library->AddFunctionToLibraryObject(arrayIteratorPrototype, PropertyIds::next, &JavascriptArrayIterator::EntryInfo::Next, 0);
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(arrayIteratorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"Array Iterator"), PropertyConfigurable);
+            library->AddMember(arrayIteratorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("Array Iterator")), PropertyConfigurable);
         }
     }
 
@@ -4277,7 +4455,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(mapIteratorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"Map Iterator"), PropertyConfigurable);
+            library->AddMember(mapIteratorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("Map Iterator")), PropertyConfigurable);
         }
     }
 
@@ -4293,7 +4471,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(setIteratorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"Set Iterator"), PropertyConfigurable);
+            library->AddMember(setIteratorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("Set Iterator")), PropertyConfigurable);
         }
     }
 
@@ -4309,7 +4487,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(stringIteratorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"String Iterator"), PropertyConfigurable);
+            library->AddMember(stringIteratorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("String Iterator")), PropertyConfigurable);
         }
     }
 
@@ -4325,7 +4503,7 @@ namespace Js
 
         if (scriptContext->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(javascriptEnumeratorIteratorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(L"Enumerator Iterator"), PropertyConfigurable);
+            library->AddMember(javascriptEnumeratorIteratorPrototype, PropertyIds::_symbolToStringTag, library->CreateStringFromCppLiteral(_u("Enumerator Iterator")), PropertyConfigurable);
         }
     }
 
@@ -4459,7 +4637,7 @@ namespace Js
         return function;
     }
 
-    JavascriptFunction * JavascriptLibrary::AddFunctionToLibraryObjectWithPrototype(GlobalObject * object, PropertyId propertyId, FunctionInfo * functionInfo, int length, DynamicObject * prototype, DynamicType * functionType)
+    JavascriptFunction * JavascriptLibrary::AddFunctionToLibraryObjectWithPrototype(DynamicObject * object, PropertyId propertyId, FunctionInfo * functionInfo, int length, DynamicObject * prototype, DynamicType * functionType)
     {
         RuntimeFunction* function = DefaultCreateFunction(functionInfo, length, prototype, functionType, propertyId);
         AddMember(object, propertyId, function);
@@ -4472,6 +4650,14 @@ namespace Js
         AddMember(object, propertyId, function);
         return function;
     }
+
+    RuntimeFunction* JavascriptLibrary::AddGetterToLibraryObject(DynamicObject* object, PropertyId propertyId, FunctionInfo* functionInfo)
+    {
+        RuntimeFunction* getter = CreateGetterFunction(propertyId, functionInfo);
+        AddAccessorsToLibraryObject(object, propertyId, getter, nullptr);
+        return getter;
+    }
+
     void JavascriptLibrary::AddAccessorsToLibraryObject(DynamicObject* object, PropertyId propertyId, FunctionInfo * getterFunctionInfo, FunctionInfo * setterFunctionInfo)
     {
         AddAccessorsToLibraryObjectWithName(object, propertyId, propertyId, getterFunctionInfo, setterFunctionInfo);
@@ -4506,7 +4692,7 @@ namespace Js
 
     RuntimeFunction* JavascriptLibrary::CreateGetterFunction(PropertyId nameId, FunctionInfo* functionInfo)
     {
-        Var name_withGetPrefix = LiteralString::Concat(LiteralString::NewCopySz(L"get ", scriptContext), scriptContext->GetPropertyString(nameId));
+        Var name_withGetPrefix = LiteralString::Concat(LiteralString::NewCopySz(_u("get "), scriptContext), scriptContext->GetPropertyString(nameId));
         RuntimeFunction* getterFunction = DefaultCreateFunction(functionInfo, 0, nullptr, nullptr, name_withGetPrefix);
         getterFunction->SetPropertyWithAttributes(PropertyIds::length, TaggedInt::ToVarUnchecked(0), PropertyNone, nullptr);
         return getterFunction;
@@ -4514,7 +4700,7 @@ namespace Js
 
     RuntimeFunction* JavascriptLibrary::CreateSetterFunction(PropertyId nameId, FunctionInfo* functionInfo)
     {
-        Var name_withSetPrefix = LiteralString::Concat(LiteralString::NewCopySz(L"set ", scriptContext), scriptContext->GetPropertyString(nameId));
+        Var name_withSetPrefix = LiteralString::Concat(LiteralString::NewCopySz(_u("set "), scriptContext), scriptContext->GetPropertyString(nameId));
         RuntimeFunction* setterFunction = DefaultCreateFunction(functionInfo, 0, nullptr, nullptr, name_withSetPrefix);
         setterFunction->SetPropertyWithAttributes(PropertyIds::length, TaggedInt::ToVarUnchecked(1), PropertyNone, nullptr);
         return setterFunction;
@@ -4541,7 +4727,7 @@ namespace Js
 
         if (JSONObject->GetScriptContext()->GetConfig()->IsES6ToStringTagEnabled())
         {
-            library->AddMember(JSONObject, PropertyIds::_symbolToStringTag, JSONObject->GetLibrary()->CreateStringFromCppLiteral(L"JSON"), PropertyConfigurable);
+            library->AddMember(JSONObject, PropertyIds::_symbolToStringTag, JSONObject->GetLibrary()->CreateStringFromCppLiteral(_u("JSON")), PropertyConfigurable);
         }
 
         JSONObject->SetHasNoEnumerableProperties(true);
@@ -4557,16 +4743,6 @@ namespace Js
         engineInterface->SetHasNoEnumerableProperties(true);
     }
 #endif
-
-    JavascriptFunction* JavascriptLibrary::GetHostPromiseContinuationFunction()
-    {
-        if (this->hostPromiseContinuationFunction == nullptr)
-        {
-            this->hostPromiseContinuationFunction = scriptContext->GetHostScriptContext()->InitializeHostPromiseContinuationFunction();
-        }
-
-        return this->hostPromiseContinuationFunction;
-    }
 
     void JavascriptLibrary::SetNativeHostPromiseContinuationFunction(PromiseContinuationCallback function, void *state)
     {
@@ -4609,14 +4785,11 @@ namespace Js
         }
         else
         {
-            JavascriptFunction* hostPromiseContinuationFunction = this->GetHostPromiseContinuationFunction();
-
-            hostPromiseContinuationFunction->GetEntryPoint()(
-                hostPromiseContinuationFunction,
-                Js::CallInfo(Js::CallFlags::CallFlags_Value, 3),
-                this->GetUndefined(),
-                taskVar,
-                JavascriptNumber::ToVar(0, scriptContext));
+            HRESULT hr = scriptContext->GetHostScriptContext()->EnqueuePromiseTask(taskVar);
+            if (hr != S_OK)
+            {
+                Js::JavascriptError::MapAndThrowError(scriptContext, hr);
+            }
         }
     }
 
@@ -4811,7 +4984,7 @@ namespace Js
 #if DBG_DUMP
         if (Js::Configuration::Global.flags.Trace.IsEnabled(Js::HostPhase))
         {
-            Output::Print(L"Create new external function: methodAddr= %p, propertyRecord= %p, propertyName= %s\n",
+            Output::Print(_u("Create new external function: methodAddr= %p, propertyRecord= %p, propertyName= %s\n"),
                 this, nameId,
                 TaggedInt::Is(nameId) ? scriptContext->GetThreadContext()->GetPropertyName(TaggedInt::ToInt32(nameId))->GetBuffer() : ((JavascriptString *)nameId)->GetString());
         }
@@ -4876,7 +5049,7 @@ namespace Js
     }
 
 #if DBG_DUMP
-    const wchar_t* JavascriptLibrary::GetStringTemplateCallsiteObjectKey(Var callsite)
+    const char16* JavascriptLibrary::GetStringTemplateCallsiteObjectKey(Var callsite)
     {
         // Calculate the key for the string template callsite object.
         // Key is combination of the raw string literals delimited by '${}' since string template literals cannot include that symbol.
@@ -4902,8 +5075,8 @@ namespace Js
         }
 
         uint32 keyLength = totalStringLength + (arrayLength - 1) * 3 + 1;
-        wchar_t* key = RecyclerNewArray(scriptContext->GetRecycler(), wchar_t, keyLength);
-        wchar_t* ptr = key;
+        char16* key = RecyclerNewArray(scriptContext->GetRecycler(), char16, keyLength);
+        char16* ptr = key;
         charcount_t remainingSpace = keyLength;
 
         // Get first item before loop - there always must be at least one item
@@ -4918,8 +5091,8 @@ namespace Js
         // Append a delimiter and the rest of the items
         for (uint32 i = 1; i < arrayLength; i++)
         {
-            len = 3; // strlen(L"${}");
-            js_wmemcpy_s(ptr, remainingSpace, L"${}", len);
+            len = 3; // strlen(_u("${}"));
+            js_wmemcpy_s(ptr, remainingSpace, _u("${}"), len);
             ptr += len;
             remainingSpace -= len;
 
@@ -4933,7 +5106,7 @@ namespace Js
         }
 
         // Ensure string is terminated
-        key[keyLength - 1] = L'\0';
+        key[keyLength - 1] = _u('\0');
 
         return key;
     }
@@ -4991,7 +5164,7 @@ namespace Js
             }
 
             // If the strings at this index are not equal, the callsite objects are not equal.
-            if (!JsUtil::CharacterBuffer<wchar_t>::StaticEquals(pid->Psz(), str->GetSz(), str->GetLength()))
+            if (!JsUtil::CharacterBuffer<char16>::StaticEquals(pid->Psz(), str->GetSz(), str->GetLength()))
             {
                 return false;
             }
@@ -5014,7 +5187,7 @@ namespace Js
         }
 
         // If the strings at this index are not equal, the callsite objects are not equal.
-        if (!JsUtil::CharacterBuffer<wchar_t>::StaticEquals(pid->Psz(), str->GetSz(), str->GetLength()))
+        if (!JsUtil::CharacterBuffer<char16>::StaticEquals(pid->Psz(), str->GetSz(), str->GetLength()))
         {
             return false;
         }
@@ -5043,8 +5216,8 @@ namespace Js
             return false;
         }
 
-        const wchar_t* pid_x;
-        const wchar_t* pid_y;
+        const char16* pid_x;
+        const char16* pid_y;
 
         while (x->nop == knopList)
         {
@@ -5061,7 +5234,7 @@ namespace Js
             pid_y = y->sxBin.pnode1->sxPid.pid->Psz();
 
             // If the pid values of each raw string don't match each other, these are different.
-            if (!DefaultComparer<const wchar_t*>::Equals(pid_x, pid_y))
+            if (!DefaultComparer<const char16*>::Equals(pid_x, pid_y))
             {
                 return false;
             }
@@ -5082,7 +5255,7 @@ namespace Js
         pid_y = y->sxPid.pid->Psz();
 
         // This is the final string in the raw literals list. Return true if they are equal.
-        return DefaultComparer<const wchar_t*>::Equals(pid_x, pid_y);
+        return DefaultComparer<const char16*>::Equals(pid_x, pid_y);
     }
 
     hash_t StringTemplateCallsiteObjectComparer<ParseNodePtr>::GetHashCode(ParseNodePtr i)
@@ -5094,7 +5267,7 @@ namespace Js
 
         i = i->sxStrTemplate.pnodeStringRawLiterals;
 
-        const wchar_t* pid;
+        const char16* pid;
 
         while (i->nop == knopList)
         {
@@ -5102,8 +5275,8 @@ namespace Js
 
             pid = i->sxBin.pnode1->sxPid.pid->Psz();
 
-            hash ^= DefaultComparer<const wchar_t*>::GetHashCode(pid);
-            hash ^= DefaultComparer<const wchar_t*>::GetHashCode(L"${}");
+            hash ^= DefaultComparer<const char16*>::GetHashCode(pid);
+            hash ^= DefaultComparer<const char16*>::GetHashCode(_u("${}"));
 
             i = i->sxBin.pnode2;
         }
@@ -5112,7 +5285,7 @@ namespace Js
 
         pid = i->sxPid.pid->Psz();
 
-        hash ^= DefaultComparer<const wchar_t*>::GetHashCode(pid);
+        hash ^= DefaultComparer<const char16*>::GetHashCode(pid);
 
         return hash;
     }
@@ -5199,15 +5372,15 @@ namespace Js
 
         rawArray->DirectGetItemAt(0, &var);
         Js::JavascriptString* str = Js::JavascriptString::FromVar(var);
-        hash ^= DefaultComparer<const wchar_t*>::GetHashCode(str->GetSz());
+        hash ^= DefaultComparer<const char16*>::GetHashCode(str->GetSz());
 
         for (uint32 i = 1; i < rawArray->GetLength(); i++)
         {
-            hash ^= DefaultComparer<const wchar_t*>::GetHashCode(L"${}");
+            hash ^= DefaultComparer<const char16*>::GetHashCode(_u("${}"));
 
             rawArray->DirectGetItemAt(i, &var);
             str = Js::JavascriptString::FromVar(var);
-            hash ^= DefaultComparer<const wchar_t*>::GetHashCode(str->GetSz());
+            hash ^= DefaultComparer<const char16*>::GetHashCode(str->GetSz());
         }
 
         return hash;
@@ -5490,7 +5663,7 @@ namespace Js
         return this->CreateSymbol(description->GetString(), (int)description->GetLength());
     }
 
-    JavascriptSymbol* JavascriptLibrary::CreateSymbol(const wchar_t* description, int descriptionLength)
+    JavascriptSymbol* JavascriptLibrary::CreateSymbol(const char16* description, int descriptionLength)
     {
         ENTER_PINNED_SCOPE(const Js::PropertyRecord, propertyRecord);
 
@@ -5676,8 +5849,8 @@ namespace Js
     {
         Assert(scriptContext->GetConfig()->IsES6PromiseEnabled());
 
-        FunctionInfo* functionInfo = RecyclerNew(this->GetRecycler(), FunctionInfo, entryPoint);
-        DynamicType* type = CreateDeferredPrototypeFunctionType(entryPoint);
+        FunctionInfo* functionInfo = &Js::JavascriptPromise::EntryInfo::CapabilitiesExecutorFunction;
+        DynamicType* type = DynamicType::New(scriptContext, TypeIds_Function, functionPrototype, entryPoint, GetDeferredAnonymousFunctionTypeHandler());        
         JavascriptPromiseCapabilitiesExecutorFunction* function = EnsureReadyIfHybridDebugging(RecyclerNewEnumClass(this->GetRecycler(), EnumFunctionClass, JavascriptPromiseCapabilitiesExecutorFunction, type, functionInfo, capability));
 
         function->SetPropertyWithAttributes(PropertyIds::length, TaggedInt::ToVarUnchecked(2), PropertyConfigurable, nullptr);
@@ -5690,7 +5863,7 @@ namespace Js
         Assert(scriptContext->GetConfig()->IsES6PromiseEnabled());
 
         FunctionInfo* functionInfo = &Js::JavascriptPromise::EntryInfo::ResolveOrRejectFunction;
-        DynamicType* type = CreateDeferredPrototypeFunctionType(entryPoint);
+        DynamicType* type = DynamicType::New(scriptContext, TypeIds_Function, functionPrototype, entryPoint, GetDeferredAnonymousFunctionTypeHandler());
         JavascriptPromiseResolveOrRejectFunction* function = EnsureReadyIfHybridDebugging(RecyclerNewEnumClass(this->GetRecycler(), EnumFunctionClass, JavascriptPromiseResolveOrRejectFunction, type, functionInfo, promise, isReject, alreadyResolvedRecord));
 
         function->SetPropertyWithAttributes(PropertyIds::length, TaggedInt::ToVarUnchecked(1), PropertyConfigurable, nullptr);
@@ -5723,7 +5896,7 @@ namespace Js
         Assert(scriptContext->GetConfig()->IsES6PromiseEnabled());
 
         FunctionInfo* functionInfo = &Js::JavascriptPromise::EntryInfo::AllResolveElementFunction;
-        DynamicType* type = CreateDeferredPrototypeFunctionType(entryPoint);
+        DynamicType* type = DynamicType::New(scriptContext, TypeIds_Function, functionPrototype, entryPoint, GetDeferredAnonymousFunctionTypeHandler());
         JavascriptPromiseAllResolveElementFunction* function = EnsureReadyIfHybridDebugging(RecyclerNewEnumClass(this->GetRecycler(), EnumFunctionClass, JavascriptPromiseAllResolveElementFunction, type, functionInfo, index, values, capabilities, remainingElements));
 
         function->SetPropertyWithAttributes(PropertyIds::length, TaggedInt::ToVarUnchecked(1), PropertyConfigurable, nullptr);
@@ -5941,6 +6114,46 @@ namespace Js
         return RecyclerNew(this->GetRecycler(), JavascriptSymbolObject, value, symbolTypeDynamic);
     }
 
+    JavascriptSIMDObject* JavascriptLibrary::CreateSIMDObject(Var simdValue, TypeId typeDescriptor)
+    {
+        switch (typeDescriptor)
+        {
+        case TypeIds_SIMDBool8x16:
+            AssertMsg(simdBool8x16TypeDynamic, "Where's simdTypeDynamic?");
+            return RecyclerNew(this->GetRecycler(), JavascriptSIMDObject, simdValue, simdBool8x16TypeDynamic, typeDescriptor);
+        case TypeIds_SIMDBool16x8:
+            AssertMsg(simdBool16x8TypeDynamic, "Where's simdTypeDynamic?");
+            return RecyclerNew(this->GetRecycler(), JavascriptSIMDObject, simdValue, simdBool16x8TypeDynamic, typeDescriptor);
+        case TypeIds_SIMDBool32x4:
+            AssertMsg(simdBool32x4TypeDynamic, "Where's simdTypeDynamic?");
+            return RecyclerNew(this->GetRecycler(), JavascriptSIMDObject, simdValue, simdBool32x4TypeDynamic, typeDescriptor);
+        case TypeIds_SIMDInt8x16:
+            AssertMsg(simdInt8x16TypeDynamic, "Where's simdTypeDynamic?");
+            return RecyclerNew(this->GetRecycler(), JavascriptSIMDObject, simdValue, simdInt8x16TypeDynamic, typeDescriptor);
+        case TypeIds_SIMDInt16x8:
+            AssertMsg(simdInt16x8TypeDynamic, "Where's simdTypeDynamic?");
+            return RecyclerNew(this->GetRecycler(), JavascriptSIMDObject, simdValue, simdInt16x8TypeDynamic, typeDescriptor);
+        case TypeIds_SIMDInt32x4:
+            AssertMsg(simdInt32x4TypeDynamic, "Where's simdTypeDynamic?");
+            return RecyclerNew(this->GetRecycler(), JavascriptSIMDObject, simdValue, simdInt32x4TypeDynamic, typeDescriptor);
+        case TypeIds_SIMDUint8x16:
+            AssertMsg(simdUint8x16TypeDynamic, "Where's simdTypeDynamic?");
+            return RecyclerNew(this->GetRecycler(), JavascriptSIMDObject, simdValue, simdUint8x16TypeDynamic, typeDescriptor);
+        case TypeIds_SIMDUint16x8:
+            AssertMsg(simdUint16x8TypeDynamic, "Where's simdTypeDynamic?");
+            return RecyclerNew(this->GetRecycler(), JavascriptSIMDObject, simdValue, simdUint16x8TypeDynamic, typeDescriptor);
+        case TypeIds_SIMDUint32x4:
+            AssertMsg(simdUint32x4TypeDynamic, "Where's simdTypeDynamic?");
+            return RecyclerNew(this->GetRecycler(), JavascriptSIMDObject, simdValue, simdUint32x4TypeDynamic, typeDescriptor);
+        case TypeIds_SIMDFloat32x4:
+            AssertMsg(simdFloat32x4TypeDynamic, "Where's simdTypeDynamic?");
+            return RecyclerNew(this->GetRecycler(), JavascriptSIMDObject, simdValue, simdFloat32x4TypeDynamic, typeDescriptor);
+        default:
+            Assert(UNREACHED);
+        }
+        return nullptr;
+    }
+
     JavascriptNumberObject* JavascriptLibrary::CreateNumberObject(Var number)
     {
         AssertMsg(numberTypeDynamic, "Where's numberTypeDynamic?");
@@ -5958,7 +6171,7 @@ namespace Js
         return RecyclerNew(this->GetRecycler(), JavascriptStringObject, value, stringTypeDynamic);
     }
 
-    JavascriptStringObject* JavascriptLibrary::CreateStringObject(const wchar_t* value, charcount_t length)
+    JavascriptStringObject* JavascriptLibrary::CreateStringObject(const char16* value, charcount_t length)
     {
         AssertMsg(stringTypeDynamic, "Where's stringTypeDynamic?");
         return RecyclerNew(this->GetRecycler(), JavascriptStringObject,
@@ -6222,7 +6435,7 @@ namespace Js
     }
 
     // Register for profiler
-#define DEFINE_OBJECT_NAME(object) const wchar_t *pwszObjectName = L#object;
+#define DEFINE_OBJECT_NAME(object) const char16 *pwszObjectName = _u(#object);
 
 #define REGISTER_OBJECT(object)\
     if (FAILED(hr = this->ProfilerRegister##object()))\
@@ -6243,7 +6456,7 @@ namespace Js
 }
 
 #define REG_LIB_FUNC(pwszObjectName, functionPropertyId, entryPoint)\
-    REG_LIB_FUNC_CORE(pwszObjectName, L#functionPropertyId, PropertyIds::##functionPropertyId, entryPoint)\
+    REG_LIB_FUNC_CORE(pwszObjectName, _u(#functionPropertyId), PropertyIds::##functionPropertyId, entryPoint)\
 
 #define REG_OBJECTS_LIB_FUNC(functionPropertyId, entryPoint)\
     REG_LIB_FUNC(pwszObjectName, functionPropertyId, entryPoint)\
@@ -6259,7 +6472,7 @@ namespace Js
 
 #define REGISTER_ERROR_OBJECT(functionPropertyId)\
     REG_GLOBAL_LIB_FUNC(functionPropertyId, JavascriptError::New##functionPropertyId##Instance)\
-    REG_LIB_FUNC(L#functionPropertyId, toString, JavascriptError::EntryToString)\
+    REG_LIB_FUNC(_u(#functionPropertyId), toString, JavascriptError::EntryToString)\
 
     HRESULT JavascriptLibrary::ProfilerRegisterBuiltIns()
     {
@@ -6396,7 +6609,7 @@ namespace Js
             REG_OBJECTS_LIB_FUNC(assign, JavascriptObject::EntryAssign);
         }
 
-        if (config.IsES7BuiltinsEnabled())
+        if (config.IsES7ValuesEntriesEnabled())
         {
             REG_OBJECTS_LIB_FUNC(values, JavascriptObject::EntryValues);
             REG_OBJECTS_LIB_FUNC(entries, JavascriptObject::EntryEntries);
@@ -6455,10 +6668,7 @@ namespace Js
             REG_OBJECTS_LIB_FUNC(of, JavascriptArray::EntryOf);
         }
 
-        if (config.IsES7BuiltinsEnabled())
-        {
-            REG_OBJECTS_LIB_FUNC(includes, JavascriptArray::EntryIncludes);
-        }
+        REG_OBJECTS_LIB_FUNC(includes, JavascriptArray::EntryIncludes);
 
         return hr;
     }
@@ -6669,22 +6879,20 @@ namespace Js
         REG_OBJECTS_LIB_FUNC(toUpperCase, JavascriptString::EntryToUpperCase);
         REG_OBJECTS_LIB_FUNC(trim, JavascriptString::EntryTrim);
         REG_OBJECTS_LIB_FUNC(valueOf, JavascriptString::EntryValueOf);
-        if (config.SupportsES3Extensions())
-        {
-            REG_OBJECTS_LIB_FUNC(anchor, JavascriptString::EntryAnchor);
-            REG_OBJECTS_LIB_FUNC(big, JavascriptString::EntryBig);
-            REG_OBJECTS_LIB_FUNC(blink, JavascriptString::EntryBlink);
-            REG_OBJECTS_LIB_FUNC(bold, JavascriptString::EntryBold);
-            REG_OBJECTS_LIB_FUNC(fixed, JavascriptString::EntryFixed);
-            REG_OBJECTS_LIB_FUNC(fontcolor, JavascriptString::EntryFontColor);
-            REG_OBJECTS_LIB_FUNC(fontsize, JavascriptString::EntryFontSize);
-            REG_OBJECTS_LIB_FUNC(italics, JavascriptString::EntryItalics);
-            REG_OBJECTS_LIB_FUNC(link, JavascriptString::EntryLink);
-            REG_OBJECTS_DYNAMIC_LIB_FUNC(L"small", 5, JavascriptString::EntrySmall);
-            REG_OBJECTS_LIB_FUNC(strike, JavascriptString::EntryStrike);
-            REG_OBJECTS_LIB_FUNC(sub, JavascriptString::EntrySub);
-            REG_OBJECTS_LIB_FUNC(sup, JavascriptString::EntrySup);
-        }
+
+        REG_OBJECTS_LIB_FUNC(anchor, JavascriptString::EntryAnchor);
+        REG_OBJECTS_LIB_FUNC(big, JavascriptString::EntryBig);
+        REG_OBJECTS_LIB_FUNC(blink, JavascriptString::EntryBlink);
+        REG_OBJECTS_LIB_FUNC(bold, JavascriptString::EntryBold);
+        REG_OBJECTS_LIB_FUNC(fixed, JavascriptString::EntryFixed);
+        REG_OBJECTS_LIB_FUNC(fontcolor, JavascriptString::EntryFontColor);
+        REG_OBJECTS_LIB_FUNC(fontsize, JavascriptString::EntryFontSize);
+        REG_OBJECTS_LIB_FUNC(italics, JavascriptString::EntryItalics);
+        REG_OBJECTS_LIB_FUNC(link, JavascriptString::EntryLink);
+        REG_OBJECTS_DYNAMIC_LIB_FUNC(_u("small"), 5, JavascriptString::EntrySmall);
+        REG_OBJECTS_LIB_FUNC(strike, JavascriptString::EntryStrike);
+        REG_OBJECTS_LIB_FUNC(sub, JavascriptString::EntrySub);
+        REG_OBJECTS_LIB_FUNC(sup, JavascriptString::EntrySup);
 
         if (config.IsES6StringExtensionsEnabled())
         {
@@ -6699,7 +6907,7 @@ namespace Js
 
         REG_OBJECTS_LIB_FUNC(raw, JavascriptString::EntryRaw);
 
-        REG_OBJECTS_LIB_FUNC2(_symbolIterator, L"[Symbol.iterator]", JavascriptString::EntrySymbolIterator);
+        REG_OBJECTS_LIB_FUNC2(_symbolIterator, _u("[Symbol.iterator]"), JavascriptString::EntrySymbolIterator);
 
         if (config.IsES7BuiltinsEnabled())
         {
@@ -6744,7 +6952,7 @@ namespace Js
 
         DEFINE_OBJECT_NAME(WeakMap);
 
-        REG_OBJECTS_LIB_FUNC2(delete_, L"delete", JavascriptWeakMap::EntryDelete);
+        REG_OBJECTS_LIB_FUNC2(delete_, _u("delete"), JavascriptWeakMap::EntryDelete);
         REG_OBJECTS_LIB_FUNC(get, JavascriptWeakMap::EntryGet);
         REG_OBJECTS_LIB_FUNC(has, JavascriptWeakMap::EntryHas);
         REG_OBJECTS_LIB_FUNC(set, JavascriptWeakMap::EntrySet);
@@ -6760,7 +6968,7 @@ namespace Js
         DEFINE_OBJECT_NAME(WeakSet);
 
         REG_OBJECTS_LIB_FUNC(add, JavascriptWeakSet::EntryAdd);
-        REG_OBJECTS_LIB_FUNC2(delete_, L"delete", JavascriptWeakSet::EntryDelete);
+        REG_OBJECTS_LIB_FUNC2(delete_, _u("delete"), JavascriptWeakSet::EntryDelete);
         REG_OBJECTS_LIB_FUNC(has, JavascriptWeakSet::EntryHas);
 
         return hr;
@@ -6774,7 +6982,7 @@ namespace Js
         DEFINE_OBJECT_NAME(Map);
 
         REG_OBJECTS_LIB_FUNC(clear, JavascriptMap::EntryClear);
-        REG_OBJECTS_LIB_FUNC2(delete_, L"delete", JavascriptMap::EntryDelete);
+        REG_OBJECTS_LIB_FUNC2(delete_, _u("delete"), JavascriptMap::EntryDelete);
         REG_OBJECTS_LIB_FUNC(forEach, JavascriptMap::EntryForEach);
         REG_OBJECTS_LIB_FUNC(get, JavascriptMap::EntryGet);
         REG_OBJECTS_LIB_FUNC(has, JavascriptMap::EntryHas);
@@ -6796,7 +7004,7 @@ namespace Js
 
         REG_OBJECTS_LIB_FUNC(add, JavascriptSet::EntryAdd);
         REG_OBJECTS_LIB_FUNC(clear, JavascriptSet::EntryClear);
-        REG_OBJECTS_LIB_FUNC2(delete_, L"delete", JavascriptSet::EntryDelete);
+        REG_OBJECTS_LIB_FUNC2(delete_, _u("delete"), JavascriptSet::EntryDelete);
         REG_OBJECTS_LIB_FUNC(forEach, JavascriptSet::EntryForEach);
         REG_OBJECTS_LIB_FUNC(has, JavascriptSet::EntryHas);
 
@@ -6815,7 +7023,7 @@ namespace Js
 
         REG_OBJECTS_LIB_FUNC(valueOf, JavascriptSymbol::EntryValueOf);
         REG_OBJECTS_LIB_FUNC(toString, JavascriptSymbol::EntryToString);
-        REG_OBJECTS_LIB_FUNC2(for_, L"for", JavascriptSymbol::EntryFor);
+        REG_OBJECTS_LIB_FUNC2(for_, _u("for"), JavascriptSymbol::EntryFor);
         REG_OBJECTS_LIB_FUNC(keyFor, JavascriptSymbol::EntryKeyFor);
 
         return hr;
@@ -6828,7 +7036,7 @@ namespace Js
 
         DEFINE_OBJECT_NAME(Iterator);
 
-        REG_OBJECTS_LIB_FUNC2(_symbolIterator, L"[Symbol.iterator]", JavascriptIterator::EntrySymbolIterator);
+        REG_OBJECTS_LIB_FUNC2(_symbolIterator, _u("[Symbol.iterator]"), JavascriptIterator::EntrySymbolIterator);
 
         return hr;
     }
@@ -6921,12 +7129,8 @@ namespace Js
         REG_OBJECTS_LIB_FUNC(slice, TypedArrayBase::EntrySlice);
         REG_OBJECTS_LIB_FUNC(some, TypedArrayBase::EntrySome);
         REG_OBJECTS_LIB_FUNC(sort, TypedArrayBase::EntrySort);
+        REG_OBJECTS_LIB_FUNC(includes, TypedArrayBase::EntryIncludes);
 
-        ScriptConfiguration const& config = *(scriptContext->GetConfig());
-        if (config.IsES7BuiltinsEnabled())
-        {
-            REG_OBJECTS_LIB_FUNC(includes, TypedArrayBase::EntryIncludes);
-        }
 
         return hr;
     }
@@ -6939,7 +7143,7 @@ namespace Js
         DEFINE_OBJECT_NAME(Promise);
 
         REG_OBJECTS_LIB_FUNC(all, JavascriptPromise::EntryAll);
-        REG_OBJECTS_LIB_FUNC2(catch_, L"catch", JavascriptPromise::EntryCatch);
+        REG_OBJECTS_LIB_FUNC2(catch_, _u("catch"), JavascriptPromise::EntryCatch);
         REG_OBJECTS_LIB_FUNC(race, JavascriptPromise::EntryRace);
         REG_OBJECTS_LIB_FUNC(resolve, JavascriptPromise::EntryResolve);
         REG_OBJECTS_LIB_FUNC(then, JavascriptPromise::EntryThen);
@@ -7002,7 +7206,6 @@ namespace Js
         // Float32x4
         REG_OBJECTS_LIB_FUNC(Float32x4, SIMDFloat32x4Lib::EntryFloat32x4);
         REG_OBJECTS_LIB_FUNC(check, SIMDFloat32x4Lib::EntryCheck);
-        REG_OBJECTS_LIB_FUNC(zero, SIMDFloat32x4Lib::EntryZero);
         REG_OBJECTS_LIB_FUNC(splat, SIMDFloat32x4Lib::EntrySplat);
         REG_OBJECTS_LIB_FUNC(extractLane, SIMDFloat32x4Lib::EntryExtractLane);
         REG_OBJECTS_LIB_FUNC(replaceLane, SIMDFloat32x4Lib::EntryReplaceLane);
@@ -7027,7 +7230,6 @@ namespace Js
         REG_OBJECTS_LIB_FUNC(max, SIMDFloat32x4Lib::EntryMax);
         REG_OBJECTS_LIB_FUNC(minNum, SIMDFloat32x4Lib::EntryMinNum);
         REG_OBJECTS_LIB_FUNC(maxNum, SIMDFloat32x4Lib::EntryMaxNum);
-        REG_OBJECTS_LIB_FUNC(scale, SIMDFloat32x4Lib::EntryScale);
         REG_OBJECTS_LIB_FUNC(abs, SIMDFloat32x4Lib::EntryAbs);
         REG_OBJECTS_LIB_FUNC(neg, SIMDFloat32x4Lib::EntryNeg);
         REG_OBJECTS_LIB_FUNC(not, SIMDFloat32x4Lib::EntryNot);
@@ -7042,12 +7244,10 @@ namespace Js
         REG_OBJECTS_LIB_FUNC(greaterThanOrEqual, SIMDFloat32x4Lib::EntryGreaterThanOrEqual);
         REG_OBJECTS_LIB_FUNC(swizzle, SIMDFloat32x4Lib::EntrySwizzle);
         REG_OBJECTS_LIB_FUNC(shuffle, SIMDFloat32x4Lib::EntryShuffle);
-        REG_OBJECTS_LIB_FUNC(clamp, SIMDFloat32x4Lib::EntryClamp);
         REG_OBJECTS_LIB_FUNC(select, SIMDFloat32x4Lib::EntrySelect);
         // Float64x2
         REG_OBJECTS_LIB_FUNC(Float64x2, SIMDFloat64x2Lib::EntryFloat64x2);
         REG_OBJECTS_LIB_FUNC(check, SIMDFloat64x2Lib::EntryCheck);
-        REG_OBJECTS_LIB_FUNC(zero, SIMDFloat64x2Lib::EntryZero);
         REG_OBJECTS_LIB_FUNC(splat, SIMDFloat64x2Lib::EntrySplat);
         REG_OBJECTS_LIB_FUNC(fromFloat32x4, SIMDFloat64x2Lib::EntryFromFloat32x4);
         REG_OBJECTS_LIB_FUNC(fromFloat32x4Bits, SIMDFloat64x2Lib::EntryFromFloat32x4Bits);
@@ -7059,7 +7259,6 @@ namespace Js
         REG_OBJECTS_LIB_FUNC(div, SIMDFloat64x2Lib::EntryDiv);
         REG_OBJECTS_LIB_FUNC(min, SIMDFloat64x2Lib::EntryMin);
         REG_OBJECTS_LIB_FUNC(max, SIMDFloat64x2Lib::EntryMax);
-        REG_OBJECTS_LIB_FUNC(scale, SIMDFloat64x2Lib::EntryScale);
         REG_OBJECTS_LIB_FUNC(abs, SIMDFloat64x2Lib::EntryAbs);
         REG_OBJECTS_LIB_FUNC(neg, SIMDFloat64x2Lib::EntryNeg);
         REG_OBJECTS_LIB_FUNC(sqrt, SIMDFloat64x2Lib::EntrySqrt);
@@ -7073,19 +7272,13 @@ namespace Js
         REG_OBJECTS_LIB_FUNC(greaterThanOrEqual, SIMDFloat64x2Lib::EntryGreaterThanOrEqual);
         REG_OBJECTS_LIB_FUNC(swizzle, SIMDFloat64x2Lib::EntrySwizzle);
         REG_OBJECTS_LIB_FUNC(shuffle, SIMDFloat64x2Lib::EntryShuffle);
-        REG_OBJECTS_LIB_FUNC(clamp, SIMDFloat64x2Lib::EntryClamp);
         REG_OBJECTS_LIB_FUNC(select, SIMDFloat64x2Lib::EntrySelect);
         // Int32x4
         REG_OBJECTS_LIB_FUNC(Int32x4, SIMDInt32x4Lib::EntryInt32x4);
         REG_OBJECTS_LIB_FUNC(check, SIMDInt32x4Lib::EntryCheck);
         REG_OBJECTS_LIB_FUNC(splat, SIMDInt32x4Lib::EntrySplat);
-        REG_OBJECTS_LIB_FUNC(bool_, SIMDInt32x4Lib::EntryBool);
         REG_OBJECTS_LIB_FUNC(extractLane, SIMDInt32x4Lib::EntryExtractLane);
         REG_OBJECTS_LIB_FUNC(replaceLane, SIMDInt32x4Lib::EntryReplaceLane);
-        REG_OBJECTS_LIB_FUNC(withFlagX, SIMDInt32x4Lib::EntryWithFlagX);
-        REG_OBJECTS_LIB_FUNC(withFlagY, SIMDInt32x4Lib::EntryWithFlagY);
-        REG_OBJECTS_LIB_FUNC(withFlagZ, SIMDInt32x4Lib::EntryWithFlagZ);
-        REG_OBJECTS_LIB_FUNC(withFlagW, SIMDInt32x4Lib::EntryWithFlagW);
         REG_OBJECTS_LIB_FUNC(fromFloat64x2, SIMDInt32x4Lib::EntryFromFloat64x2);
         REG_OBJECTS_LIB_FUNC(fromFloat64x2Bits, SIMDInt32x4Lib::EntryFromFloat64x2Bits);
         REG_OBJECTS_LIB_FUNC(fromFloat32x4, SIMDInt32x4Lib::EntryFromFloat32x4);
@@ -7250,6 +7443,7 @@ namespace Js
         REG_OBJECTS_LIB_FUNC(or, SIMDUint32x4Lib::EntryOr);
         REG_OBJECTS_LIB_FUNC(xor, SIMDUint32x4Lib::EntryXor);
         REG_OBJECTS_LIB_FUNC(not, SIMDUint32x4Lib::EntryNot);
+        REG_OBJECTS_LIB_FUNC(neg, SIMDUint32x4Lib::EntryNeg);
         REG_OBJECTS_LIB_FUNC(lessThan, SIMDUint32x4Lib::EntryLessThan);
         REG_OBJECTS_LIB_FUNC(lessThanOrEqual, SIMDUint32x4Lib::EntryLessThanOrEqual);
         REG_OBJECTS_LIB_FUNC(equal, SIMDUint32x4Lib::EntryEqual);
@@ -7282,6 +7476,7 @@ namespace Js
         REG_OBJECTS_LIB_FUNC(fromUint32x4Bits, SIMDUint16x8Lib::EntryFromUint32x4Bits);
         REG_OBJECTS_LIB_FUNC(fromUint8x16Bits, SIMDUint16x8Lib::EntryFromUint8x16Bits);
         REG_OBJECTS_LIB_FUNC(not, SIMDUint16x8Lib::EntryNot);
+        REG_OBJECTS_LIB_FUNC(neg, SIMDUint16x8Lib::EntryNeg);
         REG_OBJECTS_LIB_FUNC(add, SIMDUint16x8Lib::EntryAdd);
         REG_OBJECTS_LIB_FUNC(sub, SIMDUint16x8Lib::EntrySub);
         REG_OBJECTS_LIB_FUNC(mul, SIMDUint16x8Lib::EntryMul);
@@ -7319,6 +7514,7 @@ namespace Js
         REG_OBJECTS_LIB_FUNC(fromUint32x4Bits, SIMDUint8x16Lib::EntryFromUint32x4Bits);
         REG_OBJECTS_LIB_FUNC(fromUint16x8Bits, SIMDUint8x16Lib::EntryFromUint16x8Bits);
         REG_OBJECTS_LIB_FUNC(not, SIMDUint8x16Lib::EntryNot);
+        REG_OBJECTS_LIB_FUNC(neg, SIMDUint8x16Lib::EntryNeg);
         REG_OBJECTS_LIB_FUNC(add, SIMDUint8x16Lib::EntryAdd);
         REG_OBJECTS_LIB_FUNC(sub, SIMDUint8x16Lib::EntrySub);
         REG_OBJECTS_LIB_FUNC(mul, SIMDUint8x16Lib::EntryMul);
@@ -7376,9 +7572,9 @@ namespace Js
         DEFINE_OBJECT_NAME(IRViewer);
 
         // TODO (t-doilij) move GlobalObject::EntryParseIR to JavascriptIRViewer::EntryParseIR
-        REG_LIB_FUNC_CORE(pwszObjectName, L"parseIR", scriptContext->GetOrAddPropertyIdTracked(L"parseIR"), GlobalObject::EntryParseIR);
-        REG_LIB_FUNC_CORE(pwszObjectName, L"functionList", scriptContext->GetOrAddPropertyIdTracked(L"functionList"), GlobalObject::EntryFunctionList);
-        REG_LIB_FUNC_CORE(pwszObjectName, L"rejitFunction", scriptContext->GetOrAddPropertyIdTracked(L"rejitFunction"), GlobalObject::EntryRejitFunction);
+        REG_LIB_FUNC_CORE(pwszObjectName, _u("parseIR"), scriptContext->GetOrAddPropertyIdTracked(_u("parseIR")), GlobalObject::EntryParseIR);
+        REG_LIB_FUNC_CORE(pwszObjectName, _u("functionList"), scriptContext->GetOrAddPropertyIdTracked(_u("functionList")), GlobalObject::EntryFunctionList);
+        REG_LIB_FUNC_CORE(pwszObjectName, _u("rejitFunction"), scriptContext->GetOrAddPropertyIdTracked(_u("rejitFunction")), GlobalObject::EntryRejitFunction);
 
         return hr;
     }

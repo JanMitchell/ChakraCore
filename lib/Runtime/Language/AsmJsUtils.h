@@ -33,7 +33,7 @@ namespace Js {
     static const double SIMD_SLOTS_SPACE = (sizeof(SIMDValue) / sizeof(Var)); // 4 in x86 and 2 in x64
 
     Var AsmJsChangeHeapBuffer(RecyclableObject * function, CallInfo callInfo, ...);
-    Var AsmJsExternalEntryPoint(Js::RecyclableObject* entryObject, Js::CallInfo callInfo, ...);
+
 #if _M_X64
     int GetStackSizeForAsmJsUnboxing(ScriptFunction* func);
     void * UnboxAsmJsArguments(ScriptFunction* func, Var * origArgs, char * argDst, CallInfo callInfo);
@@ -42,10 +42,10 @@ namespace Js {
 
     class AsmJsCompilationException
     {
-        wchar_t msg_[256];
+        char16 msg_[256];
     public:
-        AsmJsCompilationException( const wchar_t* _msg, ... );
-        inline wchar_t* msg() { return msg_; }
+        AsmJsCompilationException( const char16* _msg, ... );
+        inline char16* msg() { return msg_; }
     };
 
     class ParserWrapper

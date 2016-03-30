@@ -2380,15 +2380,13 @@ LowererMD::ChangeToHelperCall(IR::Instr * callInstr, IR::JnHelperMethod helperMe
     IR::Instr * bailOutInstr = callInstr;
     if (callInstr->HasBailOutInfo())
     {
-        if (callInstr->GetBailOutKind() == IR::BailOutExpectingObject ||
-            callInstr->GetBailOutKind() == IR::BailOutOnNotPrimitive)
+        if (callInstr->GetBailOutKind() == IR::BailOutOnNotPrimitive)
         {
             callInstr = IR::Instr::New(callInstr->m_opcode, callInstr->m_func);
             bailOutInstr->TransferTo(callInstr);
             bailOutInstr->InsertBefore(callInstr);
 
-            IR::BailOutKind bailOutKind = bailOutInstr->GetBailOutKind();
-            bailOutInstr->m_opcode = bailOutKind == IR::BailOutExpectingObject ? Js::OpCode::BailOnNotObject : Js::OpCode::BailOnNotPrimitive;
+            bailOutInstr->m_opcode = Js::OpCode::BailOnNotPrimitive;
             bailOutInstr->SetSrc1(opndInstance);
         }
         else
@@ -2811,6 +2809,7 @@ LowererMD::LowerCondBranch(IR::Instr * instr)
         case Js::OpCode::BrOnNotEmpty:
         case Js::OpCode::BrNotNull_A:
         case Js::OpCode::BrOnObject_A:
+        case Js::OpCode::BrOnClassConstructor:
             Assert(!opndSrc1->IsFloat64());
             AssertMsg(opndSrc1->IsRegOpnd(),"NYI for other operands");
             AssertMsg(instr->GetSrc2() == nullptr, "Expected 1 src on boolean branch");
@@ -6889,7 +6888,7 @@ bool LowererMD::GenerateFastCharAt(Js::BuiltinFunction index, IR::Opnd *dst, IR:
         insertInstr->InsertBefore(instr);
 
         // indir = [psz + index32 * 2]
-        indirOpnd = IR::IndirOpnd::New(psz, constIndex * sizeof(wchar_t), TyUint16, this->m_func);
+        indirOpnd = IR::IndirOpnd::New(psz, constIndex * sizeof(char16), TyUint16, this->m_func);
     }
     else
     {
@@ -6917,7 +6916,7 @@ bool LowererMD::GenerateFastCharAt(Js::BuiltinFunction index, IR::Opnd *dst, IR:
         insertInstr->InsertBefore(instr);
 
         // indir = [psz + index32 * 2]
-        indirOpnd = IR::IndirOpnd::New(psz, index32, (byte)Math::Log2(sizeof(wchar_t)), TyUint16, this->m_func);
+        indirOpnd = IR::IndirOpnd::New(psz, index32, (byte)Math::Log2(sizeof(char16)), TyUint16, this->m_func);
     }
 
     // char = LDRH [regSrc + index32, LSL #1]
@@ -7436,7 +7435,7 @@ LowererMD::EmitLoadVar(IR::Instr *instrLoad, bool isFromUint32, bool isHelper)
             labelToVar = IR::LabelInstr::New(Js::OpCode::Label, this->m_func, true);
             if (!isFromUint32)
             {
-                // TEQ src1,src1 LSL#1 - TIOFLW is an alias for this pattern.
+                // TEQ src1,src1 LS_u(#1) - TIOFLW is an alias for this pattern.
                 // XOR the src with itself shifted left one. If there's no overflow,
                 // the result should be positive (top bit clear).
                 instr = IR::Instr::New(Js::OpCode::TIOFLW, this->m_func);
@@ -9169,7 +9168,7 @@ template void LowererMD::Legalize<true>(IR::Instr *const instr, bool fPostRegall
 void
 LowererMD::FinalLower()
 {
-    NoRecoverMemoryArenaAllocator tempAlloc(L"BE-ARMFinalLower", m_func->m_alloc->GetPageAllocator(), Js::Throw::OutOfMemory);
+    NoRecoverMemoryArenaAllocator tempAlloc(_u("BE-ARMFinalLower"), m_func->m_alloc->GetPageAllocator(), Js::Throw::OutOfMemory);
     EncodeReloc *pRelocList = nullptr;
 
     uint32 instrOffset = 0;

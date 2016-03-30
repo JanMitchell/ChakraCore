@@ -41,6 +41,7 @@ namespace Js
         static Var ToVar(int64 nValue, ScriptContext* scriptContext);
         static Var ToVar(uint64 nValue, ScriptContext* scriptContext);
         static double GetValue(Var aValue);
+        static double DirectPowDoubleInt(double, int32);
         static double DirectPow(double, double);
 
         static bool TryToVarFast(int32 nValue, Var* result);
@@ -126,6 +127,8 @@ namespace Js
         // when radix is 10, ToStringRadix10 should be used instead
         static JavascriptString* ToStringRadixHelper(double value, int radix, ScriptContext* scriptContext);
         static JavascriptString* ToLocaleString(double dValue, ScriptContext* scriptContext);
+        static JavascriptString* ToLocaleStringIntl(ArgumentReader& args, CallInfo callInfo, ScriptContext* scriptContext);
+        static JavascriptString* ToLocaleStringIntl(Var* values, CallInfo callInfo, ScriptContext* scriptContext);
         static Var CloneToScriptContext(Var aValue, ScriptContext* requestContext);
 
 #if !FLOATVAR
@@ -221,7 +224,7 @@ namespace Js
     template <class Lib>
     __inline static typename Lib::LibStringType JavascriptNumber::ToStringNan(const Lib& lib)
     {
-        return lib.CreateStringFromCppLiteral(L"NaN");
+        return lib.CreateStringFromCppLiteral(_u("NaN"));
     }
 
     template <class Lib>
@@ -236,12 +239,12 @@ namespace Js
 
             if(IsPosInf(value))
             {
-                return lib.CreateStringFromCppLiteral(L"Infinity");
+                return lib.CreateStringFromCppLiteral(_u("Infinity"));
             }
             else
             {
                 AssertMsg(IsNegInf(value), "bad handling of infinite number");
-                return lib.CreateStringFromCppLiteral(L"-Infinity");
+                return lib.CreateStringFromCppLiteral(_u("-Infinity"));
             }
         }
         return nullptr;

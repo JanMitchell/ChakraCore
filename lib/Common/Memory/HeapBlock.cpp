@@ -58,42 +58,45 @@ HeapBlock::SetNeedOOMRescan(Recycler * recycler)
 void
 HeapBlock::CapturePageHeapAllocStack()
 {
-    Assert(this->InPageHeapMode());
-
-    // These asserts are true because explicit free is disallowed in
-    // page heap mode. If they weren't, we'd have to modify the asserts
-    Assert(this->pageHeapFreeStack == nullptr);
-    Assert(this->pageHeapAllocStack == nullptr);
-
-    // Note: NoCheckHeapAllocator will fail fast if we can't allocate the stack to capture
-    // REVIEW: Should we have a flag to configure the number of frames captured?
-    if (pageHeapAllocStack != nullptr)
+    if (this->InPageHeapMode()) // pageheap can be enabled only for some of the buckets
     {
-        this->pageHeapAllocStack->Capture(Recycler::s_numFramesToSkipForPageHeapAlloc);
-    }
-    else
-    {
-        this->pageHeapAllocStack = StackBackTrace::Capture(&NoCheckHeapAllocator::Instance, Recycler::s_numFramesToSkipForPageHeapAlloc, Recycler::s_numFramesToCaptureForPageHeap);
+
+        // These asserts are true because explicit free is disallowed in
+        // page heap mode. If they weren't, we'd have to modify the asserts
+        Assert(this->pageHeapFreeStack == nullptr);
+        Assert(this->pageHeapAllocStack == nullptr);
+
+        // Note: NoCheckHeapAllocator will fail fast if we can't allocate the stack to capture
+        // REVIEW: Should we have a flag to configure the number of frames captured?
+        if (pageHeapAllocStack != nullptr)
+        {
+            this->pageHeapAllocStack->Capture(Recycler::s_numFramesToSkipForPageHeapAlloc);
+        }
+        else
+        {
+            this->pageHeapAllocStack = StackBackTrace::Capture(&NoCheckHeapAllocator::Instance, Recycler::s_numFramesToSkipForPageHeapAlloc, Recycler::s_numFramesToCaptureForPageHeap);
+        }
     }
 }
 
 void
 HeapBlock::CapturePageHeapFreeStack()
 {
-    Assert(this->InPageHeapMode());
-
-    // These asserts are true because explicit free is disallowed in
-    // page heap mode. If they weren't, we'd have to modify the asserts
-    Assert(this->pageHeapFreeStack == nullptr);
-    Assert(this->pageHeapAllocStack != nullptr);
-
-    if (this->pageHeapFreeStack != nullptr)
+    if (this->InPageHeapMode()) // pageheap can be enabled only for some of the buckets
     {
-        this->pageHeapFreeStack->Capture(Recycler::s_numFramesToSkipForPageHeapFree);
-    }
-    else
-    {
-        this->pageHeapFreeStack = StackBackTrace::Capture(&NoCheckHeapAllocator::Instance, Recycler::s_numFramesToSkipForPageHeapFree, Recycler::s_numFramesToCaptureForPageHeap);
+        // These asserts are true because explicit free is disallowed in
+        // page heap mode. If they weren't, we'd have to modify the asserts
+        Assert(this->pageHeapFreeStack == nullptr);
+        Assert(this->pageHeapAllocStack != nullptr);
+
+        if (this->pageHeapFreeStack != nullptr)
+        {
+            this->pageHeapFreeStack->Capture(Recycler::s_numFramesToSkipForPageHeapFree);
+        }
+        else
+        {
+            this->pageHeapFreeStack = StackBackTrace::Capture(&NoCheckHeapAllocator::Instance, Recycler::s_numFramesToSkipForPageHeapFree, Recycler::s_numFramesToCaptureForPageHeap);
+        }
     }
 }
 #endif
@@ -499,7 +502,7 @@ SmallHeapBlockT<TBlockAttributes>::ReleasePages(Recycler * recycler)
 #if DBG
     if (this->IsLeafBlock())
     {
-        RecyclerVerboseTrace(recycler->GetRecyclerFlagsTable(), L"Releasing leaf block pages at address 0x%p\n", address);
+        RecyclerVerboseTrace(recycler->GetRecyclerFlagsTable(), _u("Releasing leaf block pages at address 0x%p\n"), address);
     }
 #endif
 
@@ -576,7 +579,7 @@ SmallHeapBlockT<TBlockAttributes>::ReleasePagesShutdown(Recycler * recycler)
 #if DBG
     if (this->IsLeafBlock())
     {
-        RecyclerVerboseTrace(recycler->GetRecyclerFlagsTable(), L"Releasing leaf block pages at address 0x%p\n", address);
+        RecyclerVerboseTrace(recycler->GetRecyclerFlagsTable(), _u("Releasing leaf block pages at address 0x%p\n"), address);
     }
 
 #ifdef RECYCLER_PAGE_HEAP
@@ -1294,7 +1297,7 @@ SmallHeapBlockT<TBlockAttributes>::Sweep(RecyclerSweep& recyclerSweep, bool queu
         {
             if (InPageHeapMode())
             {
-                PageHeapVerboseTrace(recycler->GetRecyclerFlagsTable(), L"Heap block 0x%p is empty\n", this);
+                PageHeapVerboseTrace(recycler->GetRecyclerFlagsTable(), _u("Heap block 0x%p is empty\n"), this);
             }
         }
 #endif
@@ -1307,7 +1310,7 @@ SmallHeapBlockT<TBlockAttributes>::Sweep(RecyclerSweep& recyclerSweep, bool queu
     {
         if (InPageHeapMode())
         {
-            PageHeapVerboseTrace(recycler->GetRecyclerFlagsTable(), L"Heap block 0x%p is not empty, local mark count is %d, expected sweep count is %d\n", this, localMarkCount, expectSweepCount);
+            PageHeapVerboseTrace(recycler->GetRecyclerFlagsTable(), _u("Heap block 0x%p is not empty, local mark count is %d, expected sweep count is %d\n"), this, localMarkCount, expectSweepCount);
         }
     }
 #endif
@@ -1975,7 +1978,7 @@ void SmallHeapBlockT<TBlockAttributes>::VerifyBumpAllocated(_In_ char * bumpAllo
                 }
                 else
                 {
-                    Recycler::VerifyCheck(false, L"Non-Finalizable block should not have finalizable objects",
+                    Recycler::VerifyCheck(false, _u("Non-Finalizable block should not have finalizable objects"),
                         this->GetAddress(), &this->ObjectInfo(i));
                 }
             }
@@ -1995,7 +1998,7 @@ void SmallHeapBlockT<TBlockAttributes>::Verify(bool pendingDispose)
     char * memBlock = this->GetAddress();
     uint objectBitDelta = this->GetObjectBitDelta();
     Recycler::VerifyCheck(!pendingDispose || this->IsAnyFinalizableBlock(),
-        L"Non-finalizable block shouldn't be disposing. May have corrupted block type.",
+        _u("Non-finalizable block shouldn't be disposing. May have corrupted block type."),
         this->GetAddress(), (void *)&this->heapBlockType);
 
     if (HasPendingDisposeObjects())
@@ -2028,7 +2031,7 @@ void SmallHeapBlockT<TBlockAttributes>::Verify(bool pendingDispose)
                 Recycler::VerifyCheck(nextFree == nullptr
                     || (nextFree >= address && nextFree < this->GetEndAddress()
                     && free->Test(GetAddressBitIndex(nextFree))),
-                    L"SmallHeapBlock memory written to after freed", memBlock, memBlock);
+                    _u("SmallHeapBlock memory written to after freed"), memBlock, memBlock);
                 Recycler::VerifyCheckFill(memBlock + sizeof(FreeObject), this->GetObjectSize() - sizeof(FreeObject));
             }
         }
@@ -2049,7 +2052,7 @@ void SmallHeapBlockT<TBlockAttributes>::Verify(bool pendingDispose)
                     || (nextFree >= address && nextFree < this->GetEndAddress()
                     && explicitFreeBits.Test(GetAddressBitIndex(nextFree)))
                     || nextFreeHeapBlock->GetObjectSize(nextFree) == this->objectSize,
-                    L"SmallHeapBlock memory written to after freed", memBlock, memBlock);
+                    _u("SmallHeapBlock memory written to after freed"), memBlock, memBlock);
                 recycler->VerifyCheckPadExplicitFreeList(memBlock, this->GetObjectSize());
             }
             else
@@ -2065,7 +2068,7 @@ void SmallHeapBlockT<TBlockAttributes>::Verify(bool pendingDispose)
                 }
                 else
                 {
-                    Recycler::VerifyCheck(false, L"Non-Finalizable block should not have finalizable objects",
+                    Recycler::VerifyCheck(false, _u("Non-Finalizable block should not have finalizable objects"),
                         this->GetAddress(), &this->ObjectInfo(i));
                 }
             }
@@ -2077,7 +2080,7 @@ void SmallHeapBlockT<TBlockAttributes>::Verify(bool pendingDispose)
     if (this->IsAnyFinalizableBlock())
     {
         Recycler::VerifyCheck(this->AsFinalizableBlock<TBlockAttributes>()->finalizeCount == verifyFinalizeCount,
-            L"SmallHeapBlock finalize count mismatch", this->GetAddress(), &this->AsFinalizableBlock<TBlockAttributes>()->finalizeCount);
+            _u("SmallHeapBlock finalize count mismatch"), this->GetAddress(), &this->AsFinalizableBlock<TBlockAttributes>()->finalizeCount);
     }
     else
     {

@@ -1,11 +1,18 @@
 //-------------------------------------------------------------------------------------------------------
-// Copyright (C) Microsoft. All rights reserved.
+// Copyright (C) Microsoft Corporation and contributors. All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 //-------------------------------------------------------------------------------------------------------
+
 #include "RuntimeLanguagePch.h"
 
 namespace Js
 {
+    bool IsSimdType(Var aVar)
+    {
+        TypeId tid = JavascriptOperators::GetTypeId(aVar); //Depends on contiguous SIMD TypeIds
+        return (TypeIds_SIMDFloat32x4 <= tid && tid <= TypeIds_SIMDBool8x16) ? true : false;
+    }
+
     int32 SIMDCheckTypedArrayIndex(ScriptContext* scriptContext, Var index)
     {
         int32 int32Value;
@@ -60,7 +67,7 @@ namespace Js
         X86SIMDValue x86Result;
         X86SIMDValue v = X86SIMDValue::ToX86SIMDValue(value);
 
-        _mm_store_ps(x86Result.simdValue.f32, v.m128_value);
+        _mm_store_ps(x86Result.f32, v.m128_value);
 
         return X86SIMDValue::ToSIMDValue(x86Result);
     }
@@ -76,6 +83,8 @@ namespace Js
     }
 #endif
 
+
+
     template <int laneCount>
     SIMDValue SIMD128InnerShuffle(SIMDValue src1, SIMDValue src2, int32 lane0, int32 lane1, int32 lane2, int32 lane3)
     {
@@ -83,15 +92,15 @@ namespace Js
         CompileAssert(laneCount == 4 || laneCount == 2);
         if (laneCount == 4)
         {
-            result.i32[SIMD_X] = lane0 < 4 ? src1.i32[lane0] : src2.i32[lane0 - 4];
-            result.i32[SIMD_Y] = lane1 < 4 ? src1.i32[lane1] : src2.i32[lane1 - 4];
-            result.i32[SIMD_Z] = lane2 < 4 ? src1.i32[lane2] : src2.i32[lane2 - 4];
-            result.i32[SIMD_W] = lane3 < 4 ? src1.i32[lane3] : src2.i32[lane3 - 4];
+            result.i32[SIMD_X] = lane0 < laneCount ? src1.i32[lane0] : src2.i32[lane0 - laneCount];
+            result.i32[SIMD_Y] = lane1 < laneCount ? src1.i32[lane1] : src2.i32[lane1 - laneCount];
+            result.i32[SIMD_Z] = lane2 < laneCount ? src1.i32[lane2] : src2.i32[lane2 - laneCount];
+            result.i32[SIMD_W] = lane3 < laneCount ? src1.i32[lane3] : src2.i32[lane3 - laneCount];
         }
         else
         {
-            result.f64[SIMD_X] = lane0 < 2 ? src1.f64[lane0] : src2.f64[lane0 - 2];
-            result.f64[SIMD_Y] = lane1 < 2 ? src1.f64[lane1] : src2.f64[lane1 - 2];
+            result.f64[SIMD_X] = lane0 < laneCount ? src1.f64[lane0] : src2.f64[lane0 - laneCount];
+            result.f64[SIMD_Y] = lane1 < laneCount ? src1.f64[lane1] : src2.f64[lane1 - laneCount];
         }
         return result;
     }
@@ -196,10 +205,10 @@ namespace Js
         return SIMDType::New(&result, scriptContext);
     }
 
-    template Var SIMD128SlowShuffle<JavascriptSIMDInt32x4, 4>   (Var src1, Var src2, Var lane0, Var lane1, Var lane2, Var lane3, int range, ScriptContext* scriptContext);
+    template Var SIMD128SlowShuffle<JavascriptSIMDInt32x4  , 4> (Var src1, Var src2, Var lane0, Var lane1, Var lane2, Var lane3, int range, ScriptContext* scriptContext);
     template Var SIMD128SlowShuffle<JavascriptSIMDFloat32x4, 4> (Var src1, Var src2, Var lane0, Var lane1, Var lane2, Var lane3, int range, ScriptContext* scriptContext);
     template Var SIMD128SlowShuffle<JavascriptSIMDFloat64x2, 2> (Var src1, Var src2, Var lane0, Var lane1, Var lane2, Var lane3, int range, ScriptContext* scriptContext);
-    template Var SIMD128SlowShuffle<JavascriptSIMDUint32x4, 4>(Var src1, Var src2, Var lane0, Var lane1, Var lane2, Var lane3, int range, ScriptContext* scriptContext);
+    template Var SIMD128SlowShuffle<JavascriptSIMDUint32x4 , 4> (Var src1, Var src2, Var lane0, Var lane1, Var lane2, Var lane3, int range, ScriptContext* scriptContext);
 
     //Int8x16 LaneAccess
     inline int8 SIMD128InnerExtractLaneI16(const SIMDValue& src1, const int32 lane)
@@ -432,7 +441,7 @@ namespace Js
     {
         if (!SIMDIsSupportedTypedArray(arg1))
         {
-            JavascriptError::ThrowTypeError(scriptContext, JSERR_SimdInvalidArgType, L"Simd typed array access");
+            JavascriptError::ThrowTypeError(scriptContext, JSERR_SimdInvalidArgType, _u("Simd typed array access"));
         }
 
         *index = SIMDCheckInt32Number(scriptContext, arg2);
@@ -443,7 +452,7 @@ namespace Js
         int32 offset = (*index) * bpe;
         if (offset < 0 || (offset + dataWidth) >(int32)(*tarray)->GetByteLength())
         {
-            JavascriptError::ThrowRangeError(scriptContext, JSERR_ArgumentOutOfRange, L"Simd typed array access");
+            JavascriptError::ThrowRangeError(scriptContext, JSERR_ArgumentOutOfRange, _u("Simd typed array access"));
         }
         return (SIMDValue*)((*tarray)->GetByteBuffer() + offset);
     }

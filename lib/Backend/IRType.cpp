@@ -1,7 +1,8 @@
 //-------------------------------------------------------------------------------------------------------
-// Copyright (C) Microsoft. All rights reserved.
+// Copyright (C) Microsoft Corporation and contributors. All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 //-------------------------------------------------------------------------------------------------------
+
 #include "Backend.h"
 
 int const TySize[] = {
@@ -27,8 +28,8 @@ int const TyBaseType[] = {
 #undef IRTYPE
 };
 
-wchar_t * const TyDumpName[] = {
-#define IRTYPE(ucname, baseType, size, bitSize, enRegOk, dname) L# dname,
+char16 * const TyDumpName[] = {
+#define IRTYPE(ucname, baseType, size, bitSize, enRegOk, dname) _u(#dname),
 #include "IRTypeList.h"
 #undef IRTYPE
 };
@@ -52,7 +53,8 @@ bool IRType_IsSimd(IRType type)
 
 bool IRType_IsSimd128(IRType type)
 {
-    return type == TySimd128F4 || type == TySimd128I4 || type == TySimd128D2;
+    return type >= TySimd128F4 && type <= TySimd128D2;
+           
 }
 
 #if DBG_DUMP || defined(ENABLE_IR_VIEWER)

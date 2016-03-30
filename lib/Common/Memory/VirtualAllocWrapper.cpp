@@ -78,14 +78,13 @@ PreReservedVirtualAllocWrapper::PreReservedVirtualAllocWrapper() :
     freeSegments.SetAll();
 }
 
-void
-PreReservedVirtualAllocWrapper::Shutdown()
+PreReservedVirtualAllocWrapper::~PreReservedVirtualAllocWrapper()
 {
     Assert(this);
     if (IsPreReservedRegionPresent())
     {
         BOOL success = VirtualFree(preReservedStartAddress, 0, MEM_RELEASE);
-        PreReservedHeapTrace(L"MEM_RELEASE the PreReservedSegment. Start Address: 0x%p, Size: 0x%x * 0x%x bytes", preReservedStartAddress, PreReservedAllocationSegmentCount,
+        PreReservedHeapTrace(_u("MEM_RELEASE the PreReservedSegment. Start Address: 0x%p, Size: 0x%x * 0x%x bytes"), preReservedStartAddress, PreReservedAllocationSegmentCount,
             AutoSystemInfo::Data.GetAllocationGranularityPageSize());
         if (!success)
         {
@@ -113,17 +112,22 @@ PreReservedVirtualAllocWrapper::IsInRange(void * address)
     {
         return false;
     }
-#if DBG
-    //Check if the region is in MEM_COMMIT state.
-    MEMORY_BASIC_INFORMATION memBasicInfo;
-    size_t bytes = VirtualQuery(address, &memBasicInfo, sizeof(memBasicInfo));
-    if (bytes == 0 || memBasicInfo.State != MEM_COMMIT)
-    {
-        AssertMsg(false, "Memory not committed? Checking for uncommitted address region?");
-    }
-#endif
 
-    return address >= GetPreReservedStartAddress() && address < GetPreReservedEndAddress();
+    if (address >= GetPreReservedStartAddress() && address < GetPreReservedEndAddress())
+    {
+#if DBG
+        //Check if the region is in MEM_COMMIT state.
+        MEMORY_BASIC_INFORMATION memBasicInfo;
+        size_t bytes = VirtualQuery(address, &memBasicInfo, sizeof(memBasicInfo));
+        if (bytes == 0 || memBasicInfo.State != MEM_COMMIT)
+        {
+            AssertMsg(false, "Memory not committed? Checking for uncommitted address region?");
+        }
+#endif
+        return true;
+    }
+
+    return false;
 }
 
 LPVOID
@@ -168,7 +172,7 @@ LPVOID PreReservedVirtualAllocWrapper::EnsurePreReservedRegionInternal()
     {
         //This code is used where CFG is not available, but still PreReserve optimization for CFG can be tested
         startAddress = VirtualAlloc(NULL, bytes, MEM_RESERVE, PAGE_READWRITE);
-        PreReservedHeapTrace(L"Reserving PreReservedSegment For the first time(CFG Non-Enabled). Address: 0x%p\n", preReservedStartAddress);
+        PreReservedHeapTrace(_u("Reserving PreReservedSegment For the first time(CFG Non-Enabled). Address: 0x%p\n"), preReservedStartAddress);
         preReservedStartAddress = startAddress;
         return startAddress;
     }
@@ -195,7 +199,7 @@ LPVOID PreReservedVirtualAllocWrapper::EnsurePreReservedRegionInternal()
     if (AutoSystemInfo::Data.IsCFGEnabled())
     {
         startAddress = VirtualAlloc(NULL, bytes, MEM_RESERVE, PAGE_READWRITE);
-        PreReservedHeapTrace(L"Reserving PreReservedSegment For the first time(CFG Enabled). Address: 0x%p\n", preReservedStartAddress);
+        PreReservedHeapTrace(_u("Reserving PreReservedSegment For the first time(CFG Enabled). Address: 0x%p\n"), preReservedStartAddress);
         preReservedStartAddress = startAddress;
 
 #if !_M_X64_OR_ARM64
@@ -230,7 +234,7 @@ LPVOID PreReservedVirtualAllocWrapper::Alloc(LPVOID lpAddress, size_t dwSize, DW
         //Return nullptr, if no space to Reserve
         if (EnsurePreReservedRegionInternal() == nullptr)
         {
-            PreReservedHeapTrace(L"No space to pre-reserve memory with %d pages. Returning NULL\n", PreReservedAllocationSegmentCount * AutoSystemInfo::Data.GetAllocationGranularityPageCount());
+            PreReservedHeapTrace(_u("No space to pre-reserve memory with %d pages. Returning NULL\n"), PreReservedAllocationSegmentCount * AutoSystemInfo::Data.GetAllocationGranularityPageCount());
             return nullptr;
         }
 
@@ -252,7 +256,7 @@ LPVOID PreReservedVirtualAllocWrapper::Alloc(LPVOID lpAddress, size_t dwSize, DW
                 if ((freeSegments.Length() - freeSegmentsBVIndex < requestedNumOfSegments) ||
                     freeSegmentsBVIndex == BVInvalidIndex)
                 {
-                    PreReservedHeapTrace(L"No more space to commit in PreReserved Memory region.\n");
+                    PreReservedHeapTrace(_u("No more space to commit in PreReserved Memory region.\n"));
                     return nullptr;
                 }
             } while (!freeSegments.TestRange(freeSegmentsBVIndex, static_cast<uint>(requestedNumOfSegments)));
@@ -315,9 +319,11 @@ LPVOID PreReservedVirtualAllocWrapper::Alloc(LPVOID lpAddress, size_t dwSize, DW
 
                 allocatedAddress = (char *)VirtualAlloc(addressToReserve, dwSize, MEM_COMMIT, allocProtectFlags);
 
-                AssertMsg(allocatedAddress != nullptr, "If no space to allocate, then how did we fetch this address from the tracking bit vector?");
-                VirtualProtect(allocatedAddress, dwSize, protectFlags, &oldProtect);
-                AssertMsg(oldProtect == (PAGE_EXECUTE_READWRITE), "CFG Bitmap gets allocated and bits will be set to invalid only upon passing these flags.");
+                if (allocatedAddress != nullptr)
+                {
+                    VirtualProtect(allocatedAddress, dwSize, protectFlags, &oldProtect);
+                    AssertMsg(oldProtect == (PAGE_EXECUTE_READWRITE), "CFG Bitmap gets allocated and bits will be set to invalid only upon passing these flags.");
+                }
             }
             else
 #endif
@@ -339,7 +345,7 @@ LPVOID PreReservedVirtualAllocWrapper::Alloc(LPVOID lpAddress, size_t dwSize, DW
             freeSegments.ClearRange(freeSegmentsBVIndex, static_cast<uint>(requestedNumOfSegments));
         }
 
-        PreReservedHeapTrace(L"MEM_COMMIT: StartAddress: 0x%p of size: 0x%x * 0x%x bytes \n", allocatedAddress, requestedNumOfSegments, AutoSystemInfo::Data.GetAllocationGranularityPageSize());
+        PreReservedHeapTrace(_u("MEM_COMMIT: StartAddress: 0x%p of size: 0x%x * 0x%x bytes \n"), allocatedAddress, requestedNumOfSegments, AutoSystemInfo::Data.GetAllocationGranularityPageSize());
         return allocatedAddress;
     }
 }
@@ -378,7 +384,7 @@ PreReservedVirtualAllocWrapper::Free(LPVOID lpAddress, size_t dwSize, DWORD dwFr
 
         if (success)
         {
-            PreReservedHeapTrace(L"MEM_DECOMMIT: Address: 0x%p of size: 0x%x bytes\n", lpAddress, dwSize);
+            PreReservedHeapTrace(_u("MEM_DECOMMIT: Address: 0x%p of size: 0x%x bytes\n"), lpAddress, dwSize);
         }
 
         if (success && (dwFreeType & MEM_RELEASE) != 0)
@@ -391,7 +397,7 @@ PreReservedVirtualAllocWrapper::Free(LPVOID lpAddress, size_t dwSize, DWORD dwFr
             BVIndex freeSegmentsBVIndex = (BVIndex) (((uintptr_t) lpAddress - (uintptr_t) preReservedStartAddress) / AutoSystemInfo::Data.GetAllocationGranularityPageSize());
             AssertMsg(freeSegmentsBVIndex < PreReservedAllocationSegmentCount, "Invalid Index ?");
             freeSegments.SetRange(freeSegmentsBVIndex, static_cast<uint>(requestedNumOfSegments));
-            PreReservedHeapTrace(L"MEM_RELEASE: Address: 0x%p of size: 0x%x * 0x%x bytes\n", lpAddress, requestedNumOfSegments, AutoSystemInfo::Data.GetAllocationGranularityPageSize());
+            PreReservedHeapTrace(_u("MEM_RELEASE: Address: 0x%p of size: 0x%x * 0x%x bytes\n"), lpAddress, requestedNumOfSegments, AutoSystemInfo::Data.GetAllocationGranularityPageSize());
         }
         return success;
     }
@@ -438,7 +444,7 @@ AutoEnableDynamicCodeGen::AutoEnableDynamicCodeGen(bool enable) : enabled(false)
         {
             PGET_PROCESS_MITIGATION_POLICY_PROC GetProcessMitigationPolicyProc = nullptr;
 
-            HMODULE module = GetModuleHandleW(L"api-ms-win-core-processthreads-l1-1-3.dll");
+            HMODULE module = GetModuleHandleW(_u("api-ms-win-core-processthreads-l1-1-3.dll"));
 
             if (module != nullptr)
             {

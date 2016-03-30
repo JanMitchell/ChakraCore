@@ -1,7 +1,8 @@
 //-------------------------------------------------------------------------------------------------------
-// Copyright (C) Microsoft. All rights reserved.
+// Copyright (C) Microsoft Corporation and contributors. All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 //-------------------------------------------------------------------------------------------------------
+
 #include "Backend.h"
 #include "Language/JavascriptFunctionArgIndex.h"
 
@@ -646,15 +647,13 @@ LowererMD::ChangeToHelperCall(IR::Instr * callInstr,  IR::JnHelperMethod helperM
     IR::Instr * bailOutInstr = callInstr;
     if (callInstr->HasBailOutInfo())
     {
-        if (callInstr->GetBailOutKind() == IR::BailOutExpectingObject ||
-            callInstr->GetBailOutKind() == IR::BailOutOnNotPrimitive)
+        if (callInstr->GetBailOutKind() == IR::BailOutOnNotPrimitive)
         {
             callInstr = IR::Instr::New(callInstr->m_opcode, callInstr->m_func);
             bailOutInstr->TransferTo(callInstr);
             bailOutInstr->InsertBefore(callInstr);
 
-            IR::BailOutKind bailOutKind = bailOutInstr->GetBailOutKind();
-            bailOutInstr->m_opcode = bailOutKind == IR::BailOutExpectingObject ? Js::OpCode::BailOnNotObject : Js::OpCode::BailOnNotPrimitive;
+            bailOutInstr->m_opcode = Js::OpCode::BailOnNotPrimitive;
             bailOutInstr->SetSrc1(opndBailOutArg);
         }
         else
@@ -809,6 +808,38 @@ LowererMD::LowerRet(IR::Instr * retInstr)
         {
             regType = TySimd128I4;
         }
+        else if (asmType.which() == Js::AsmJsRetType::Int16x8)
+        {
+            regType = TySimd128I8;
+        }
+        else if (asmType.which() == Js::AsmJsRetType::Int8x16)
+        {
+            regType = TySimd128I16;
+        }
+        else if (asmType.which() == Js::AsmJsRetType::Uint32x4)
+        {
+            regType = TySimd128U4;
+        }
+        else if (asmType.which() == Js::AsmJsRetType::Uint16x8)
+        {
+            regType = TySimd128U8;
+        }
+        else if (asmType.which() == Js::AsmJsRetType::Uint8x16)
+        {
+            regType = TySimd128U16;
+        }
+        else if (asmType.which() == Js::AsmJsRetType::Bool32x4)
+        {
+            regType = TySimd128B4;
+        }
+        else if (asmType.which() == Js::AsmJsRetType::Bool16x8)
+        {
+            regType = TySimd128B8;
+        }
+        else if (asmType.which() == Js::AsmJsRetType::Bool8x16)
+        {
+            regType = TySimd128B16;
+        }
         else if (asmType.which() == Js::AsmJsRetType::Float64x2)
         {
             regType = TySimd128D2;
@@ -824,10 +855,6 @@ LowererMD::LowerRet(IR::Instr * retInstr)
     {
         retReg = IR::RegOpnd::New(nullptr, lowererMDArch.GetRegReturn(TyMachReg), TyMachReg, m_func);
     }
-
-
-
-
 
     retInstr->SetDst(retReg);
 
@@ -1552,13 +1579,35 @@ LowererMD::Legalize(IR::Instr *const instr, bool fPostRegAlloc)
         case Js::OpCode::MINPS:
         case Js::OpCode::MULPS:
         case Js::OpCode::ORPS:
+        case Js::OpCode::PADDB:
+        case Js::OpCode::PADDSB:
         case Js::OpCode::PADDD:
+        case Js::OpCode::PADDW:
+        case Js::OpCode::PADDSW:
+        case Js::OpCode::PADDUSB:
+        case Js::OpCode::PADDUSW:
         case Js::OpCode::PAND:
+        case Js::OpCode::PANDN:
+        case Js::OpCode::PCMPEQB:
         case Js::OpCode::PCMPEQD:
+        case Js::OpCode::PCMPEQW:
+        case Js::OpCode::PCMPGTB:
+        case Js::OpCode::PCMPGTW:
         case Js::OpCode::PCMPGTD:
+        case Js::OpCode::PMAXSW:
+        case Js::OpCode::PMAXUB:
+        case Js::OpCode::PMINSW:
+        case Js::OpCode::PMINUB:
+        case Js::OpCode::PMULLW:
         case Js::OpCode::PMULUDQ:
         case Js::OpCode::POR:
+        case Js::OpCode::PSUBB:
+        case Js::OpCode::PSUBSB:
         case Js::OpCode::PSUBD:
+        case Js::OpCode::PSUBW:
+        case Js::OpCode::PSUBSW:
+        case Js::OpCode::PSUBUSB:
+        case Js::OpCode::PSUBUSW:
         case Js::OpCode::PXOR:
         case Js::OpCode::SUBPS:
         case Js::OpCode::XORPS:
@@ -1570,7 +1619,9 @@ LowererMD::Legalize(IR::Instr *const instr, bool fPostRegAlloc)
         case Js::OpCode::CMPLEPD:
         case Js::OpCode::CMPEQPD:
         case Js::OpCode::CMPNEQPD:
+        case Js::OpCode::PUNPCKLBW:
         case Js::OpCode::PUNPCKLDQ:
+        case Js::OpCode::PUNPCKLWD:
 
             MakeDstEquSrc1<verify>(instr);
             LegalizeOpnds<verify>(
@@ -1630,17 +1681,22 @@ LowererMD::Legalize(IR::Instr *const instr, bool fPostRegAlloc)
             Assert(instr->GetSrc1()->IsIndirOpnd() || instr->GetSrc1()->IsSymOpnd());
             Assert(!instr->GetSrc2());
             break;
-
-
         case Js::OpCode::PSRLDQ:
         case Js::OpCode::PSLLDQ:
+        case Js::OpCode::PSRLW:
+        case Js::OpCode::PSRLD:
+        case Js::OpCode::PSRAW:
+        case Js::OpCode::PSRAD:
+        case Js::OpCode::PSLLW:
+        case Js::OpCode::PSLLD:
+
             Assert(AutoSystemInfo::Data.SSE2Available());
             MakeDstEquSrc1<verify>(instr);
             LegalizeOpnds<verify>(
                 instr,
                 L_Reg,
                 L_Reg,
-                L_Imm32);
+                L_Reg | L_Imm32);
             break;
 
         case Js::OpCode::ROUNDSD:
@@ -5617,7 +5673,7 @@ bool LowererMD::GenerateFastCharAt(Js::BuiltinFunction index, IR::Opnd *dst, IR:
 
     this->m_lowerer->GenerateStringTest(regSrcStr, insertInstr, labelHelper, nullptr, false);
 
-    // r1 contains the value of the wchar_t* pointer inside JavascriptString.
+    // r1 contains the value of the char16* pointer inside JavascriptString.
     // MOV r1, [regSrcStr + offset(m_pszValue)]
     IR::RegOpnd *r1 = IR::RegOpnd::New(TyMachReg, this->m_func);
     IR::IndirOpnd * indirOpnd = IR::IndirOpnd::New(regSrcStr->AsRegOpnd(), Js::JavascriptString::GetOffsetOfpszValue(), TyMachPtr, this->m_func);
@@ -5648,7 +5704,7 @@ bool LowererMD::GenerateFastCharAt(Js::BuiltinFunction index, IR::Opnd *dst, IR:
         instr = IR::BranchInstr::New(Js::OpCode::JBE, labelHelper, this->m_func);
         insertInstr->InsertBefore(instr);
 
-        indirOpnd = IR::IndirOpnd::New(r1, Js::TaggedInt::ToUInt32(srcIndex->AsAddrOpnd()->m_address) * sizeof(wchar_t), TyInt16, this->m_func);
+        indirOpnd = IR::IndirOpnd::New(r1, Js::TaggedInt::ToUInt32(srcIndex->AsAddrOpnd()->m_address) * sizeof(char16), TyInt16, this->m_func);
     }
     else
     {
@@ -8628,6 +8684,18 @@ void LowererMD::GenerateFastInlineBuiltInCall(IR::Instr* instr, IR::JnHelperMeth
         Assert(helperMethod == (IR::JnHelperMethod)0);
         return GenerateFastInlineBuiltInMathAbs(instr);
 
+    case Js::OpCode::InlineMathPow:
+#ifdef _M_IX86
+        if (!instr->GetSrc2()->IsFloat())
+        {
+#endif
+            this->GenerateFastInlineBuiltInMathPow(instr);
+            break;
+#ifdef _M_IX86
+        }
+        // fallthrough
+#endif
+
     case Js::OpCode::InlineMathAcos:
     case Js::OpCode::InlineMathAsin:
     case Js::OpCode::InlineMathAtan:
@@ -8635,7 +8703,6 @@ void LowererMD::GenerateFastInlineBuiltInCall(IR::Instr* instr, IR::JnHelperMeth
     case Js::OpCode::InlineMathCos:
     case Js::OpCode::InlineMathExp:
     case Js::OpCode::InlineMathLog:
-    case Js::OpCode::InlineMathPow:
     case Js::OpCode::Expo_A:        //** operator reuses InlineMathPow fastpath
     case Js::OpCode::InlineMathSin:
     case Js::OpCode::InlineMathTan:
@@ -9263,6 +9330,41 @@ void LowererMD::GenerateFastInlineBuiltInMathAbs(IR::Instr* inlineInstr)
     {
         AssertMsg(FALSE, "GenerateFastInlineBuiltInMathAbs: unexpected type of the src!");
     }
+}
+
+void LowererMD::GenerateFastInlineBuiltInMathPow(IR::Instr* instr)
+{
+#ifdef _M_IX86
+    AssertMsg(!instr->GetSrc2()->IsFloat(), "Math.pow(*, double) needs customized lowering!");
+#endif
+
+    IR::JnHelperMethod directPowHelper = (IR::JnHelperMethod)0;
+
+    if (!instr->GetSrc2()->IsFloat())
+    {
+        LoadHelperArgument(instr, instr->UnlinkSrc2());
+
+        if (instr->GetSrc1()->IsFloat())
+        {
+            directPowHelper = IR::HelperDirectMath_PowDoubleInt;
+            LoadDoubleHelperArgument(instr, instr->UnlinkSrc1());
+        }
+        else
+        {
+            AssertMsg(0, "Math.Pow(int, int) spec NYI");
+        }
+    }
+#ifndef _M_IX86
+    else
+    {
+        AssertMsg(instr->GetSrc1()->IsFloat(), "Math.Pow(int, double) should not generated by GlobOpt!");
+        directPowHelper = IR::HelperDirectMath_Pow;
+        LoadDoubleHelperArgument(instr, instr->UnlinkSrc2());
+        LoadDoubleHelperArgument(instr, instr->UnlinkSrc1());
+    }
+#endif
+
+    ChangeToHelperCall(instr, directPowHelper);
 }
 
 void

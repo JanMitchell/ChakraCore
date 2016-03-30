@@ -1,7 +1,8 @@
 //-------------------------------------------------------------------------------------------------------
-// Copyright (C) Microsoft. All rights reserved.
+// Copyright (C) Microsoft Corporation and contributors. All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 //-------------------------------------------------------------------------------------------------------
+
 #include "RuntimeLibraryPch.h"
 
 namespace Js
@@ -75,9 +76,6 @@ namespace Js
         case PropertyIds::toString:
             *value = requestContext->GetLibrary()->GetSIMDFloat64x2ToStringFunction();
             return true;
-        case PropertyIds::signMask:
-            *value = GetSignMask();
-            return true;
         }
 
         return false;
@@ -97,13 +95,13 @@ namespace Js
 
         if (args.Info.Count == 0 || JavascriptOperators::GetTypeId(args[0]) != TypeIds_SIMDFloat64x2)
         {
-            JavascriptError::ThrowTypeError(scriptContext, JSERR_This_NeedSimd, L"SIMDFloat64x2.toString");
+            JavascriptError::ThrowTypeError(scriptContext, JSERR_This_NeedSimd, _u("SIMDFloat64x2.toString"));
         }
 
         JavascriptSIMDFloat64x2 *instance = JavascriptSIMDFloat64x2::FromVar(args[0]);
         Assert(instance);
 
-        wchar_t stringBuffer[SIMD_STRING_BUFFER_MAX];
+        char16 stringBuffer[SIMD_STRING_BUFFER_MAX];
         SIMDValue value = instance->GetValue();
 
         JavascriptSIMDFloat64x2::ToStringBuffer(value, stringBuffer, SIMD_STRING_BUFFER_MAX);
@@ -118,12 +116,5 @@ namespace Js
     Var JavascriptSIMDFloat64x2::Copy(ScriptContext* requestContext)
     {
         return JavascriptSIMDFloat64x2::New(&this->value, requestContext);
-    }
-
-    __inline Var JavascriptSIMDFloat64x2::GetSignMask()
-    {
-        int signMask = SIMDFloat64x2Operation::OpGetSignMask(value);
-
-        return TaggedInt::ToVarUnchecked(signMask);
     }
 }

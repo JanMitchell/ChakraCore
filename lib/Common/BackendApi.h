@@ -1,7 +1,8 @@
 //-------------------------------------------------------------------------------------------------------
-// Copyright (C) Microsoft. All rights reserved.
+// Copyright (C) Microsoft Corporation and contributors. All rights reserved.
 // Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
 //-------------------------------------------------------------------------------------------------------
+
 #pragma once
 
 #if DYNAMIC_INTERPRETER_THUNK
@@ -266,11 +267,16 @@ enum VTableValue {
     // SIMD_JS
     VtableSimd128F4,
     VtableSimd128I4,
+    VtableSimd128I8,
+    VtableSimd128I16,
+    VtableSimd128U4,
+    VtableSimd128U8,
+    VtableSimd128U16,
     Count
 };
 
 #if DBG_DUMP || defined(ENABLE_IR_VIEWER)
-const wchar_t *GetVtableName(VTableValue value);
+const char16 *GetVtableName(VTableValue value);
 #endif
 
 enum AuxArrayValue {

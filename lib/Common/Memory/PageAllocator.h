@@ -34,13 +34,13 @@ typedef void* FunctionTableHandle;
     { \
         if (!verbose || this->pageAllocatorFlagTable.Verbose) \
         {   \
-            Output::Print(L"%p : %p> PageAllocator(%p): ", GetCurrentThreadContextId(), ::GetCurrentThreadId(), this); \
+            Output::Print(_u("%p : %p> PageAllocator(%p): "), GetCurrentThreadContextId(), ::GetCurrentThreadId(), this); \
             if (debugName != nullptr) \
             { \
-                Output::Print(L"[%s] ", this->debugName); \
+                Output::Print(_u("[%s] "), this->debugName); \
             } \
             Output::Print(format, __VA_ARGS__);         \
-            Output::Print(L"\n"); \
+            Output::Print(_u("\n")); \
             if (stats && this->pageAllocatorFlagTable.Stats.IsEnabled(Js::PageAllocatorPhase)) \
             { \
                 this->DumpStats();         \
@@ -476,7 +476,7 @@ public:
 #endif
 
 #if DBG_DUMP
-    wchar_t const * debugName;
+    char16 const * debugName;
 #endif
 protected:
     SegmentBase<TVirtualAlloc> * AllocSegment(size_t pageCount);
@@ -491,6 +491,8 @@ protected:
 
     template <bool notPageAligned>
     char * TryAllocFreePages(uint pageCount, PageSegmentBase<TVirtualAlloc> ** pageSegment, PageHeapMode pageHeapFlags);
+    char * TryAllocFromZeroPagesList(uint pageCount, PageSegmentBase<TVirtualAlloc> ** pageSegment, SLIST_HEADER& zeroPagesList, bool isPendingZeroList);
+    char * TryAllocFromZeroPages(uint pageCount, PageSegmentBase<TVirtualAlloc> ** pageSegment, PageHeapMode pageHeapFlags);
 
     template <bool notPageAligned>
     char * TryAllocDecommittedPages(uint pageCount, PageSegmentBase<TVirtualAlloc> ** pageSegment, PageHeapMode pageHeapFlags);
@@ -719,7 +721,7 @@ public:
 
     BOOL ProtectPages(__in char* address, size_t pageCount, __in void* segment, DWORD dwVirtualProtectFlags, DWORD desiredOldProtectFlag);
     bool AllocSecondary(void* segment, ULONG_PTR functionStart, DWORD functionSize, ushort pdataCount, ushort xdataSize, SecondaryAllocation* allocation);
-    void ReleaseSecondary(const SecondaryAllocation& allocation, void* segment);
+    bool ReleaseSecondary(const SecondaryAllocation& allocation, void* segment);
     void TrackDecommittedPages(void * address, uint pageCount, __in void* segment);
     void DecommitPages(__in char* address, size_t pageCount = 1);
 

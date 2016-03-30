@@ -240,4 +240,28 @@
       <files>OS_5553123.js</files>
     </default>
   </test>
+  <test>
+    <default>
+      <files>symbol_tostring.js</files>
+      <compile-flags>-maxsimplejitruncount:1 -maxinterpretcount:1 -force:fieldcopyprop</compile-flags>
+    </default>
+  </test>
+  <test>
+    <default>
+      <files>default_undodefer.js</files>
+      <compile-flags>-forcedeferparse -forceundodefer</compile-flags>
+    </default>
+  </test>
+  <test>
+    <default>
+      <files>bug_resetisdead.js</files>
+      <compile-flags>-on:prelowererpeeps</compile-flags>
+    </default>
+  </test>
+  <test>
+    <default>
+      <files>bug_es5array.js</files>
+      <compile-flags>-off:NativeArray -ForceES5Array</compile-flags>
+    </default>
+  </test>
 </regress-exe>
