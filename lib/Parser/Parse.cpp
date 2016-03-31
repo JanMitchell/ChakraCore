@@ -7559,6 +7559,10 @@ void Parser::TransformAsyncFncDeclAST(ParseNodePtr *pnodeBody, bool fLambda)
     {
         GetCurrentFunctionNode()->sxFnc.SetUsesArguments();
     }
+    if (pnodeFncGenerator->sxFnc.CallsEval() || pnodeFncGenerator->sxFnc.ChildCallsEval())
+    {
+        GetCurrentFunctionNode()->sxFnc.SetChildCallsEval();
+    }
     lastNodeRef = NULL;
 }
 
